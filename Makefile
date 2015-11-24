@@ -1,7 +1,10 @@
+
 CC=gcc
+CXX=g++
 LATEXC=pdflatex
 DOCC=doxygen
-CFLAGS=-g -Wall 
+CFLAGS=-Wall #-g
+CXXFLAGS=g++ -Ofast -Wall
 
 REFDIR=.
 SRCDIR=$(REFDIR)/src
@@ -14,29 +17,29 @@ CSOURCE=$(wildcard $(SRCDIR)/applyPatch.c)
 PDF=$(LATEXSOURCE:.tex=.pdf)
 
 
-all: binary report doc 
+all: binary report doc
 
 
 $(BINDIR)/applyPatch: $(CSOURCE)
 	$(CC) $(CFLAGS)  $^ -o $@
 
 %.pdf: $(LATEXSOURCE)
-	$(LATEXC) -output-directory $(REPORTDIR) $^ 
+	$(LATEXC) -output-directory $(REPORTDIR) $^
 
-$(DOCDIR)/index.html: $(SRCDIR)/Doxyfile $(CSOURCE) 
+$(DOCDIR)/index.html: $(SRCDIR)/Doxyfile $(CSOURCE)
 	$(DOCC) $(SRCDIR)/Doxyfile
 
 binary: $(BINDIR)/applyPatch $(BINDIR)/computePatchOpt
 
-report: $(PDF) 
+report: $(PDF)
 
 doc: $(DOCDIR)/index.html
 
 $(BINDIR)/computePatchOpt: $(SRCDIR)/computePatchOpt.cpp
-	g++ -Ofast -Wall $(SRCDIR)/computePatchOpt.cpp -o $(BINDIR)/computePatchOpt
+	$(CXXFLAGS) $(SRCDIR)/computePatchOpt.cpp -o $(BINDIR)/computePatchOpt
 
 clean:
-	rm -rf $(DOCDIR) $(BINDIR)/* $(REPORTDIR)/*.aux $(REPORTDIR)/*.log  $(REPORTDIR)/rapport.pdf 
+	rm -rf $(DOCDIR) $(BINDIR)/* $(REPORTDIR)/*.aux $(REPORTDIR)/*.log  $(REPORTDIR)/rapport.pdf
 
 
-.PHONY: all doc binary report 
+.PHONY: all doc binary report
