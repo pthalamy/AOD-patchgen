@@ -1,0 +1,9885 @@
++ 0
+// New GCC code for 4MMAOD
++ 0
+
++ 6
+   Copyright (C) 1993-1999, 2000, 2001, 2002 Free Software Foundation, Inc.
++ 6
+   This file is part of the GNU C Library.
++ 6
+
++ 6
+   The GNU C Library is free software; you can redistribute it and/or
++ 6
+   modify it under the terms of the GNU Lesser General Public
++ 6
+   License as published by the Free Software Foundation; either
++ 6
+   version 2.1 of the License, or (at your option) any later version.
++ 6
+
++ 6
+   The GNU C Library is distributed in the hope that it will be useful,
++ 6
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
++ 6
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ 6
+   Lesser General Public License for more details.
++ 6
+
++ 6
+   You should have received a copy of the GNU Lesser General Public
++ 6
+   License along with the GNU C Library; if not, write to the Free
++ 6
+   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++ 6
+   02111-1307 USA.  */
++ 6
+
++ 6
+/* This file has been modified for usage in libiberty.  It includes "xregex.h"
++ 6
+   instead of <regex.h>.  The "xregex.h" header file renames all external
++ 6
+   routines with an "x" prefix so they do not collide with the native regex
++ 6
+   routines or with other components regex routines. */
++ 6
+/* AIX requires this to be the first thing in the file. */
++ 6
+#if defined _AIX && !defined __GNUC__ && !defined REGEX_MALLOC
++ 6
+  #pragma alloca
++ 6
+#endif
++ 6
+
++ 6
+/* Define to enable the use of a default linker. */
++ 6
+/* #undef DEFAULT_LINKER */
++ 6
+
++ 6
+/* Define if you want to use __cxa_atexit, rather than atexit, to register C++
++ 6
+   destructors for local statics and global objects. This is essential for
++ 6
+   fully standards-compliant handling of destructors, but requires
++ 6
+   __cxa_atexit in libc. */
++ 6
+/* #undef DEFAULT_USE_CXA_ATEXIT */
++ 6
+
++ 6
+/* Define if you want the garbage collector to do object poisoning and other
++ 6
+   memory allocation checks. This is quite expensive. */
++ 6
+/* #undef ENABLE_GC_CHECKING */
++ 6
+
++ 6
+/* Define to 1 if translation of program messages to the user's native
++ 6
+   language is requested. */
++ 6
+#define ENABLE_NLS 1
++ 6
+
++ 6
+/* Define if you want all operations on RTL (the basic data structure of the
++ 6
+   optimizer and back end) to be checked for dynamic type safety at runtime.
++ 6
+   This is quite expensive. */
++ 6
+/* #undef ENABLE_RTL_CHECKING */
++ 6
+
++ 6
+/* Define if you want RTL flag accesses to be checked against the RTL codes
++ 6
+   that are supported for each access macro. This is relatively cheap. */
++ 6
+/* #undef ENABLE_RTL_FLAG_CHECKING */
++ 6
+
++ 6
+/* Define if you want all operations on trees (the basic data structure of the
++ 6
+   front ends) to be checked for dynamic type safety at runtime. This is
++ 6
+   moderately expensive. The tree browser debugging routines will also be
++ 6
+   enabled by this option. */
++ 6
+/* #undef ENABLE_TREE_CHECKING */
++ 6
+
++ 6
+/* Define if you want to run subprograms and generated programs through
++ 6
+   valgrind (a memory checker). This is extremely expensive. */
++ 6
+/* #undef ENABLE_VALGRIND_CHECKING */
++ 6
+
++ 6
+/* Define to 1 if installation paths should be looked up in Windows32
++ 6
+   Registry. Ignored on non windows32 hosts. */
++ 6
+/* #undef ENABLE_WIN32_REGISTRY */
++ 6
+
++ 6
+/* Define to the name of a file containing a list of extra machine modes for
++ 6
+   this architecture. */
++ 6
+#define EXTRA_MODES_FILE "config/i386/i386-modes.def"
++ 6
+
++ 6
+/* Define to enable detailed memory allocation stats gathering. */
++ 6
+/* #undef GATHER_STATISTICS */
++ 6
+
++ 6
+/* Define to the type of elements in the array set by `getgroups'. Usually
++ 6
+   this is either `int' or `gid_t'. */
++ 6
+#define GETGROUPS_T gid_t
++ 6
+
++ 6
+/* Define true if the assembler supports '.long foo@GOTOFF'. */
++ 6
+#define HAVE_AS_GOTOFF_IN_DATA 1
++ 6
+
++ 6
+/* Define if your assembler supports the --gstabs option. */
++ 6
+#define HAVE_AS_GSTABS_DEBUG_FLAG 1
++ 6
+
++ 6
+/* Define if your assembler supports the Sun syntax for cmov. */
++ 6
+/* #undef HAVE_AS_IX86_CMOV_SUN_SYNTAX */
++ 6
+
++ 6
+/* Define if your assembler supports .sleb128 and .uleb128. */
++ 6
+#define HAVE_AS_LEB128 1
++ 6
+
++ 6
+/* Define if your assembler supports ltoffx and ldxmov relocations. */
++ 6
+/* #undef HAVE_AS_LTOFFX_LDXMOV_RELOCS */
++ 6
+
++ 6
+/* Define if your assembler supports mfcr field. */
++ 6
+/* #undef HAVE_AS_MFCRF */
++ 6
+
++ 6
+/* Define if your assembler supports the -no-mul-bug-abort option. */
++ 6
+/* #undef HAVE_AS_NO_MUL_BUG_ABORT_OPTION */
++ 6
+
++ 6
+/* Define if your assembler supports offsetable %lo(). */
++ 6
+/* #undef HAVE_AS_OFFSETABLE_LO10 */
++ 6
+
++ 6
+/* Define if your assembler supports .register. */
++ 6
+/* #undef HAVE_AS_REGISTER_PSEUDO_OP */
++ 6
+
++ 6
+/* Define if your assembler supports -relax option. */
++ 6
+/* #undef HAVE_AS_RELAX_OPTION */
++ 6
+
++ 6
+/* Define if your assembler and linker support unaligned PC relative relocs.
++ 6
+   */
++ 6
+/* #undef HAVE_AS_SPARC_UA_PCREL */
++ 6
+
++ 6
+/* Define if your assembler and linker support unaligned PC relative relocs
++ 6
+   against hidden symbols. */
++ 6
+/* #undef HAVE_AS_SPARC_UA_PCREL_HIDDEN */
++ 6
+
++ 6
+/* Define if your assembler supports thread-local storage. */
++ 6
+/* #undef HAVE_AS_TLS */
++ 6
+
++ 6
+/* Define to 1 if you have the `atoll' function. */
++ 6
+#define HAVE_ATOLL 1
++ 6
+
++ 6
+/* Define to 1 if you have the `atoq' function. */
++ 6
+/* #undef HAVE_ATOQ */
++ 6
+
++ 6
+/* Define if BANSHEE is available */
++ 6
+/* #undef HAVE_BANSHEE */
++ 6
+
++ 6
+/* Define to 1 if you have the `clock' function. */
++ 6
+#define HAVE_CLOCK 1
++ 6
+
++ 6
+/* Define if <time.h> defines clock_t. */
++ 6
+#define HAVE_CLOCK_T 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'abort', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_ABORT 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'atof', otherwise define to 0. */
++ 6
+#define HAVE_DECL_ATOF 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'atol', otherwise define to 0. */
++ 6
+#define HAVE_DECL_ATOL 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'basename', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_BASENAME 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'calloc', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_CALLOC 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'clock', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_CLOCK 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'errno', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_ERRNO 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'fprintf_unlocked', otherwise
++ 6
+   define to 0. */
++ 6
+#define HAVE_DECL_FPRINTF_UNLOCKED 0
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'fputs_unlocked', otherwise
++ 6
+   define to 0. */
++ 6
+#define HAVE_DECL_FPUTS_UNLOCKED 0
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'free', otherwise define to 0. */
++ 6
+#define HAVE_DECL_FREE 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'fwrite_unlocked', otherwise
++ 6
+   define to 0. */
++ 6
+#define HAVE_DECL_FWRITE_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'getcwd', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_GETCWD 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'getenv', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_GETENV 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'getopt', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_GETOPT 0
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'getrlimit', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_GETRLIMIT 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'getrusage', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_GETRUSAGE 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'getwd', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_GETWD 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'ldgetname', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_LDGETNAME 0
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'malloc', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_MALLOC 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'putc_unlocked', otherwise define
++ 6
+   to 0. */
++ 6
+#define HAVE_DECL_PUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'realloc', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_REALLOC 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'sbrk', otherwise define to 0. */
++ 6
+#define HAVE_DECL_SBRK 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'setrlimit', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_SETRLIMIT 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'snprintf', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_SNPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'strsignal', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_STRSIGNAL 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'strstr', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_STRSTR 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'times', otherwise define to 0.
++ 6
+   */
++ 6
+#define HAVE_DECL_TIMES 1
++ 6
+
++ 6
+/* Define to 1 if we found a declaration for 'vasprintf', otherwise define to
++ 6
+   0. */
++ 6
+#define HAVE_DECL_VASPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the <direct.h> header file. */
++ 6
+/* #undef HAVE_DIRECT_H */
++ 6
+
++ 6
+/* Define to 1 if you have the `dup2' function. */
++ 6
+#define HAVE_DUP2 1
++ 6
+
++ 6
+/* Define to 1 if you have the <fcntl.h> header file. */
++ 6
+#define HAVE_FCNTL_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fork' function. */
++ 6
+#define HAVE_FORK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fprintf_unlocked' function. */
++ 6
+/* #undef HAVE_FPRINTF_UNLOCKED */
++ 6
+
++ 6
+/* Define to 1 if you have the `fputc_unlocked' function. */
++ 6
+#define HAVE_FPUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fputs_unlocked' function. */
++ 6
+#define HAVE_FPUTS_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fwrite_unlocked' function. */
++ 6
+#define HAVE_FWRITE_UNLOCKED 1
++ 6
+
++ 6
+/* Define if your assembler supports .balign and .p2align. */
++ 6
+#define HAVE_GAS_BALIGN_AND_P2ALIGN 1
++ 6
+
++ 6
+/* Define if your assembler uses the new HImode fild and fist notation. */
++ 6
+#define HAVE_GAS_FILDS_FISTS 1
++ 6
+
++ 6
+/* Define if your assembler and linker support .hidden. */
++ 6
+/* #undef HAVE_GAS_HIDDEN */
++ 6
+
++ 6
+/* Define if your assembler supports specifying the maximum number of bytes to
++ 6
+   skip when using the GAS .p2align command. */
++ 6
+#define HAVE_GAS_MAX_SKIP_P2ALIGN 1
++ 6
+
++ 6
+/* Define if your assembler and linker support 32-bit section relative relocs
++ 6
+   via '.secrel32 label'. */
++ 6
+/* #undef HAVE_GAS_PE_SECREL32_RELOC */
++ 6
+
++ 6
+/* Define 0/1 if your assembler supports marking sections with SHF_MERGE flag.
++ 6
+   */
++ 6
+#define HAVE_GAS_SHF_MERGE 1
++ 6
+
++ 6
+/* Define if your assembler supports .subsection and .subsection -1 starts
++ 6
+   emitting at the beginning of your section. */
++ 6
+#define HAVE_GAS_SUBSECTION_ORDERING 1
++ 6
+
++ 6
+/* Define if your assembler supports .weak. */
++ 6
+#define HAVE_GAS_WEAK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `getrlimit' function. */
++ 6
+#define HAVE_GETRLIMIT 1
++ 6
+
++ 6
+/* Define to 1 if you have the `getrusage' function. */
++ 6
+#define HAVE_GETRUSAGE 1
++ 6
+
++ 6
+/* Define to 1 if you have the `gettimeofday' function. */
++ 6
+#define HAVE_GETTIMEOFDAY 1
++ 6
+
++ 6
+/* Define if you have the iconv() function. */
++ 6
+#define HAVE_ICONV 1
++ 6
+
++ 6
+/* Define to 1 if you have the <iconv.h> header file. */
++ 6
+#define HAVE_ICONV_H 1
++ 6
+
++ 6
+/* Define .init_array/.fini_array sections are available and working. */
++ 6
+/* #undef HAVE_INITFINI_ARRAY */
++ 6
+
++ 6
+/* Define if you have a working <inttypes.h> header file. */
++ 6
+#define HAVE_INTTYPES_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `kill' function. */
++ 6
+#define HAVE_KILL 1
++ 6
+
++ 6
+/* Define to 1 if you have the <langinfo.h> header file. */
++ 6
+#define HAVE_LANGINFO_H 1
++ 6
+
++ 6
+/* Define if your <locale.h> file defines LC_MESSAGES. */
++ 6
+#define HAVE_LC_MESSAGES 1
++ 6
+
++ 6
+/* Define to 1 if you have the <ldfcn.h> header file. */
++ 6
+/* #undef HAVE_LDFCN_H */
++ 6
+
++ 6
+/* Define if your linker supports --as-needed and --no-as-needed options. */
++ 6
+/* #undef HAVE_LD_AS_NEEDED */
++ 6
+
++ 6
+/* Define if your linker supports --eh-frame-hdr option. */
++ 6
+#define HAVE_LD_EH_FRAME_HDR 1
++ 6
+
++ 6
+/* Define if your linker supports -pie option. */
++ 6
+/* #undef HAVE_LD_PIE */
++ 6
+
++ 6
+/* Define if your linker links a mix of read-only and read-write sections into
++ 6
+   a read-write section. */
++ 6
+#define HAVE_LD_RO_RW_SECTION_MIXING 1
++ 6
+
++ 6
+/* Define to 1 if you have the <limits.h> header file. */
++ 6
+#define HAVE_LIMITS_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <locale.h> header file. */
++ 6
+#define HAVE_LOCALE_H 1
++ 6
+
++ 6
+/* Define if your compiler supports the \`long long' type. */
++ 6
+#define HAVE_LONG_LONG 1
++ 6
+
++ 6
+/* Define to 1 if you have the <malloc.h> header file. */
++ 6
+#define HAVE_MALLOC_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `mbstowcs' function. */
++ 6
+#define HAVE_MBSTOWCS 1
++ 6
+
++ 6
+/* Define if valgrind's memcheck.h header is installed. */
++ 6
+/* #undef HAVE_MEMCHECK_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <memory.h> header file. */
++ 6
+#define HAVE_MEMORY_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `mincore' function. */
++ 6
+#define HAVE_MINCORE 1
++ 6
+
++ 6
+/* Define to 1 if you have the `mmap' function. */
++ 6
+#define HAVE_MMAP 1
++ 6
+
++ 6
+/* Define if mmap with MAP_ANON(YMOUS) works. */
++ 6
+#define HAVE_MMAP_ANON 1
++ 6
+
++ 6
+/* Define if mmap of /dev/zero works. */
++ 6
+#define HAVE_MMAP_DEV_ZERO 1
++ 6
+
++ 6
+/* Define if read-only mmap of a plain file works. */
++ 6
+#define HAVE_MMAP_FILE 1
++ 6
+
++ 6
+/* Define to 1 if you have the `nl_langinfo' function. */
++ 6
+#define HAVE_NL_LANGINFO 1
++ 6
+
++ 6
+/* Define if printf supports "%p". */
++ 6
+#define HAVE_PRINTF_PTR 1
++ 6
+
++ 6
+/* Define to 1 if you have the `putc_unlocked' function. */
++ 6
+#define HAVE_PUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the `scandir' function. */
++ 6
+#define HAVE_SCANDIR 1
++ 6
+
++ 6
+/* Define to 1 if you have the `setlocale' function. */
++ 6
+#define HAVE_SETLOCALE 1
++ 6
+
++ 6
+/* Define to 1 if you have the `setrlimit' function. */
++ 6
+#define HAVE_SETRLIMIT 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stddef.h> header file. */
++ 6
+#define HAVE_STDDEF_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stdint.h> header file. */
++ 6
+#define HAVE_STDINT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stdlib.h> header file. */
++ 6
+#define HAVE_STDLIB_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <strings.h> header file. */
++ 6
+#define HAVE_STRINGS_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <string.h> header file. */
++ 6
+#define HAVE_STRING_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strsignal' function. */
++ 6
+#define HAVE_STRSIGNAL 1
++ 6
+
++ 6
+/* Define if <sys/times.h> defines struct tms. */
++ 6
+#define HAVE_STRUCT_TMS 1
++ 6
+
++ 6
+/* Define to 1 if you have the `sysconf' function. */
++ 6
+#define HAVE_SYSCONF 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/file.h> header file. */
++ 6
+#define HAVE_SYS_FILE_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/mman.h> header file. */
++ 6
+#define HAVE_SYS_MMAN_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/param.h> header file. */
++ 6
+#define HAVE_SYS_PARAM_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/resource.h> header file. */
++ 6
+#define HAVE_SYS_RESOURCE_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/stat.h> header file. */
++ 6
+#define HAVE_SYS_STAT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/times.h> header file. */
++ 6
+#define HAVE_SYS_TIMES_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/time.h> header file. */
++ 6
+#define HAVE_SYS_TIME_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/types.h> header file. */
++ 6
+#define HAVE_SYS_TYPES_H 1
++ 6
+
++ 6
+/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
++ 6
+#define HAVE_SYS_WAIT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `times' function. */
++ 6
+#define HAVE_TIMES 1
++ 6
+
++ 6
+/* Define to 1 if you have the <time.h> header file. */
++ 6
+#define HAVE_TIME_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <unistd.h> header file. */
++ 6
+#define HAVE_UNISTD_H 1
++ 6
+
++ 6
+/* Define if valgrind's valgrind/memcheck.h header is installed. */
++ 6
+/* #undef HAVE_VALGRIND_MEMCHECK_H */
++ 6
+
++ 6
+/* Define to 1 if you have the `vfork' function. */
++ 6
+#define HAVE_VFORK 1
++ 6
+
++ 6
+/* Define to 1 if you have the <vfork.h> header file. */
++ 6
+/* #undef HAVE_VFORK_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <wchar.h> header file. */
++ 6
+#define HAVE_WCHAR_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `wcswidth' function. */
++ 6
+#define HAVE_WCSWIDTH 1
++ 6
+
++ 6
+/* Define to 1 if `fork' works. */
++ 6
+#define HAVE_WORKING_FORK 1
++ 6
+
++ 6
+/* Define this macro if mbstowcs does not crash when its first argument is
++ 6
+   NULL. */
++ 6
+#define HAVE_WORKING_MBSTOWCS 1
++ 6
+
++ 6
+/* Define to 1 if `vfork' works. */
++ 6
+#define HAVE_WORKING_VFORK 1
++ 6
+
++ 6
+/* Define if your compiler supports the \`__int64' type. */
++ 6
+/* #undef HAVE___INT64 */
++ 6
+
++ 6
+/* Define if the host machine stores words of multi-word integers in
++ 6
+   big-endian order. */
++ 6
+/* #undef HOST_WORDS_BIG_ENDIAN */
++ 6
+
++ 6
+/* Define as const if the declaration of iconv() needs const. */
++ 6
+#define ICONV_CONST 
++ 6
+
++ 6
+/* Define if host mkdir takes a single argument. */
++ 6
+/* #undef MKDIR_TAKES_ONE_ARG */
++ 6
+
++ 6
+/* Define to 1 if HOST_WIDE_INT must be 64 bits wide (see hwint.h). */
++ 6
+/* #undef NEED_64BIT_HOST_WIDE_INT */
++ 6
+
++ 6
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
++ 6
+/* #undef NO_MINUS_C_MINUS_O */
++ 6
+
++ 6
+/* Define to PREFIX/include if cpp should also search that directory. */
++ 6
+#define PREFIX_INCLUDE_DIR "/scratch2/smcc-extras/build/gcc-cvs/install/include"
++ 6
+
++ 6
+/* The number of bytes in type int */
++ 6
+#define SIZEOF_INT 4
++ 6
+
++ 6
+/* The number of bytes in type long */
++ 6
+#define SIZEOF_LONG 4
++ 6
+
++ 6
+/* The number of bytes in type long long */
++ 6
+#define SIZEOF_LONG_LONG 8
++ 6
+
++ 6
+/* The number of bytes in type short */
++ 6
+#define SIZEOF_SHORT 2
++ 6
+
++ 6
+/* The number of bytes in type void * */
++ 6
+#define SIZEOF_VOID_P 4
++ 6
+
++ 6
+/* The number of bytes in type __int64 */
++ 6
+/* #undef SIZEOF___INT64 */
++ 6
+
++ 6
+/* Define to 1 if you have the ANSI C header files. */
++ 6
+#define STDC_HEADERS 1
++ 6
+
++ 6
+/* Define if you can safely include both <string.h> and <strings.h>. */
++ 6
+#define STRING_WITH_STRINGS 1
++ 6
+
++ 6
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
++ 6
+#define TIME_WITH_SYS_TIME 1
++ 6
+
++ 6
+/* Define if your assembler mis-optimizes .eh_frame data. */
++ 6
+/* #undef USE_AS_TRADITIONAL_FORMAT */
++ 6
+
++ 6
+/* Define if gcc should use -lunwind. */
++ 6
+/* #undef USE_LIBUNWIND_EXCEPTIONS */
++ 6
+
++ 6
+/* Define if location_t is fileline integer cookie. */
++ 6
+/* #undef USE_MAPPED_LOCATION */
++ 6
+
++ 6
+/* Define to be the last portion of registry key on windows hosts. */
++ 6
+/* #undef WIN32_REGISTRY_KEY */
++ 6
+
++ 6
+/* whether byteorder is bigendian */
++ 6
+/* #undef WORDS_BIGENDIAN */
++ 6
+
++ 6
+/* Define to `int' if <sys/types.h> doesn't define. */
++ 6
+/* #undef gid_t */
++ 6
+
++ 6
+/* Define to `__inline__' or `__inline' if that's what the C compiler
++ 6
+   calls it, or to nothing if 'inline' is not supported under any name.  */
++ 6
+#ifndef __cplusplus
++ 6
+/* #undef inline */
++ 6
+#endif
++ 6
+
++ 6
+/* Define to `int' if <sys/types.h> does not define. */
++ 6
+/* #undef pid_t */
++ 6
+
++ 6
+/* Define to \`long' if <sys/resource.h> doesn't define. */
++ 6
+/* #undef rlim_t */
++ 6
+
++ 6
+/* Define to `int' if <sys/types.h> does not define. */
++ 6
+/* #undef ssize_t */
++ 6
+
++ 6
+/* Define to `int' if <sys/types.h> doesn't define. */
++ 6
+/* #undef uid_t */
++ 6
+
++ 6
+/* Define as `fork' if `vfork' does not work. */
++ 6
+/* #undef vfork */
++ 6
+
++ 6
+#ifdef IN_GCC
++ 6
+/* ANSI and traditional C compatability macros
++ 6
+   Copyright 1991, 1992, 1993, 1994, 1995, 1996, 1998, 1999, 2000, 2001
++ 6
+   Free Software Foundation, Inc.
++ 6
+   This file is part of the GNU C Library.
++ 6
+
++ 6
+This program is free software; you can redistribute it and/or modify
++ 6
+it under the terms of the GNU General Public License as published by
++ 6
+the Free Software Foundation; either version 2 of the License, or
++ 6
+(at your option) any later version.
++ 6
+
++ 6
+This program is distributed in the hope that it will be useful,
++ 6
+but WITHOUT ANY WARRANTY; without even the implied warranty of
++ 6
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ 6
+GNU General Public License for more details.
++ 6
+
++ 6
+You should have received a copy of the GNU General Public License
++ 6
+along with this program; if not, write to the Free Software
++ 6
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
++ 6
+
++ 6
+/* ANSI and traditional C compatibility macros
++ 6
+
++ 6
+   ANSI C is assumed if __STDC__ is #defined.
++ 6
+
++ 6
+   Macro		ANSI C definition	Traditional C definition
++ 6
+   -----		---- - ----------	----------- - ----------
++ 6
+   ANSI_PROTOTYPES	1			not defined
++ 6
+   PTR			`void *'		`char *'
++ 6
+   PTRCONST		`void *const'		`char *'
++ 6
+   LONG_DOUBLE		`long double'		`double'
++ 6
+   const		not defined		`'
++ 6
+   volatile		not defined		`'
++ 6
+   signed		not defined		`'
++ 6
+   VA_START(ap, var)	va_start(ap, var)	va_start(ap)
++ 6
+
++ 6
+   Note that it is safe to write "void foo();" indicating a function
++ 6
+   with no return value, in all K+R compilers we have been able to test.
++ 6
+
++ 6
+   For declaring functions with prototypes, we also provide these:
++ 6
+
++ 6
+   PARAMS ((prototype))
++ 6
+   -- for functions which take a fixed number of arguments.  Use this
++ 6
+   when declaring the function.  When defining the function, write a
++ 6
+   K+R style argument list.  For example:
++ 6
+
++ 6
+	char *strcpy PARAMS ((char *dest, char *source));
++ 6
+	...
++ 6
+	char *
++ 6
+	strcpy (dest, source)
++ 6
+	     char *dest;
++ 6
+	     char *source;
++ 6
+	{ ... }
++ 6
+
++ 6
+
++ 6
+   VPARAMS ((prototype, ...))
++ 6
+   -- for functions which take a variable number of arguments.  Use
++ 6
+   PARAMS to declare the function, VPARAMS to define it.  For example:
++ 6
+
++ 6
+	int printf PARAMS ((const char *format, ...));
++ 6
+	...
++ 6
+	int
++ 6
+	printf VPARAMS ((const char *format, ...))
++ 6
+	{
++ 6
+	   ...
++ 6
+	}
++ 6
+
++ 6
+   For writing functions which take variable numbers of arguments, we
++ 6
+   also provide the VA_OPEN, VA_CLOSE, and VA_FIXEDARG macros.  These
++ 6
+   hide the differences between K+R <varargs.h> and C89 <stdarg.h> more
++ 6
+   thoroughly than the simple VA_START() macro mentioned above.
++ 6
+
++ 6
+   VA_OPEN and VA_CLOSE are used *instead of* va_start and va_end.
++ 6
+   Immediately after VA_OPEN, put a sequence of VA_FIXEDARG calls
++ 6
+   corresponding to the list of fixed arguments.  Then use va_arg
++ 6
+   normally to get the variable arguments, or pass your va_list object
++ 6
+   around.  You do not declare the va_list yourself; VA_OPEN does it
++ 6
+   for you.
++ 6
+
++ 6
+   Here is a complete example:
++ 6
+
++ 6
+	int
++ 6
+	printf VPARAMS ((const char *format, ...))
++ 6
+	{
++ 6
+	   int result;
++ 6
+
++ 6
+	   VA_OPEN (ap, format);
++ 6
+	   VA_FIXEDARG (ap, const char *, format);
++ 6
+
++ 6
+	   result = vfprintf (stdout, format, ap);
++ 6
+	   VA_CLOSE (ap);
++ 6
+
++ 6
+	   return result;
++ 6
+	}
++ 6
+
++ 6
+
++ 6
+   You can declare variables either before or after the VA_OPEN,
++ 6
+   VA_FIXEDARG sequence.  Also, VA_OPEN and VA_CLOSE are the beginning
++ 6
+   and end of a block.  They must appear at the same nesting level,
++ 6
+   and any variables declared after VA_OPEN go out of scope at
++ 6
+   VA_CLOSE.  Unfortunately, with a K+R compiler, that includes the
++ 6
+   argument list.  You can have multiple instances of VA_OPEN/VA_CLOSE
++ 6
+   pairs in a single function in case you need to traverse the
++ 6
+   argument list more than once.
++ 6
+
++ 6
+   For ease of writing code which uses GCC extensions but needs to be
++ 6
+   portable to other compilers, we provide the GCC_VERSION macro that
++ 6
+   simplifies testing __GNUC__ and __GNUC_MINOR__ together, and various
++ 6
+   wrappers around __attribute__.  Also, __extension__ will be #defined
++ 6
+   to nothing if it doesn't work.  See below.
++ 6
+
++ 6
+   This header also defines a lot of obsolete macros:
++ 6
+   CONST, VOLATILE, SIGNED, PROTO, EXFUN, DEFUN, DEFUN_VOID,
++ 6
+   AND, DOTS, NOARGS.  Don't use them.  */
++ 6
+
++ 6
+#ifndef	_ANSIDECL_H
++ 6
+#define _ANSIDECL_H	1
++ 6
+
++ 6
+/* Every source file includes this file,
++ 6
+   so they will all get the switch for lint.  */
++ 6
+/* LINTLIBRARY */
++ 6
+
++ 6
+/* Using MACRO(x,y) in cpp #if conditionals does not work with some
++ 6
+   older preprocessors.  Thus we can't define something like this:
++ 6
+
++ 6
+#define HAVE_GCC_VERSION(MAJOR, MINOR) \
++ 6
+  (__GNUC__ > (MAJOR) || (__GNUC__ == (MAJOR) && __GNUC_MINOR__ >= (MINOR)))
++ 6
+
++ 6
+and then test "#if HAVE_GCC_VERSION(2,7)".
++ 6
+
++ 6
+So instead we use the macro below and test it against specific values.  */
++ 6
+
++ 6
+/* This macro simplifies testing whether we are using gcc, and if it
++ 6
+   is of a particular minimum version. (Both major & minor numbers are
++ 6
+   significant.)  This macro will evaluate to 0 if we are not using
++ 6
+   gcc at all.  */
++ 6
+#ifndef GCC_VERSION
++ 6
+#define GCC_VERSION (__GNUC__ * 1000 + __GNUC_MINOR__)
++ 6
+#endif /* GCC_VERSION */
++ 6
+
++ 6
+#if defined (__STDC__) || defined (_AIX) || (defined (__mips) && defined (_SYSTYPE_SVR4)) || defined(_WIN32) || (defined(__alpha) && defined(__cplusplus))
++ 6
+/* All known AIX compilers implement these things (but don't always
++ 6
+   define __STDC__).  The RISC/OS MIPS compiler defines these things
++ 6
+   in SVR4 mode, but does not define __STDC__.  */
++ 6
+/* eraxxon@alumni.rice.edu: The Compaq C++ compiler, unlike many other
++ 6
+   C++ compilers, does not define __STDC__, though it acts as if this
++ 6
+   was so. (Verified versions: 5.7, 6.2, 6.3, 6.5) */
++ 6
+
++ 6
+#define ANSI_PROTOTYPES	1
++ 6
+#define PTR		void *
++ 6
+#define PTRCONST	void *const
++ 6
+#define LONG_DOUBLE	long double
++ 6
+
++ 6
+#define PARAMS(ARGS)		ARGS
++ 6
+#define VPARAMS(ARGS)		ARGS
++ 6
+#define VA_START(VA_LIST, VAR)	va_start(VA_LIST, VAR)
++ 6
+
++ 6
+/* variadic function helper macros */
++ 6
+/* "struct Qdmy" swallows the semicolon after VA_OPEN/VA_FIXEDARG's
++ 6
+   use without inhibiting further decls and without declaring an
++ 6
+   actual variable.  */
++ 6
+#define VA_OPEN(AP, VAR)	{ va_list AP; va_start(AP, VAR); { struct Qdmy
++ 6
+#define VA_CLOSE(AP)		} va_end(AP); }
++ 6
+#define VA_FIXEDARG(AP, T, N)	struct Qdmy
++ 6
+ 
++ 6
+#undef const
++ 6
+#undef volatile
++ 6
+#undef signed
++ 6
+
++ 6
+/* inline requires special treatment; it's in C99, and GCC >=2.7 supports
++ 6
+   it too, but it's not in C89.  */
++ 6
+#undef inline
++ 6
+#if __STDC_VERSION__ > 199901L
++ 6
+/* it's a keyword */
++ 6
+#else
++ 6
+# if GCC_VERSION >= 2007
++ 6
+#  define inline __inline__   /* __inline__ prevents -pedantic warnings */
++ 6
+# else
++ 6
+#  define inline  /* nothing */
++ 6
+# endif
++ 6
+#endif
++ 6
+
++ 6
+/* These are obsolete.  Do not use.  */
++ 6
+#ifndef IN_GCC
++ 6
+#define CONST		const
++ 6
+#define VOLATILE	volatile
++ 6
+#define SIGNED		signed
++ 6
+
++ 6
+#define PROTO(type, name, arglist)	type name arglist
++ 6
+#define EXFUN(name, proto)		name proto
++ 6
+#define DEFUN(name, arglist, args)	name(args)
++ 6
+#define DEFUN_VOID(name)		name(void)
++ 6
+#define AND		,
++ 6
+#define DOTS		, ...
++ 6
+#define NOARGS		void
++ 6
+#endif /* ! IN_GCC */
++ 6
+
++ 6
+#else	/* Not ANSI C.  */
++ 6
+
++ 6
+#undef  ANSI_PROTOTYPES
++ 6
+#define PTR		char *
++ 6
+#define PTRCONST	PTR
++ 6
+#define LONG_DOUBLE	double
++ 6
+
++ 6
+#define PARAMS(args)		()
++ 6
+#define VPARAMS(args)		(va_alist) va_dcl
++ 6
+#define VA_START(va_list, var)	va_start(va_list)
++ 6
+
++ 6
+#define VA_OPEN(AP, VAR)		{ va_list AP; va_start(AP); { struct Qdmy
++ 6
+#define VA_CLOSE(AP)			} va_end(AP); }
++ 6
+#define VA_FIXEDARG(AP, TYPE, NAME)	TYPE NAME = va_arg(AP, TYPE)
++ 6
+
++ 6
+/* some systems define these in header files for non-ansi mode */
++ 6
+#undef const
++ 6
+#undef volatile
++ 6
+#undef signed
++ 6
+#undef inline
++ 6
+#define const
++ 6
+#define volatile
++ 6
+#define signed
++ 6
+#define inline
++ 6
+
++ 6
+#ifndef IN_GCC
++ 6
+#define CONST
++ 6
+#define VOLATILE
++ 6
+#define SIGNED
++ 6
+
++ 6
+#define PROTO(type, name, arglist)	type name ()
++ 6
+#define EXFUN(name, proto)		name()
++ 6
+#define DEFUN(name, arglist, args)	name arglist args;
++ 6
+#define DEFUN_VOID(name)		name()
++ 6
+#define AND		;
++ 6
+#define DOTS
++ 6
+#define NOARGS
++ 6
+#endif /* ! IN_GCC */
++ 6
+
++ 6
+#endif	/* ANSI C.  */
++ 6
+
++ 6
+/* Define macros for some gcc attributes.  This permits us to use the
++ 6
+   macros freely, and know that they will come into play for the
++ 6
+   version of gcc in which they are supported.  */
++ 6
+
++ 6
+#if (GCC_VERSION < 2007)
++ 6
+# define __attribute__(x)
++ 6
+#endif
++ 6
+
++ 6
+/* Attribute __malloc__ on functions was valid as of gcc 2.96. */
++ 6
+#ifndef ATTRIBUTE_MALLOC
++ 6
+# if (GCC_VERSION >= 2096)
++ 6
+#  define ATTRIBUTE_MALLOC __attribute__ ((__malloc__))
++ 6
+# else
++ 6
+#  define ATTRIBUTE_MALLOC
++ 6
+# endif /* GNUC >= 2.96 */
++ 6
+#endif /* ATTRIBUTE_MALLOC */
++ 6
+
++ 6
+/* Attributes on labels were valid as of gcc 2.93. */
++ 6
+#ifndef ATTRIBUTE_UNUSED_LABEL
++ 6
+# if (GCC_VERSION >= 2093)
++ 6
+#  define ATTRIBUTE_UNUSED_LABEL ATTRIBUTE_UNUSED
++ 6
+# else
++ 6
+#  define ATTRIBUTE_UNUSED_LABEL
++ 6
+# endif /* GNUC >= 2.93 */
++ 6
+#endif /* ATTRIBUTE_UNUSED_LABEL */
++ 6
+
++ 6
+#ifndef ATTRIBUTE_UNUSED
++ 6
+#define ATTRIBUTE_UNUSED __attribute__ ((__unused__))
++ 6
+#endif /* ATTRIBUTE_UNUSED */
++ 6
+
++ 6
+#ifndef ATTRIBUTE_NORETURN
++ 6
+#define ATTRIBUTE_NORETURN __attribute__ ((__noreturn__))
++ 6
+#endif /* ATTRIBUTE_NORETURN */
++ 6
+
++ 6
+/* Attribute `nonnull' was valid as of gcc 3.3.  */
++ 6
+#ifndef ATTRIBUTE_NONNULL
++ 6
+# if (GCC_VERSION >= 3003)
++ 6
+#  define ATTRIBUTE_NONNULL(m) __attribute__ ((__nonnull__ (m)))
++ 6
+# else
++ 6
+#  define ATTRIBUTE_NONNULL(m)
++ 6
+# endif /* GNUC >= 3.3 */
++ 6
+#endif /* ATTRIBUTE_NONNULL */
++ 6
+
++ 6
+/* Use ATTRIBUTE_PRINTF when the format specifier must not be NULL.
++ 6
+   This was the case for the `printf' format attribute by itself
++ 6
+   before GCC 3.3, but as of 3.3 we need to add the `nonnull'
++ 6
+   attribute to retain this behavior.  */
++ 6
+#ifndef ATTRIBUTE_PRINTF
++ 6
+#define ATTRIBUTE_PRINTF(m, n) __attribute__ ((__format__ (__printf__, m, n))) ATTRIBUTE_NONNULL(m)
++ 6
+#define ATTRIBUTE_PRINTF_1 ATTRIBUTE_PRINTF(1, 2)
++ 6
+#define ATTRIBUTE_PRINTF_2 ATTRIBUTE_PRINTF(2, 3)
++ 6
+#define ATTRIBUTE_PRINTF_3 ATTRIBUTE_PRINTF(3, 4)
++ 6
+#define ATTRIBUTE_PRINTF_4 ATTRIBUTE_PRINTF(4, 5)
++ 6
+#define ATTRIBUTE_PRINTF_5 ATTRIBUTE_PRINTF(5, 6)
++ 6
+#endif /* ATTRIBUTE_PRINTF */
++ 6
+
++ 6
+/* Use ATTRIBUTE_NULL_PRINTF when the format specifier may be NULL.  A
++ 6
+   NULL format specifier was allowed as of gcc 3.3.  */
++ 6
+#ifndef ATTRIBUTE_NULL_PRINTF
++ 6
+# if (GCC_VERSION >= 3003)
++ 6
+#  define ATTRIBUTE_NULL_PRINTF(m, n) __attribute__ ((__format__ (__printf__, m, n)))
++ 6
+# else
++ 6
+#  define ATTRIBUTE_NULL_PRINTF(m, n)
++ 6
+# endif /* GNUC >= 3.3 */
++ 6
+# define ATTRIBUTE_NULL_PRINTF_1 ATTRIBUTE_NULL_PRINTF(1, 2)
++ 6
+# define ATTRIBUTE_NULL_PRINTF_2 ATTRIBUTE_NULL_PRINTF(2, 3)
++ 6
+# define ATTRIBUTE_NULL_PRINTF_3 ATTRIBUTE_NULL_PRINTF(3, 4)
++ 6
+# define ATTRIBUTE_NULL_PRINTF_4 ATTRIBUTE_NULL_PRINTF(4, 5)
++ 6
+# define ATTRIBUTE_NULL_PRINTF_5 ATTRIBUTE_NULL_PRINTF(5, 6)
++ 6
+#endif /* ATTRIBUTE_NULL_PRINTF */
++ 6
+
++ 6
+/* We use __extension__ in some places to suppress -pedantic warnings
++ 6
+   about GCC extensions.  This feature didn't work properly before
++ 6
+   gcc 2.8.  */
++ 6
+#if GCC_VERSION < 2008
++ 6
+#define __extension__
++ 6
+#endif
++ 6
+
++ 6
+#endif	/* ansidecl.h	*/
++ 6
+#endif
++ 6
+
++ 6
+/* config.h.  Generated by configure.  */
++ 6
+/* config.in.  Generated from configure.ac by autoheader.  */
++ 6
+
++ 6
+/* Define to one of `_getb67', `GETB67', `getb67' for Cray-2 and Cray-YMP
++ 6
+   systems. This function is required for `alloca.c' support on those systems.
++ 6
+   */
++ 6
+/* #undef CRAY_STACKSEG_END */
++ 6
+
++ 6
+/* Define to 1 if using `alloca.c'. */
++ 6
+/* #undef C_ALLOCA */
++ 6
+
++ 6
+/* Define if you want more run-time sanity checks. */
++ 6
+/* #undef ENABLE_CHECKING */
++ 6
+
++ 6
+/* Define to 1 if translation of program messages to the user's native
++ 6
+   language is requested. */
++ 6
+#define ENABLE_NLS 1
++ 6
+
++ 6
+/* Define to 1 if you have `alloca', as a function or macro. */
++ 6
+#define HAVE_ALLOCA 1
++ 6
+
++ 6
+/* Define to 1 if you have <alloca.h> and it should be used (not on Ultrix).
++ 6
+   */
++ 6
+#define HAVE_ALLOCA_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the declaration of `abort', and to 0 if you don't.
++ 6
+   */
++ 6
+#define HAVE_DECL_ABORT 1
++ 6
+
++ 6
+/* Define to 1 if you have the declaration of `fprintf_unlocked', and to 0 if
++ 6
+   you don't. */
++ 6
+#define HAVE_DECL_FPRINTF_UNLOCKED 0
++ 6
+
++ 6
+/* Define to 1 if you have the declaration of `fputc_unlocked', and to 0 if
++ 6
+   you don't. */
++ 6
+#define HAVE_DECL_FPUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the declaration of `fwrite_unlocked', and to 0 if
++ 6
+   you don't. */
++ 6
+#define HAVE_DECL_FWRITE_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the declaration of `putc_unlocked', and to 0 if you
++ 6
+   don't. */
++ 6
+#define HAVE_DECL_PUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the <fcntl.h> header file. */
++ 6
+#define HAVE_FCNTL_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fprintf_unlocked' function. */
++ 6
+/* #undef HAVE_FPRINTF_UNLOCKED */
++ 6
+
++ 6
+/* Define to 1 if you have the `fputc_unlocked' function. */
++ 6
+#define HAVE_FPUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fputs_unlocked' function. */
++ 6
+#define HAVE_FPUTS_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fwrite_unlocked' function. */
++ 6
+#define HAVE_FWRITE_UNLOCKED 1
++ 6
+
++ 6
+/* Define if you have the iconv() function. */
++ 6
+#define HAVE_ICONV 1
++ 6
+
++ 6
+/* Define to 1 if you have the <iconv.h> header file. */
++ 6
+#define HAVE_ICONV_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <inttypes.h> header file. */
++ 6
+#define HAVE_INTTYPES_H 1
++ 6
+
++ 6
+/* Define if you have <langinfo.h> and nl_langinfo(CODESET). */
++ 6
+#define HAVE_LANGINFO_CODESET 1
++ 6
+
++ 6
+/* Define to 1 if you have the <limits.h> header file. */
++ 6
+#define HAVE_LIMITS_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <locale.h> header file. */
++ 6
+#define HAVE_LOCALE_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <memory.h> header file. */
++ 6
+#define HAVE_MEMORY_H 1
++ 6
+
++ 6
+/* Define to 1 if libc includes obstacks. */
++ 6
+#define HAVE_OBSTACK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `putc_unlocked' function. */
++ 6
+#define HAVE_PUTC_UNLOCKED 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stddef.h> header file. */
++ 6
+#define HAVE_STDDEF_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stdint.h> header file. */
++ 6
+#define HAVE_STDINT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stdlib.h> header file. */
++ 6
+#define HAVE_STDLIB_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <strings.h> header file. */
++ 6
+#define HAVE_STRINGS_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <string.h> header file. */
++ 6
+#define HAVE_STRING_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/file.h> header file. */
++ 6
+#define HAVE_SYS_FILE_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/stat.h> header file. */
++ 6
+#define HAVE_SYS_STAT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/types.h> header file. */
++ 6
+#define HAVE_SYS_TYPES_H 1
++ 6
+
++ 6
+/* Define if <sys/types.h> defines \`uchar'. */
++ 6
+/* #undef HAVE_UCHAR */
++ 6
+
++ 6
+/* Define to 1 if you have the <unistd.h> header file. */
++ 6
+#define HAVE_UNISTD_H 1
++ 6
+
++ 6
+/* Define to the widest efficient host integer type at least as wide as the
++ 6
+   target's size_t type. */
++ 6
+#define HOST_WIDE_INT long
++ 6
+
++ 6
+/* Define as const if the declaration of iconv() needs const. */
++ 6
+#define ICONV_CONST 
++ 6
+
++ 6
+/* Name of package */
++ 6
+#define PACKAGE "cpplib"
++ 6
+
++ 6
+/* Define to the address where bug reports for this package should be sent. */
++ 6
+#define PACKAGE_BUGREPORT "gcc-bugs@gcc.gnu.org"
++ 6
+
++ 6
+/* Define to the full name of this package. */
++ 6
+#define PACKAGE_NAME "cpplib"
++ 6
+
++ 6
+/* Define to the full name and version of this package. */
++ 6
+#define PACKAGE_STRING "cpplib  "
++ 6
+
++ 6
+/* Define to the one symbol short name of this package. */
++ 6
+#define PACKAGE_TARNAME "cpplib"
++ 6
+
++ 6
+/* Define to the version of this package. */
++ 6
+#define PACKAGE_VERSION " "
++ 6
+
++ 6
+/* The size of a `int', as computed by sizeof. */
++ 6
+#define SIZEOF_INT 4
++ 6
+
++ 6
+/* The size of a `long', as computed by sizeof. */
++ 6
+#define SIZEOF_LONG 4
++ 6
+
++ 6
+/* If using the C implementation of alloca, define if you know the
++ 6
+   direction of stack growth for your system; otherwise it will be
++ 6
+   automatically deduced at run-time.
++ 6
+	STACK_DIRECTION > 0 => grows toward higher addresses
++ 6
+	STACK_DIRECTION < 0 => grows toward lower addresses
++ 6
+	STACK_DIRECTION = 0 => direction of growth unknown */
++ 6
+/* #undef STACK_DIRECTION */
++ 6
+
++ 6
+/* Define to 1 if you have the ANSI C header files. */
++ 6
+#define STDC_HEADERS 1
++ 6
+
++ 6
+/* Define if you can safely include both <string.h> and <strings.h>. */
++ 6
+#define STRING_WITH_STRINGS 1
++ 6
+
++ 6
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
++ 6
+#define TIME_WITH_SYS_TIME 1
++ 6
+
++ 6
+/* Define to 1 if your <sys/time.h> declares `struct tm'. */
++ 6
+/* #undef TM_IN_SYS_TIME */
++ 6
+
++ 6
+/* Version number of package */
++ 6
+#define VERSION " "
++ 6
+
++ 6
+/* Define to empty if `const' does not conform to ANSI C. */
++ 6
+/* #undef const */
++ 6
+
++ 6
+/* Define to `__inline__' or `__inline' if that's what the C compiler
++ 6
+   calls it, or to nothing if 'inline' is not supported under any name.  */
++ 6
+#ifndef __cplusplus
++ 6
+/* #undef inline */
++ 6
+#endif
++ 6
+
++ 6
+/* Define to `long' if <sys/types.h> does not define. */
++ 6
+/* #undef off_t */
++ 6
+
++ 6
+/* Define to `unsigned' if <sys/types.h> does not define. */
++ 6
+/* #undef size_t */
++ 6
+/* config.h.  Generated by configure.  */
++ 6
+/* config.in.  Generated from configure.ac by autoheader.  */
++ 6
+
++ 6
+/* 1234 = LIL_ENDIAN, 4321 = BIGENDIAN */
++ 6
+#define BYTEORDER 1234
++ 6
+
++ 6
+/* Define to one of _getb67, GETB67, getb67 for Cray-2 and Cray-YMP systems.
++ 6
+   This function is required for alloca.c support on those systems. */
++ 6
+/* #undef CRAY_STACKSEG_END */
++ 6
+
++ 6
+/* Define to 1 if you have the <alloca.h> header file. */
++ 6
+#define HAVE_ALLOCA_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `asprintf' function. */
++ 6
+#define HAVE_ASPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `atexit' function. */
++ 6
+#define HAVE_ATEXIT 1
++ 6
+
++ 6
+/* Define to 1 if you have the `basename' function. */
++ 6
+#define HAVE_BASENAME 1
++ 6
+
++ 6
+/* Define to 1 if you have the `bcmp' function. */
++ 6
+#define HAVE_BCMP 1
++ 6
+
++ 6
+/* Define to 1 if you have the `bcopy' function. */
++ 6
+#define HAVE_BCOPY 1
++ 6
+
++ 6
+/* Define to 1 if you have the `bsearch' function. */
++ 6
+#define HAVE_BSEARCH 1
++ 6
+
++ 6
+/* Define to 1 if you have the `bzero' function. */
++ 6
+#define HAVE_BZERO 1
++ 6
+
++ 6
+/* Define to 1 if you have the `calloc' function. */
++ 6
+#define HAVE_CALLOC 1
++ 6
+
++ 6
+/* Define to 1 if you have the `canonicalize_file_name' function. */
++ 6
+#define HAVE_CANONICALIZE_FILE_NAME 1
++ 6
+
++ 6
+/* Define to 1 if you have the `clock' function. */
++ 6
+#define HAVE_CLOCK 1
++ 6
+
++ 6
+/* Define to 1 if you have the <fcntl.h> header file. */
++ 6
+#define HAVE_FCNTL_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `ffs' function. */
++ 6
+#define HAVE_FFS 1
++ 6
+
++ 6
+/* Define to 1 if you have the `fork' function. */
++ 6
+#define HAVE_FORK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `getcwd' function. */
++ 6
+#define HAVE_GETCWD 1
++ 6
+
++ 6
+/* Define to 1 if you have the `getpagesize' function. */
++ 6
+#define HAVE_GETPAGESIZE 1
++ 6
+
++ 6
+/* Define to 1 if you have the `getrusage' function. */
++ 6
+#define HAVE_GETRUSAGE 1
++ 6
+
++ 6
+/* Define to 1 if you have the `getsysinfo' function. */
++ 6
+/* #undef HAVE_GETSYSINFO */
++ 6
+
++ 6
+/* Define to 1 if you have the `gettimeofday' function. */
++ 6
+#define HAVE_GETTIMEOFDAY 1
++ 6
+
++ 6
+/* Define to 1 if you have the `index' function. */
++ 6
+#define HAVE_INDEX 1
++ 6
+
++ 6
+/* Define to 1 if you have the `insque' function. */
++ 6
+#define HAVE_INSQUE 1
++ 6
+
++ 6
+/* Define to 1 if you have the <inttypes.h> header file. */
++ 6
+#define HAVE_INTTYPES_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <limits.h> header file. */
++ 6
+#define HAVE_LIMITS_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <machine/hal_sysinfo.h> header file. */
++ 6
+/* #undef HAVE_MACHINE_HAL_SYSINFO_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <malloc.h> header file. */
++ 6
+#define HAVE_MALLOC_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `memchr' function. */
++ 6
+#define HAVE_MEMCHR 1
++ 6
+
++ 6
+/* Define to 1 if you have the `memcmp' function. */
++ 6
+#define HAVE_MEMCMP 1
++ 6
+
++ 6
+/* Define to 1 if you have the `memcpy' function. */
++ 6
+#define HAVE_MEMCPY 1
++ 6
+
++ 6
+/* Define to 1 if you have the `memmove' function. */
++ 6
+#define HAVE_MEMMOVE 1
++ 6
+
++ 6
+/* Define to 1 if you have the <memory.h> header file. */
++ 6
+#define HAVE_MEMORY_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `mempcpy' function. */
++ 6
+#define HAVE_MEMPCPY 1
++ 6
+
++ 6
+/* Define to 1 if you have the `memset' function. */
++ 6
+#define HAVE_MEMSET 1
++ 6
+
++ 6
+/* Define to 1 if you have the `mkstemps' function. */
++ 6
+/* #undef HAVE_MKSTEMPS */
++ 6
+
++ 6
+/* Define to 1 if you have a working `mmap' system call. */
++ 6
+#define HAVE_MMAP 1
++ 6
+
++ 6
+/* Define to 1 if you have the `on_exit' function. */
++ 6
+#define HAVE_ON_EXIT 1
++ 6
+
++ 6
+/* Define to 1 if you have the `psignal' function. */
++ 6
+#define HAVE_PSIGNAL 1
++ 6
+
++ 6
+/* Define to 1 if you have the `pstat_getdynamic' function. */
++ 6
+/* #undef HAVE_PSTAT_GETDYNAMIC */
++ 6
+
++ 6
+/* Define to 1 if you have the `pstat_getstatic' function. */
++ 6
+/* #undef HAVE_PSTAT_GETSTATIC */
++ 6
+
++ 6
+/* Define to 1 if you have the `putenv' function. */
++ 6
+#define HAVE_PUTENV 1
++ 6
+
++ 6
+/* Define to 1 if you have the `random' function. */
++ 6
+#define HAVE_RANDOM 1
++ 6
+
++ 6
+/* Define to 1 if you have the `realpath' function. */
++ 6
+#define HAVE_REALPATH 1
++ 6
+
++ 6
+/* Define to 1 if you have the `rename' function. */
++ 6
+#define HAVE_RENAME 1
++ 6
+
++ 6
+/* Define to 1 if you have the `rindex' function. */
++ 6
+#define HAVE_RINDEX 1
++ 6
+
++ 6
+/* Define to 1 if you have the `sbrk' function. */
++ 6
+#define HAVE_SBRK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `setenv' function. */
++ 6
+#define HAVE_SETENV 1
++ 6
+
++ 6
+/* Define to 1 if you have the `sigsetmask' function. */
++ 6
+#define HAVE_SIGSETMASK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `snprintf' function. */
++ 6
+#define HAVE_SNPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stdint.h> header file. */
++ 6
+#define HAVE_STDINT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <stdlib.h> header file. */
++ 6
+#define HAVE_STDLIB_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `stpcpy' function. */
++ 6
+#define HAVE_STPCPY 1
++ 6
+
++ 6
+/* Define to 1 if you have the `stpncpy' function. */
++ 6
+#define HAVE_STPNCPY 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strcasecmp' function. */
++ 6
+#define HAVE_STRCASECMP 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strchr' function. */
++ 6
+#define HAVE_STRCHR 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strdup' function. */
++ 6
+#define HAVE_STRDUP 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strerror' function. */
++ 6
+#define HAVE_STRERROR 1
++ 6
+
++ 6
+/* Define to 1 if you have the <strings.h> header file. */
++ 6
+#define HAVE_STRINGS_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <string.h> header file. */
++ 6
+#define HAVE_STRING_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strncasecmp' function. */
++ 6
+#define HAVE_STRNCASECMP 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strrchr' function. */
++ 6
+#define HAVE_STRRCHR 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strsignal' function. */
++ 6
+#define HAVE_STRSIGNAL 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strstr' function. */
++ 6
+#define HAVE_STRSTR 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strtod' function. */
++ 6
+#define HAVE_STRTOD 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strtol' function. */
++ 6
+#define HAVE_STRTOL 1
++ 6
+
++ 6
+/* Define to 1 if you have the `strtoul' function. */
++ 6
+#define HAVE_STRTOUL 1
++ 6
+
++ 6
+/* Define to 1 if you have the `sysconf' function. */
++ 6
+#define HAVE_SYSCONF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `sysctl' function. */
++ 6
+#define HAVE_SYSCTL 1
++ 6
+
++ 6
+/* Define to 1 if you have the `sysmp' function. */
++ 6
+/* #undef HAVE_SYSMP */
++ 6
+
++ 6
+/* Define if you have the sys_errlist variable. */
++ 6
+#define HAVE_SYS_ERRLIST 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/file.h> header file. */
++ 6
+#define HAVE_SYS_FILE_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/mman.h> header file. */
++ 6
+#define HAVE_SYS_MMAN_H 1
++ 6
+
++ 6
+/* Define if you have the sys_nerr variable. */
++ 6
+#define HAVE_SYS_NERR 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/param.h> header file. */
++ 6
+#define HAVE_SYS_PARAM_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/pstat.h> header file. */
++ 6
+/* #undef HAVE_SYS_PSTAT_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/resource.h> header file. */
++ 6
+#define HAVE_SYS_RESOURCE_H 1
++ 6
+
++ 6
+/* Define if you have the sys_siglist variable. */
++ 6
+#define HAVE_SYS_SIGLIST 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/stat.h> header file. */
++ 6
+#define HAVE_SYS_STAT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/sysctl.h> header file. */
++ 6
+#define HAVE_SYS_SYSCTL_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/sysinfo.h> header file. */
++ 6
+#define HAVE_SYS_SYSINFO_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/sysmp.h> header file. */
++ 6
+/* #undef HAVE_SYS_SYSMP_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/systemcfg.h> header file. */
++ 6
+/* #undef HAVE_SYS_SYSTEMCFG_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/table.h> header file. */
++ 6
+/* #undef HAVE_SYS_TABLE_H */
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/time.h> header file. */
++ 6
+#define HAVE_SYS_TIME_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the <sys/types.h> header file. */
++ 6
+#define HAVE_SYS_TYPES_H 1
++ 6
+
++ 6
+/* Define to 1 if you have <sys/wait.h> that is POSIX.1 compatible. */
++ 6
+#define HAVE_SYS_WAIT_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `table' function. */
++ 6
+/* #undef HAVE_TABLE */
++ 6
+
++ 6
+/* Define to 1 if you have the `times' function. */
++ 6
+#define HAVE_TIMES 1
++ 6
+
++ 6
+/* Define to 1 if you have the <time.h> header file. */
++ 6
+#define HAVE_TIME_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `tmpnam' function. */
++ 6
+#define HAVE_TMPNAM 1
++ 6
+
++ 6
+/* Define if you have the \`uintptr_t' type. */
++ 6
+#define HAVE_UINTPTR_T 1
++ 6
+
++ 6
+/* Define to 1 if you have the <unistd.h> header file. */
++ 6
+#define HAVE_UNISTD_H 1
++ 6
+
++ 6
+/* Define to 1 if you have the `vasprintf' function. */
++ 6
+#define HAVE_VASPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `vfork' function. */
++ 6
+#define HAVE_VFORK 1
++ 6
+
++ 6
+/* Define to 1 if you have the <vfork.h> header file. */
++ 6
+/* #undef HAVE_VFORK_H */
++ 6
+
++ 6
+/* Define to 1 if you have the `vfprintf' function. */
++ 6
+#define HAVE_VFPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `vprintf' function. */
++ 6
+#define HAVE_VPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `vsnprintf' function. */
++ 6
+#define HAVE_VSNPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `vsprintf' function. */
++ 6
+#define HAVE_VSPRINTF 1
++ 6
+
++ 6
+/* Define to 1 if you have the `waitpid' function. */
++ 6
+#define HAVE_WAITPID 1
++ 6
+
++ 6
+/* Define to 1 if `fork' works. */
++ 6
+#define HAVE_WORKING_FORK 1
++ 6
+
++ 6
+/* Define to 1 if `vfork' works. */
++ 6
+#define HAVE_WORKING_VFORK 1
++ 6
+
++ 6
+/* Define to 1 if you have the `_doprnt' function. */
++ 6
+/* #undef HAVE__DOPRNT */
++ 6
+
++ 6
+/* Define if you have the _system_configuration variable. */
++ 6
+/* #undef HAVE__SYSTEM_CONFIGURATION */
++ 6
+
++ 6
+/* Define if the host machine stores words of multi-word integers in
++ 6
+   big-endian order. */
++ 6
+/* #undef HOST_WORDS_BIG_ENDIAN */
++ 6
+
++ 6
+/* Define if canonicalize_file_name is not declared in system header files. */
++ 6
+#define NEED_DECLARATION_CANONICALIZE_FILE_NAME 1
++ 6
+
++ 6
+/* Define if errno must be declared even when <errno.h> is included. */
++ 6
+/* #undef NEED_DECLARATION_ERRNO */
++ 6
+
++ 6
+/* Define to 1 if your C compiler doesn't accept -c and -o together. */
++ 6
+/* #undef NO_MINUS_C_MINUS_O */
++ 6
+
++ 6
+/* Define if you know the direction of stack growth for your system; otherwise
++ 6
+   it will be automatically deduced at run-time. STACK_DIRECTION > 0 => grows
++ 6
+   toward higher addresses STACK_DIRECTION < 0 => grows toward lower addresses
++ 6
+   STACK_DIRECTION = 0 => direction of growth unknown */
++ 6
+#define STACK_DIRECTION -1
++ 6
+
++ 6
+/* Define to 1 if you have the ANSI C header files. */
++ 6
+#define STDC_HEADERS 1
++ 6
+
++ 6
+/* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
++ 6
+#define TIME_WITH_SYS_TIME 1
++ 6
+
++ 6
+/* Define to an unsigned 64-bit type available in the compiler. */
++ 6
+#define UNSIGNED_64BIT_TYPE uint64_t
++ 6
+
++ 6
+/* whether byteorder is bigendian */
++ 6
+/* #undef WORDS_BIGENDIAN */
++ 6
+
++ 6
+/* Define to empty if `const' does not conform to ANSI C. */
++ 6
+/* #undef const */
++ 6
+
++ 6
+/* Define to `__inline__' or `__inline' if that's what the C compiler
++ 6
+   calls it, or to nothing if 'inline' is not supported under any name.  */
++ 6
+#ifndef __cplusplus
++ 6
+/* #undef inline */
++ 6
+#endif
++ 6
+
++ 6
+/* Define to `int' if <sys/types.h> does not define. */
++ 6
+/* #undef pid_t */
++ 6
+
++ 6
+/* Define to `unsigned long' if <sys/types.h> does not define. */
++ 6
+/* #undef uintptr_t */
++ 6
+
++ 6
+/* Define as `fork' if `vfork' does not work. */
++ 6
+/* #undef vfork */
++ 6
+
++ 6
+#define HAVE_LIBINTL_H 1
++ 6
+
++ 6
+#endif /* GCC_CONFIG_H */
++ 6
+
++ 6
+
++ 6
+#ifndef PARAMS
++ 6
+# if defined __GNUC__ || (defined __STDC__ && __STDC__)
++ 6
+#  define PARAMS(args) args
++ 6
+# else
++ 6
+#  define PARAMS(args) ()
++ 6
+# endif  /* GCC.  */
++ 6
+#endif  /* Not PARAMS.  */
++ 6
+
++ 6
+#ifndef INSIDE_RECURSION
++ 6
+
++ 6
+# if defined STDC_HEADERS && !defined emacs
++ 6
+#  include <stddef.h>
++ 6
+# else
++ 6
+/* We need this for `regex.h', and perhaps for the Emacs include files.  */
++ 6
+#  include <sys/types.h>
++ 6
+# endif
++ 6
+
++ 6
+# define WIDE_CHAR_SUPPORT (HAVE_WCTYPE_H && HAVE_WCHAR_H && HAVE_BTOWC)
++ 6
+
++ 6
+/* For platform which support the ISO C amendement 1 functionality we
++ 6
+   support user defined character classes.  */
++ 6
+# if defined _LIBC || WIDE_CHAR_SUPPORT
++ 6
+/* Solaris 2.5 has a bug: <wchar.h> must be included before <wctype.h>.  */
++ 6
+#  include <wchar.h>
++ 6
+#  include <wctype.h>
++ 6
+# endif
++ 6
+
++ 6
+/* This is for other GNU distributions with internationalized messages.  */
++ 6
+# if (HAVE_LIBINTL_H && ENABLE_NLS) || defined _LIBC
++ 6
+#  include <libintl.h>
++ 6
+#  ifdef _LIBC
++ 6
+#   undef gettext
++ 6
+#   define gettext(msgid) __dcgettext ("libc", msgid, LC_MESSAGES)
++ 6
+#  endif
++ 6
+# else
++ 6
+#  define gettext(msgid) (msgid)
++ 6
+# endif
++ 6
+
++ 6
+# ifndef gettext_noop
++ 6
+/* This define is so xgettext can find the internationalizable
++ 6
+   strings.  */
++ 6
+#  define gettext_noop(String) String
++ 6
+# endif
++ 6
+
++ 6
+/* The `emacs' switch turns on certain matching commands
++ 6
+   that make sense only in Emacs. */
++ 6
+# ifdef emacs
++ 6
+
++ 6
+# else  /* not emacs */
++ 6
+
++ 6
+/* If we are not linking with Emacs proper,
++ 6
+   we can't use the relocating allocator
++ 6
+   even if config.h says that we can.  */
++ 6
+#  undef REL_ALLOC
++ 6
+
++ 6
+#  if defined STDC_HEADERS || defined _LIBC
++ 6
+#   include <stdlib.h>
++ 6
+#  else
++ 6
+char *malloc ();
++ 6
+char *realloc ();
++ 6
+#  endif
++ 6
+
++ 6
+/* When used in Emacs's lib-src, we need to get bzero and bcopy somehow.
++ 6
+   If nothing else has been done, use the method below.  */
++ 6
+#  ifdef INHIBIT_STRING_HEADER
++ 6
+#   if !(defined HAVE_BZERO && defined HAVE_BCOPY)
++ 6
+#    if !defined bzero && !defined bcopy
++ 6
+#     undef INHIBIT_STRING_HEADER
++ 6
+#    endif
++ 6
+#   endif
++ 6
+#  endif
++ 6
+
++ 6
+/* This is the normal way of making sure we have a bcopy and a bzero.
++ 6
+   This is used in most programs--a few other programs avoid this
++ 6
+   by defining INHIBIT_STRING_HEADER.  */
++ 6
+#  ifndef INHIBIT_STRING_HEADER
++ 6
+#   if defined HAVE_STRING_H || defined STDC_HEADERS || defined _LIBC
++ 6
+#    include <string.h>
++ 6
+#    ifndef bzero
++ 6
+#     ifndef _LIBC
++ 6
+#      define bzero(s, n)	(memset (s, '\0', n), (s))
++ 6
+#     else
++ 6
+#      define bzero(s, n)	__bzero (s, n)
++ 6
+#     endif
++ 6
+#    endif
++ 6
+#   else
++ 6
+#    include <strings.h>
++ 6
+#    ifndef memcmp
++ 6
+#     define memcmp(s1, s2, n)	bcmp (s1, s2, n)
++ 6
+#    endif
++ 6
+#    ifndef memcpy
++ 6
+#     define memcpy(d, s, n)	(bcopy (s, d, n), (d))
++ 6
+#    endif
++ 6
+#   endif
++ 6
+#  endif
++ 6
+
++ 6
+/* Define the syntax stuff for \<, \>, etc.  */
++ 6
+
++ 6
+/* This must be nonzero for the wordchar and notwordchar pattern
++ 6
+   commands in re_match_2.  */
++ 6
+#  ifndef Sword
++ 6
+#   define Sword 1
++ 6
+#  endif
++ 6
+
++ 6
+#  ifdef SWITCH_ENUM_BUG
++ 6
+#   define SWITCH_ENUM_CAST(x) ((int)(x))
++ 6
+#  else
++ 6
+#   define SWITCH_ENUM_CAST(x) (x)
++ 6
+#  endif
++ 6
+
++ 6
+# endif /* not emacs */
++ 6
+
++ 6
+# if defined _LIBC || HAVE_LIMITS_H
++ 6
+#  include <limits.h>
++ 6
+# endif
++ 6
+
++ 6
+# ifndef MB_LEN_MAX
++ 6
+#  define MB_LEN_MAX 1
++ 6
+# endif
++ 6
+
++ 6
+/* Get the interface, including the syntax bits.  */
++ 6
+/* This file redefines all regex external names before including
++ 6
+   a renamed copy of glibc's regex.h.  */
++ 6
+
++ 6
+#ifndef _XREGEX_H
++ 6
+#define _XREGEX_H 1
++ 6
+
++ 6
+#  define regfree xregfree 
++ 6
+#  define regexec xregexec
++ 6
+#  define regcomp xregcomp
++ 6
+#  define regerror xregerror
++ 6
+#  define re_set_registers xre_set_registers
++ 6
+#  define re_match_2 xre_match_2
++ 6
+#  define re_match xre_match
++ 6
+#  define re_search xre_search
++ 6
+#  define re_compile_pattern xre_compile_pattern
++ 6
+#  define re_set_syntax xre_set_syntax
++ 6
+#  define re_search_2 xre_search_2
++ 6
+#  define re_compile_fastmap xre_compile_fastmap
++ 6
+#  define re_syntax_options xre_syntax_options
++ 6
+#  define re_max_failures xre_max_failures
++ 6
+
++ 6
+#  define _REGEX_RE_COMP
++ 6
+#  define re_comp xre_comp
++ 6
+#  define re_exec xre_exec
++ 6
+
++ 6
+/* Definitions for data structures and routines for the regular
++ 6
+   expression library, version 0.12.
++ 6
+   Copyright (C) 1985,1989-1993,1995-1998, 2000 Free Software Foundation, Inc.
++ 6
+   This file is part of the GNU C Library.  Its master source is NOT part of
++ 6
+   the C library, however.  The master source lives in /gd/gnu/lib.
++ 6
+
++ 6
+   The GNU C Library is free software; you can redistribute it and/or
++ 6
+   modify it under the terms of the GNU Lesser General Public
++ 6
+   License as published by the Free Software Foundation; either
++ 6
+   version 2.1 of the License, or (at your option) any later version.
++ 6
+
++ 6
+   The GNU C Library is distributed in the hope that it will be useful,
++ 6
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
++ 6
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++ 6
+   Lesser General Public License for more details.
++ 6
+
++ 6
+   You should have received a copy of the GNU Lesser General Public
++ 6
+   License along with the GNU C Library; if not, write to the Free
++ 6
+   Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
++ 6
+   02111-1307 USA.  */
++ 6
+
++ 6
+#ifndef _REGEX_H
++ 6
+#define _REGEX_H 1
++ 6
+
++ 6
+/* Allow the use in C++ code.  */
++ 6
+#ifdef __cplusplus
++ 6
+extern "C" {
++ 6
+#endif
++ 6
+
++ 6
+/* POSIX says that <sys/types.h> must be included (by the caller) before
++ 6
+   <regex.h>.  */
++ 6
+
++ 6
+#if !defined _POSIX_C_SOURCE && !defined _POSIX_SOURCE && defined VMS
++ 6
+/* VMS doesn't have `size_t' in <sys/types.h>, even though POSIX says it
++ 6
+   should be there.  */
++ 6
+# include <stddef.h>
++ 6
+#endif
++ 6
+
++ 6
+/* The following two types have to be signed and unsigned integer type
++ 6
+   wide enough to hold a value of a pointer.  For most ANSI compilers
++ 6
+   ptrdiff_t and size_t should be likely OK.  Still size of these two
++ 6
+   types is 2 for Microsoft C.  Ugh... */
++ 6
+typedef long int s_reg_t;
++ 6
+typedef unsigned long int active_reg_t;
++ 6
+
++ 6
+/* The following bits are used to determine the regexp syntax we
++ 6
+   recognize.  The set/not-set meanings are chosen so that Emacs syntax
++ 6
+   remains the value 0.  The bits are given in alphabetical order, and
++ 6
+   the definitions shifted by one from the previous bit; thus, when we
++ 6
+   add or remove a bit, only one other definition need change.  */
++ 6
+typedef unsigned long int reg_syntax_t;
++ 6
+
++ 6
+/* If this bit is not set, then \ inside a bracket expression is literal.
++ 6
+   If set, then such a \ quotes the following character.  */
++ 6
+#define RE_BACKSLASH_ESCAPE_IN_LISTS ((unsigned long int) 1)
++ 6
+
++ 6
+/* If this bit is not set, then + and ? are operators, and \+ and \? are
++ 6
+     literals.
++ 6
+   If set, then \+ and \? are operators and + and ? are literals.  */
++ 6
+#define RE_BK_PLUS_QM (RE_BACKSLASH_ESCAPE_IN_LISTS << 1)
++ 6
+
++ 6
+/* If this bit is set, then character classes are supported.  They are:
++ 6
+     [:alpha:], [:upper:], [:lower:],  [:digit:], [:alnum:], [:xdigit:],
++ 6
+     [:space:], [:print:], [:punct:], [:graph:], and [:cntrl:].
++ 6
+   If not set, then character classes are not supported.  */
++ 6
+#define RE_CHAR_CLASSES (RE_BK_PLUS_QM << 1)
++ 6
+
++ 6
+/* If this bit is set, then ^ and $ are always anchors (outside bracket
++ 6
+     expressions, of course).
++ 6
+   If this bit is not set, then it depends:
++ 6
+        ^  is an anchor if it is at the beginning of a regular
++ 6
+           expression or after an open-group or an alternation operator;
++ 6
+        $  is an anchor if it is at the end of a regular expression, or
++ 6
+           before a close-group or an alternation operator.
++ 6
+
++ 6
+   This bit could be (re)combined with RE_CONTEXT_INDEP_OPS, because
++ 6
+   POSIX draft 11.2 says that * etc. in leading positions is undefined.
++ 6
+   We already implemented a previous draft which made those constructs
++ 6
+   invalid, though, so we haven't changed the code back.  */
++ 6
+#define RE_CONTEXT_INDEP_ANCHORS (RE_CHAR_CLASSES << 1)
++ 6
+
++ 6
+/* If this bit is set, then special characters are always special
++ 6
+     regardless of where they are in the pattern.
++ 6
+   If this bit is not set, then special characters are special only in
++ 6
+     some contexts; otherwise they are ordinary.  Specifically,
++ 6
+     * + ? and intervals are only special when not after the beginning,
++ 6
+     open-group, or alternation operator.  */
++ 6
+#define RE_CONTEXT_INDEP_OPS (RE_CONTEXT_INDEP_ANCHORS << 1)
++ 6
+
++ 6
+/* If this bit is set, then *, +, ?, and { cannot be first in an re or
++ 6
+     immediately after an alternation or begin-group operator.  */
++ 6
+#define RE_CONTEXT_INVALID_OPS (RE_CONTEXT_INDEP_OPS << 1)
++ 6
+/* Define if you want more run-time sanity checks. This one gets a grab bag of
++ 6
+   miscellaneous but relatively cheap checks. */
++ 6
+/* #undef ENABLE_CHECKING */
++ 6
+
++ 6
+/* Define if you want fold checked that it never destructs its argument. This
++ 6
+   is quite expensive. */
++ 6
+/* #undef ENABLE_FOLD_CHECKING */
++ 6
+
++ 6
+/* Define if you want the garbage collector to operate in maximally paranoid
++ 6
+   mode, validating the entire heap and collecting garbage at every
++ 6
+   opportunity. This is extremely expensive. */
++ 6
+/* #undef ENABLE_GC_ALWAYS_COLLECT */
++ 6
+
++ 6
+
++ 6
+/* If this bit is set, then . matches newline.
++ 6
+   If not set, then it doesn't.  */
++ 6
+#define RE_DOT_NEWLINE (RE_CONTEXT_INVALID_OPS << 1)
++ 6
+
++ 6
+/* If this bit is set, then . doesn't match NUL.
++ 6
+   If not set, then it does.  */
++ 6
+#define RE_DOT_NOT_NULL (RE_DOT_NEWLINE << 1)
++ 6
+
++ 6
+/* If this bit is set, nonmatching lists [^...] do not match newline.
++ 6
+   If not set, they do.  */
++ 6
+#define RE_HAT_LISTS_NOT_NEWLINE (RE_DOT_NOT_NULL << 1)
++ 6
+
++ 6
+/* If this bit is set, either \{...\} or {...} defines an
++ 6
+     interval, depending on RE_NO_BK_BRACES.
++ 6
+   If not set, \{, \}, {, and } are literals.  */
++ 6
+#define RE_INTERVALS (RE_HAT_LISTS_NOT_NEWLINE << 1)
++ 6
+
++ 6
+/* If this bit is set, +, ? and | aren't recognized as operators.
++ 6
+   If not set, they are.  */
++ 6
+#define RE_LIMITED_OPS (RE_INTERVALS << 1)
++ 6
+
++ 6
+/* If this bit is set, newline is an alternation operator.
++ 6
+   If not set, newline is literal.  */
++ 6
+#define RE_NEWLINE_ALT (RE_LIMITED_OPS << 1)
++ 6
+
++ 6
+/* If this bit is set, then `{...}' defines an interval, and \{ and \}
++ 6
+     are literals.
++ 6
+  If not set, then `\{...\}' defines an interval.  */
++ 6
+#define RE_NO_BK_BRACES (RE_NEWLINE_ALT << 1)
++ 6
+
++ 6
+/* If this bit is set, (...) defines a group, and \( and \) are literals.
++ 6
+   If not set, \(...\) defines a group, and ( and ) are literals.  */
++ 6
+#define RE_NO_BK_PARENS (RE_NO_BK_BRACES << 1)
++ 6
+
++ 6
+/* If this bit is set, then \<digit> matches <digit>.
++ 6
+   If not set, then \<digit> is a back-reference.  */
++ 6
+#define RE_NO_BK_REFS (RE_NO_BK_PARENS << 1)
++ 6
+
++ 6
+/* If this bit is set, then | is an alternation operator, and \| is literal.
++ 6
+   If not set, then \| is an alternation operator, and | is literal.  */
++ 6
+#define RE_NO_BK_VBAR (RE_NO_BK_REFS << 1)
++ 6
+
++ 6
+/* If this bit is set, then an ending range point collating higher
++ 6
+     than the starting range point, as in [z-a], is invalid.
++ 6
+   If not set, then when ending range point collates higher than the
++ 6
+     starting range point, the range is ignored.  */
++ 6
+#define RE_NO_EMPTY_RANGES (RE_NO_BK_VBAR << 1)
++ 6
+
++ 6
+/* If this bit is set, then an unmatched ) is ordinary.
++ 6
+   If not set, then an unmatched ) is invalid.  */
++ 6
+#define RE_UNMATCHED_RIGHT_PAREN_ORD (RE_NO_EMPTY_RANGES << 1)
++ 6
+
++ 6
+/* If this bit is set, succeed as soon as we match the whole pattern,
++ 6
+   without further backtracking.  */
++ 6
+#define RE_NO_POSIX_BACKTRACKING (RE_UNMATCHED_RIGHT_PAREN_ORD << 1)
++ 6
+
++ 6
+/* If this bit is set, do not process the GNU regex operators.
++ 6
+   If not set, then the GNU regex operators are recognized. */
++ 6
+#define RE_NO_GNU_OPS (RE_NO_POSIX_BACKTRACKING << 1)
++ 6
+
++ 6
+/* If this bit is set, turn on internal regex debugging.
++ 6
+   If not set, and debugging was on, turn it off.
++ 6
+   This only works if regex.c is compiled -DDEBUG.
++ 6
+   We define this bit always, so that all that's needed to turn on
++ 6
+   debugging is to recompile regex.c; the calling code can always have
++ 6
+   this bit set, and it won't affect anything in the normal case. */
++ 6
+#define RE_DEBUG (RE_NO_GNU_OPS << 1)
++ 6
+
++ 6
+/* If this bit is set, a syntactically invalid interval is treated as
++ 6
+   a string of ordinary characters.  For example, the ERE 'a{1' is
++ 6
+   treated as 'a\{1'.  */
++ 6
+#define RE_INVALID_INTERVAL_ORD (RE_DEBUG << 1)
++ 6
+
++ 6
+/* This global variable defines the particular regexp syntax to use (for
++ 6
+   some interfaces).  When a regexp is compiled, the syntax used is
++ 6
+   stored in the pattern buffer, so changing this does not affect
++ 6
+   already-compiled regexps.  */
++ 6
+extern reg_syntax_t re_syntax_options;
++ 6
+
++ 6
+/* Define combinations of the above bits for the standard possibilities.
++ 6
+   (The [[[ comments delimit what gets put into the Texinfo file, so
++ 6
+   don't delete them!)  */
++ 6
+/* [[[begin syntaxes]]] */
++ 6
+#define RE_SYNTAX_EMACS 0
++ 6
+
++ 6
+#define RE_SYNTAX_AWK							\
++ 6
+  (RE_BACKSLASH_ESCAPE_IN_LISTS   | RE_DOT_NOT_NULL			\
++ 6
+   | RE_NO_BK_PARENS              | RE_NO_BK_REFS			\
++ 6
+   | RE_NO_BK_VBAR                | RE_NO_EMPTY_RANGES			\
++ 6
+   | RE_DOT_NEWLINE		  | RE_CONTEXT_INDEP_ANCHORS		\
++ 6
+   | RE_UNMATCHED_RIGHT_PAREN_ORD | RE_NO_GNU_OPS)
++ 6
+
++ 6
+#define RE_SYNTAX_GNU_AWK						\
++ 6
+  ((RE_SYNTAX_POSIX_EXTENDED | RE_BACKSLASH_ESCAPE_IN_LISTS | RE_DEBUG)	\
++ 6
+   & ~(RE_DOT_NOT_NULL | RE_INTERVALS | RE_CONTEXT_INDEP_OPS))
++ 6
+
++ 6
+#define RE_SYNTAX_POSIX_AWK 						\
++ 6
+  (RE_SYNTAX_POSIX_EXTENDED | RE_BACKSLASH_ESCAPE_IN_LISTS		\
++ 6
+   | RE_INTERVALS	    | RE_NO_GNU_OPS)
++ 6
+
++ 6
+#define RE_SYNTAX_GREP							\
++ 6
+  (RE_BK_PLUS_QM              | RE_CHAR_CLASSES				\
++ 6
+   | RE_HAT_LISTS_NOT_NEWLINE | RE_INTERVALS				\
++ 6
+   | RE_NEWLINE_ALT)
++ 6
+
++ 6
+#define RE_SYNTAX_EGREP							\
++ 6
+  (RE_CHAR_CLASSES        | RE_CONTEXT_INDEP_ANCHORS			\
++ 6
+   | RE_CONTEXT_INDEP_OPS | RE_HAT_LISTS_NOT_NEWLINE			\
++ 6
+   | RE_NEWLINE_ALT       | RE_NO_BK_PARENS				\
++ 6
+   | RE_NO_BK_VBAR)
++ 6
+
++ 6
+#define RE_SYNTAX_POSIX_EGREP						\
++ 6
+  (RE_SYNTAX_EGREP | RE_INTERVALS | RE_NO_BK_BRACES			\
++ 6
+   | RE_INVALID_INTERVAL_ORD)
++ 6
+
++ 6
+/* P1003.2/D11.2, section 4.20.7.1, lines 5078ff.  */
++ 6
+#define RE_SYNTAX_ED RE_SYNTAX_POSIX_BASIC
++ 6
+
++ 6
+#define RE_SYNTAX_SED RE_SYNTAX_POSIX_BASIC
++ 6
+
++ 6
+/* Syntax bits common to both basic and extended POSIX regex syntax.  */
++ 6
+#define _RE_SYNTAX_POSIX_COMMON						\
++ 6
+  (RE_CHAR_CLASSES | RE_DOT_NEWLINE      | RE_DOT_NOT_NULL		\
++ 6
+   | RE_INTERVALS  | RE_NO_EMPTY_RANGES)
++ 6
+
++ 6
+#define RE_SYNTAX_POSIX_BASIC						\
++ 6
+  (_RE_SYNTAX_POSIX_COMMON | RE_BK_PLUS_QM)
++ 6
+
++ 6
+/* Differs from ..._POSIX_BASIC only in that RE_BK_PLUS_QM becomes
++ 6
+   RE_LIMITED_OPS, i.e., \? \+ \| are not recognized.  Actually, this
++ 6
+   isn't minimal, since other operators, such as \`, aren't disabled.  */
++ 6
+#define RE_SYNTAX_POSIX_MINIMAL_BASIC					\
++ 6
+  (_RE_SYNTAX_POSIX_COMMON | RE_LIMITED_OPS)
++ 6
+
++ 6
+#define RE_SYNTAX_POSIX_EXTENDED					\
++ 6
+  (_RE_SYNTAX_POSIX_COMMON  | RE_CONTEXT_INDEP_ANCHORS			\
++ 6
+   | RE_CONTEXT_INDEP_OPS   | RE_NO_BK_BRACES				\
++ 6
+   | RE_NO_BK_PARENS        | RE_NO_BK_VBAR				\
++ 6
+   | RE_CONTEXT_INVALID_OPS | RE_UNMATCHED_RIGHT_PAREN_ORD)
++ 6
+
++ 6
+/* Differs from ..._POSIX_EXTENDED in that RE_CONTEXT_INDEP_OPS is
++ 6
+   removed and RE_NO_BK_REFS is added.  */
++ 6
+#define RE_SYNTAX_POSIX_MINIMAL_EXTENDED				\
++ 6
+  (_RE_SYNTAX_POSIX_COMMON  | RE_CONTEXT_INDEP_ANCHORS			\
++ 6
+   | RE_CONTEXT_INVALID_OPS | RE_NO_BK_BRACES				\
++ 6
+   | RE_NO_BK_PARENS        | RE_NO_BK_REFS				\
++ 6
+   | RE_NO_BK_VBAR	    | RE_UNMATCHED_RIGHT_PAREN_ORD)
++ 6
+/* [[[end syntaxes]]] */
++ 6
+
++ 6
+/* Maximum number of duplicates an interval can allow.  Some systems
++ 6
+   (erroneously) define this in other header files, but we want our
++ 6
+   value, so remove any previous define.  */
++ 6
+#ifdef RE_DUP_MAX
++ 6
+# undef RE_DUP_MAX
++ 6
+#endif
++ 6
+/* If sizeof(int) == 2, then ((1 << 15) - 1) overflows.  */
++ 6
+#define RE_DUP_MAX (0x7fff)
++ 6
+
++ 6
+
++ 6
+/* POSIX `cflags' bits (i.e., information for `regcomp').  */
++ 6
+
++ 6
+/* If this bit is set, then use extended regular expression syntax.
++ 6
+   If not set, then use basic regular expression syntax.  */
++ 6
+#define REG_EXTENDED 1
++ 6
+
++ 6
+/* If this bit is set, then ignore case when matching.
++ 6
+   If not set, then case is significant.  */
++ 6
+#define REG_ICASE (REG_EXTENDED << 1)
++ 6
+
++ 6
+/* If this bit is set, then anchors do not match at newline
++ 6
+     characters in the string.
++ 6
+   If not set, then anchors do match at newlines.  */
++ 6
+#define REG_NEWLINE (REG_ICASE << 1)
++ 6
+
++ 6
+/* If this bit is set, then report only success or fail in regexec.
++ 6
+   If not set, then returns differ between not matching and errors.  */
++ 6
+#define REG_NOSUB (REG_NEWLINE << 1)
++ 6
+
++ 6
+
++ 6
+/* POSIX `eflags' bits (i.e., information for regexec).  */
++ 6
+
++ 6
+/* If this bit is set, then the beginning-of-line operator doesn't match
++ 6
+     the beginning of the string (presumably because it's not the
++ 6
+     beginning of a line).
++ 6
+   If not set, then the beginning-of-line operator does match the
++ 6
+     beginning of the string.  */
++ 6
+#define REG_NOTBOL 1
++ 6
+
++ 6
+/* Like REG_NOTBOL, except for the end-of-line.  */
++ 6
+#define REG_NOTEOL (1 << 1)
++ 6
+
++ 6
+
++ 6
+/* If any error codes are removed, changed, or added, update the
++ 6
+   `re_error_msg' table in regex.c.  */
++ 6
+typedef enum
++ 6
+{
++ 6
+#ifdef _XOPEN_SOURCE
++ 6
+  REG_ENOSYS = -1,	/* This will never happen for this implementation.  */
++ 6
+#endif
++ 6
+
++ 6
+  REG_NOERROR = 0,	/* Success.  */
++ 6
+  REG_NOMATCH,		/* Didn't find a match (for regexec).  */
++ 6
+
++ 6
+  /* POSIX regcomp return error codes.  (In the order listed in the
++ 6
+     standard.)  */
++ 6
+  REG_BADPAT,		/* Invalid pattern.  */
++ 6
+  REG_ECOLLATE,		/* Not implemented.  */
++ 6
+  REG_ECTYPE,		/* Invalid character class name.  */
++ 6
+  REG_EESCAPE,		/* Trailing backslash.  */
++ 6
+  REG_ESUBREG,		/* Invalid back reference.  */
++ 6
+  REG_EBRACK,		/* Unmatched left bracket.  */
++ 6
+  REG_EPAREN,		/* Parenthesis imbalance.  */
++ 6
+  REG_EBRACE,		/* Unmatched \{.  */
++ 6
+  REG_BADBR,		/* Invalid contents of \{\}.  */
++ 6
+  REG_ERANGE,		/* Invalid range end.  */
++ 6
+  REG_ESPACE,		/* Ran out of memory.  */
++ 6
+  REG_BADRPT,		/* No preceding re for repetition op.  */
++ 6
+
++ 6
+  /* Error codes we've added.  */
++ 6
+  REG_EEND,		/* Premature end.  */
++ 6
+  REG_ESIZE,		/* Compiled pattern bigger than 2^16 bytes.  */
++ 6
+  REG_ERPAREN		/* Unmatched ) or \); not returned from regcomp.  */
++ 6
+} reg_errcode_t;
++ 6
+
++ 6
+/* This data structure represents a compiled pattern.  Before calling
++ 6
+   the pattern compiler, the fields `buffer', `allocated', `fastmap',
++ 6
+   `translate', and `no_sub' can be set.  After the pattern has been
++ 6
+   compiled, the `re_nsub' field is available.  All other fields are
++ 6
+   private to the regex routines.  */
++ 6
+
++ 6
+#ifndef RE_TRANSLATE_TYPE
++ 6
+# define RE_TRANSLATE_TYPE char *
++ 6
+#endif
++ 6
+
++ 6
+struct re_pattern_buffer
++ 6
+{
++ 6
+/* [[[begin pattern_buffer]]] */
++ 6
+	/* Space that holds the compiled pattern.  It is declared as
++ 6
+          `unsigned char *' because its elements are
++ 6
+           sometimes used as array indexes.  */
++ 6
+  unsigned char *buffer;
++ 6
+
++ 6
+	/* Number of bytes to which `buffer' points.  */
++ 6
+  unsigned long int allocated;
++ 6
+
++ 6
+	/* Number of bytes actually used in `buffer'.  */
++ 6
+  unsigned long int used;
++ 6
+
++ 6
+        /* Syntax setting with which the pattern was compiled.  */
++ 6
+  reg_syntax_t syntax;
++ 6
+
++ 6
+        /* Pointer to a fastmap, if any, otherwise zero.  re_search uses
++ 6
+           the fastmap, if there is one, to skip over impossible
++ 6
+           starting points for matches.  */
++ 6
+  char *fastmap;
++ 6
+
++ 6
+        /* Either a translate table to apply to all characters before
++ 6
+           comparing them, or zero for no translation.  The translation
++ 6
+           is applied to a pattern when it is compiled and to a string
++ 6
+           when it is matched.  */
++ 6
+  RE_TRANSLATE_TYPE translate;
++ 6
+
++ 6
+	/* Number of subexpressions found by the compiler.  */
++ 6
+  size_t re_nsub;
++ 6
+
++ 6
+        /* Zero if this pattern cannot match the empty string, one else.
++ 6
+           Well, in truth it's used only in `re_search_2', to see
++ 6
+           whether or not we should use the fastmap, so we don't set
++ 6
+           this absolutely perfectly; see `re_compile_fastmap' (the
++ 6
+           `duplicate' case).  */
++ 6
+  unsigned can_be_null : 1;
++ 6
+
++ 6
+        /* If REGS_UNALLOCATED, allocate space in the `regs' structure
++ 6
+             for `max (RE_NREGS, re_nsub + 1)' groups.
++ 6
+           If REGS_REALLOCATE, reallocate space if necessary.
++ 6
+           If REGS_FIXED, use what's there.  */
++ 6
+#define REGS_UNALLOCATED 0
++ 6
+#define REGS_REALLOCATE 1
++ 6
+#define REGS_FIXED 2
++ 6
+  unsigned regs_allocated : 2;
++ 6
+
++ 6
+        /* Set to zero when `regex_compile' compiles a pattern; set to one
++ 6
+           by `re_compile_fastmap' if it updates the fastmap.  */
++ 6
+  unsigned fastmap_accurate : 1;
++ 6
+
++ 6
+        /* If set, `re_match_2' does not return information about
++ 6
+           subexpressions.  */
++ 6
+  unsigned no_sub : 1;
++ 6
+
++ 6
+        /* If set, a beginning-of-line anchor doesn't match at the
++ 6
+           beginning of the string.  */
++ 6
+  unsigned not_bol : 1;
++ 6
+
++ 6
+        /* Similarly for an end-of-line anchor.  */
++ 6
+  unsigned not_eol : 1;
++ 6
+
++ 6
+        /* If true, an anchor at a newline matches.  */
++ 6
+  unsigned newline_anchor : 1;
++ 6
+
++ 6
+/* [[[end pattern_buffer]]] */
++ 6
+};
++ 6
+
++ 6
+typedef struct re_pattern_buffer regex_t;
++ 6
+
++ 6
+/* Type for byte offsets within the string.  POSIX mandates this.  */
++ 6
+typedef int regoff_t;
++ 6
+
++ 6
+
++ 6
+/* This is the structure we store register match data in.  See
++ 6
+   regex.texinfo for a full description of what registers match.  */
++ 6
+struct re_registers
++ 6
+{
++ 6
+  unsigned num_regs;
++ 6
+  regoff_t *start;
++ 6
+  regoff_t *end;
++ 6
+};
++ 6
+
++ 6
+
++ 6
+/* If `regs_allocated' is REGS_UNALLOCATED in the pattern buffer,
++ 6
+   `re_match_2' returns information about at least this many registers
++ 6
+   the first time a `regs' structure is passed.  */
++ 6
+#ifndef RE_NREGS
++ 6
+# define RE_NREGS 30
++ 6
+#endif
++ 6
+
++ 6
+
++ 6
+/* POSIX specification for registers.  Aside from the different names than
++ 6
+   `re_registers', POSIX uses an array of structures, instead of a
++ 6
+   structure of arrays.  */
++ 6
+typedef struct
++ 6
+{
++ 6
+  regoff_t rm_so;  /* Byte offset from string's start to substring's start.  */
++ 6
+  regoff_t rm_eo;  /* Byte offset from string's start to substring's end.  */
++ 6
+} regmatch_t;
++ 6
+
++ 6
+/* Declarations for routines.  */
++ 6
+
++ 6
+/* To avoid duplicating every routine declaration -- once with a
++ 6
+   prototype (if we are ANSI), and once without (if we aren't) -- we
++ 6
+   use the following macro to declare argument types.  This
++ 6
+   unfortunately clutters up the declarations a bit, but I think it's
++ 6
+   worth it.  */
++ 6
+
++ 6
+#if __STDC__
++ 6
+
++ 6
+# define _RE_ARGS(args) args
++ 6
+
++ 6
+#else /* not __STDC__ */
++ 6
+
++ 6
+# define _RE_ARGS(args) ()
++ 6
+
++ 6
+#endif /* not __STDC__ */
++ 6
+
++ 6
+/* Sets the current default syntax to SYNTAX, and return the old syntax.
++ 6
+   You can also simply assign to the `re_syntax_options' variable.  */
++ 6
+extern reg_syntax_t re_set_syntax _RE_ARGS ((reg_syntax_t syntax));
++ 6
+
++ 6
+/* Compile the regular expression PATTERN, with length LENGTH
++ 6
+   and syntax given by the global `re_syntax_options', into the buffer
++ 6
+   BUFFER.  Return NULL if successful, and an error string if not.  */
++ 6
+extern const char *re_compile_pattern
++ 6
+  _RE_ARGS ((const char *pattern, size_t length,
++ 6
+             struct re_pattern_buffer *buffer));
++ 6
+
++ 6
+
++ 6
+/* Compile a fastmap for the compiled pattern in BUFFER; used to
++ 6
+   accelerate searches.  Return 0 if successful and -2 if was an
++ 6
+   internal error.  */
++ 6
+extern int re_compile_fastmap _RE_ARGS ((struct re_pattern_buffer *buffer));
++ 6
+
++ 6
+
++ 6
+/* Search in the string STRING (with length LENGTH) for the pattern
++ 6
+   compiled into BUFFER.  Start searching at position START, for RANGE
++ 6
+   characters.  Return the starting position of the match, -1 for no
++ 6
+   match, or -2 for an internal error.  Also return register
++ 6
+   information in REGS (if REGS and BUFFER->no_sub are nonzero).  */
++ 6
+extern int re_search
++ 6
+  _RE_ARGS ((struct re_pattern_buffer *buffer, const char *string,
++ 6
+            int length, int start, int range, struct re_registers *regs));
++ 6
+
++ 6
+
++ 6
+/* Like `re_search', but search in the concatenation of STRING1 and
++ 6
+   STRING2.  Also, stop searching at index START + STOP.  */
++ 6
+extern int re_search_2
++ 6
+  _RE_ARGS ((struct re_pattern_buffer *buffer, const char *string1,
++ 6
+             int length1, const char *string2, int length2,
++ 6
+             int start, int range, struct re_registers *regs, int stop));
++ 6
+
++ 6
+
++ 6
+/* Like `re_search', but return how many characters in STRING the regexp
++ 6
+   in BUFFER matched, starting at position START.  */
++ 6
+extern int re_match
++ 6
+  _RE_ARGS ((struct re_pattern_buffer *buffer, const char *string,
++ 6
+             int length, int start, struct re_registers *regs));
++ 6
+
++ 6
+
++ 6
+/* Relates to `re_match' as `re_search_2' relates to `re_search'.  */
++ 6
+extern int re_match_2
++ 6
+  _RE_ARGS ((struct re_pattern_buffer *buffer, const char *string1,
++ 6
+             int length1, const char *string2, int length2,
++ 6
+             int start, struct re_registers *regs, int stop));
++ 6
+
++ 6
+
++ 6
+/* Set REGS to hold NUM_REGS registers, storing them in STARTS and
++ 6
+   ENDS.  Subsequent matches using BUFFER and REGS will use this memory
++ 6
+   for recording register information.  STARTS and ENDS must be
++ 6
+   allocated with malloc, and must each be at least `NUM_REGS * sizeof
++ 6
+   (regoff_t)' bytes long.
++ 6
+
++ 6
+   If NUM_REGS == 0, then subsequent matches should allocate their own
++ 6
+   register data.
++ 6
+
++ 6
+   Unless this function is called, the first search or match using
++ 6
+   PATTERN_BUFFER will allocate its own register data, without
++ 6
+   freeing the old data.  */
++ 6
+extern void re_set_registers
++ 6
+  _RE_ARGS ((struct re_pattern_buffer *buffer, struct re_registers *regs,
++ 6
+             unsigned num_regs, regoff_t *starts, regoff_t *ends));
++ 6
+
++ 6
+#if defined _REGEX_RE_COMP || defined _LIBC
++ 6
+# ifndef _CRAY
++ 6
+/* 4.2 bsd compatibility.  */
++ 6
+extern char *re_comp _RE_ARGS ((const char *));
++ 6
+extern int re_exec _RE_ARGS ((const char *));
++ 6
+# endif
++ 6
+#endif
++ 6
+
++ 6
+/* GCC 2.95 and later have "__restrict"; C99 compilers have
++ 6
+   "restrict", and "configure" may have defined "restrict".  */
++ 6
+#ifndef __restrict
++ 6
+# if ! (2 < __GNUC__ || (2 == __GNUC__ && 95 <= __GNUC_MINOR__))
++ 6
+#  if defined restrict || 199901L <= __STDC_VERSION__
++ 6
+#   define __restrict restrict
++ 6
+#  else
++ 6
+#   define __restrict
++ 6
+#  endif
++ 6
+# endif
++ 6
+#endif
++ 6
+
++ 6
+/* GCC 3.1 and later support declaring arrays as non-overlapping
++ 6
+   using the syntax array_name[restrict]  */
++ 6
+#ifndef __restrict_arr
++ 6
+# if ! (3 < __GNUC__ || (3 == __GNUC__ && 1 <= __GNUC_MINOR__)) || defined (__GNUG__)
++ 6
+#  define __restrict_arr
++ 6
+# else
++ 6
+#  define __restrict_arr __restrict
++ 6
+# endif
++ 6
+#endif
++ 6
+
++ 6
+/* POSIX compatibility.  */
++ 6
+extern int regcomp _RE_ARGS ((regex_t *__restrict __preg,
++ 6
+			      const char *__restrict __pattern,
++ 6
+			      int __cflags));
++ 6
+
++ 6
+extern int regexec _RE_ARGS ((const regex_t *__restrict __preg,
++ 6
+			      const char *__restrict __string, size_t __nmatch,
++ 6
+			      regmatch_t __pmatch[__restrict_arr],
++ 6
+			      int __eflags));
++ 6
+
++ 6
+extern size_t regerror _RE_ARGS ((int __errcode, const regex_t *__preg,
++ 6
+				  char *__errbuf, size_t __errbuf_size));
++ 6
+
++ 6
+extern void regfree _RE_ARGS ((regex_t *__preg));
++ 6
+
++ 6
+
++ 6
+#ifdef __cplusplus
++ 6
+}
++ 6
+#endif	/* C++ */
++ 6
+
++ 6
+#endif /* regex.h */
++ 6
+
++ 6
+/*
++ 6
+Local variables:
++ 6
+make-backup-files: t
++ 6
+version-control: t
++ 6
+trim-versions-without-asking: nil
++ 6
+End:
++ 6
+*/
++ 6
+
++ 6
+#endif /* xregex.h */
++ 6
+
++ 6
+/* isalpha etc. are used for the character classes.  */
++ 6
+# include <ctype.h>
++ 6
+
++ 6
+/* Jim Meyering writes:
++ 6
+
++ 6
+   "... Some ctype macros are valid only for character codes that
++ 6
+   isascii says are ASCII (SGI's IRIX-4.0.5 is one such system --when
++ 6
+   using /bin/cc or gcc but without giving an ansi option).  So, all
++ 6
+   ctype uses should be through macros like ISPRINT...  If
++ 6
+   STDC_HEADERS is defined, then autoconf has verified that the ctype
++ 6
+   macros don't need to be guarded with references to isascii. ...
++ 6
+   Defining isascii to 1 should let any compiler worth its salt
++ 6
+   eliminate the && through constant folding."
++ 6
+   Solaris defines some of these symbols so we must undefine them first.  */
++ 6
+
++ 6
+# undef ISASCII
++ 6
+# if defined STDC_HEADERS || (!defined isascii && !defined HAVE_ISASCII)
++ 6
+#  define ISASCII(c) 1
++ 6
+# else
++ 6
+#  define ISASCII(c) isascii(c)
++ 6
+# endif
++ 6
+
++ 6
+# ifdef isblank
++ 6
+#  define ISBLANK(c) (ISASCII (c) && isblank (c))
++ 6
+# else
++ 6
+#  define ISBLANK(c) ((c) == ' ' || (c) == '\t')
++ 6
+# endif
++ 6
+# ifdef isgraph
++ 6
+#  define ISGRAPH(c) (ISASCII (c) && isgraph (c))
++ 6
+# else
++ 6
+#  define ISGRAPH(c) (ISASCII (c) && isprint (c) && !isspace (c))
++ 6
+# endif
++ 6
+
++ 6
+# undef ISPRINT
++ 6
+# define ISPRINT(c) (ISASCII (c) && isprint (c))
++ 6
+# define ISDIGIT(c) (ISASCII (c) && isdigit (c))
++ 6
+# define ISALNUM(c) (ISASCII (c) && isalnum (c))
++ 6
+# define ISALPHA(c) (ISASCII (c) && isalpha (c))
++ 6
+# define ISCNTRL(c) (ISASCII (c) && iscntrl (c))
++ 6
+# define ISLOWER(c) (ISASCII (c) && islower (c))
++ 6
+# define ISPUNCT(c) (ISASCII (c) && ispunct (c))
++ 6
+# define ISSPACE(c) (ISASCII (c) && isspace (c))
++ 6
+# define ISUPPER(c) (ISASCII (c) && isupper (c))
++ 6
+# define ISXDIGIT(c) (ISASCII (c) && isxdigit (c))
++ 6
+
++ 6
+# ifdef _tolower
++ 6
+#  define TOLOWER(c) _tolower(c)
++ 6
+# else
++ 6
+#  define TOLOWER(c) tolower(c)
++ 6
+# endif
++ 6
+
++ 6
+# ifndef NULL
++ 6
+#  define NULL (void *)0
++ 6
+# endif
++ 6
+
++ 6
+/* We remove any previous definition of `SIGN_EXTEND_CHAR',
++ 6
+   since ours (we hope) works properly with all combinations of
++ 6
+   machines, compilers, `char' and `unsigned char' argument types.
++ 6
+   (Per Bothner suggested the basic approach.)  */
++ 6
+# undef SIGN_EXTEND_CHAR
++ 6
+# if __STDC__
++ 6
+#  define SIGN_EXTEND_CHAR(c) ((signed char) (c))
++ 6
+# else  /* not __STDC__ */
++ 6
+/* As in Harbison and Steele.  */
++ 6
+#  define SIGN_EXTEND_CHAR(c) ((((unsigned char) (c)) ^ 128) - 128)
++ 6
+# endif
++ 6
+
++ 6
+# ifndef emacs
++ 6
+/* How many characters in the character set.  */
++ 6
+#  define CHAR_SET_SIZE 256
++ 6
+
++ 6
+#  ifdef SYNTAX_TABLE
++ 6
+
++ 6
+extern char *re_syntax_table;
++ 6
+
++ 6
+#  else /* not SYNTAX_TABLE */
++ 6
+
++ 6
+static char re_syntax_table[CHAR_SET_SIZE];
++ 6
+
++ 6
+static void init_syntax_once PARAMS ((void));
++ 6
+
++ 6
+static void
++ 6
+init_syntax_once ()
++ 6
+{
++ 6
+   register int c;
++ 6
+   static int done = 0;
++ 6
+
++ 6
+   if (done)
++ 6
+     return;
++ 6
+   bzero (re_syntax_table, sizeof re_syntax_table);
++ 6
+
++ 6
+   for (c = 0; c < CHAR_SET_SIZE; ++c)
++ 6
+     if (ISALNUM (c))
++ 6
+	re_syntax_table[c] = Sword;
++ 6
+
++ 6
+   re_syntax_table['_'] = Sword;
++ 6
+
++ 6
+   done = 1;
++ 6
+}
++ 6
+
++ 6
+#  endif /* not SYNTAX_TABLE */
++ 6
+
++ 6
+#  define SYNTAX(c) re_syntax_table[(unsigned char) (c)]
++ 6
+
++ 6
+# endif /* emacs */
++ 6
+
++ 6
+/* Integer type for pointers.  */
++ 6
+# if !defined _LIBC && !defined HAVE_UINTPTR_T
++ 6
+typedef unsigned long int uintptr_t;
++ 6
+# endif
++ 6
+
++ 6
+/* Should we use malloc or alloca?  If REGEX_MALLOC is not defined, we
++ 6
+   use `alloca' instead of `malloc'.  This is because using malloc in
++ 6
+   re_search* or re_match* could cause memory leaks when C-g is used in
++ 6
+   Emacs; also, malloc is slower and causes storage fragmentation.  On
++ 6
+   the other hand, malloc is more portable, and easier to debug.
++ 6
+
++ 6
+   Because we sometimes use alloca, some routines have to be macros,
++ 6
+   not functions -- `alloca'-allocated space disappears at the end of the
++ 6
+   function it is called in.  */
++ 6
+
++ 6
+# ifdef REGEX_MALLOC
++ 6
+
++ 6
+#  define REGEX_ALLOCATE malloc
++ 6
+#  define REGEX_REALLOCATE(source, osize, nsize) realloc (source, nsize)
++ 6
+#  define REGEX_FREE free
++ 6
+
++ 6
+# else /* not REGEX_MALLOC  */
++ 6
+
++ 6
+/* Emacs already defines alloca, sometimes.  */
++ 6
+#  ifndef alloca
++ 6
+
++ 6
+/* Make alloca work the best possible way.  */
++ 6
+#   ifdef __GNUC__
++ 6
+#    define alloca __builtin_alloca
++ 6
+#   else /* not __GNUC__ */
++ 6
+#    if HAVE_ALLOCA_H
++ 6
+#     include <alloca.h>
++ 6
+#    endif /* HAVE_ALLOCA_H */
++ 6
+#   endif /* not __GNUC__ */
++ 6
+
++ 6
+#  endif /* not alloca */
++ 6
+
++ 6
+#  define REGEX_ALLOCATE alloca
++ 6
+
++ 6
+/* Assumes a `char *destination' variable.  */
++ 6
+#  define REGEX_REALLOCATE(source, osize, nsize)			\
++ 6
+  (destination = (char *) alloca (nsize),				\
++ 6
+   memcpy (destination, source, osize))
++ 6
+
++ 6
+/* No need to do anything to free, after alloca.  */
++ 6
+#  define REGEX_FREE(arg) ((void)0) /* Do nothing!  But inhibit gcc warning.  */
++ 6
+
++ 6
+# endif /* not REGEX_MALLOC */
++ 6
+
++ 6
+/* Define how to allocate the failure stack.  */
++ 6
+
++ 6
+# if defined REL_ALLOC && defined REGEX_MALLOC
++ 6
+
++ 6
+#  define REGEX_ALLOCATE_STACK(size)				\
++ 6
+  r_alloc (&failure_stack_ptr, (size))
++ 6
+#  define REGEX_REALLOCATE_STACK(source, osize, nsize)		\
++ 6
+  r_re_alloc (&failure_stack_ptr, (nsize))
++ 6
+#  define REGEX_FREE_STACK(ptr)					\
++ 6
+  r_alloc_free (&failure_stack_ptr)
++ 6
+
++ 6
+# else /* not using relocating allocator */
++ 6
+
++ 6
+#  ifdef REGEX_MALLOC
++ 6
+
++ 6
+#   define REGEX_ALLOCATE_STACK malloc
++ 6
+#   define REGEX_REALLOCATE_STACK(source, osize, nsize) realloc (source, nsize)
++ 6
+#   define REGEX_FREE_STACK free
++ 6
+
++ 6
+#  else /* not REGEX_MALLOC */
++ 6
+
++ 6
+#   define REGEX_ALLOCATE_STACK alloca
++ 6
+
++ 6
+#   define REGEX_REALLOCATE_STACK(source, osize, nsize)			\
++ 6
+   REGEX_REALLOCATE (source, osize, nsize)
++ 6
+/* No need to explicitly free anything.  */
++ 6
+#   define REGEX_FREE_STACK(arg)
++ 6
+
++ 6
+#  endif /* not REGEX_MALLOC */
++ 6
+# endif /* not using relocating allocator */
++ 6
+
++ 6
+
++ 6
+/* True if `size1' is non-NULL and PTR is pointing anywhere inside
++ 6
+   `string1' or just past its end.  This works if PTR is NULL, which is
++ 6
+   a good thing.  */
++ 6
+# define FIRST_STRING_P(ptr) 					\
++ 6
+  (size1 && string1 <= (ptr) && (ptr) <= string1 + size1)
++ 6
+
++ 6
+/* (Re)Allocate N items of type T using malloc, or fail.  */
++ 6
+# define TALLOC(n, t) ((t *) malloc ((n) * sizeof (t)))
++ 6
+# define RETALLOC(addr, n, t) ((addr) = (t *) realloc (addr, (n) * sizeof (t)))
++ 6
+# define RETALLOC_IF(addr, n, t) \
++ 6
+  if (addr) RETALLOC((addr), (n), t); else (addr) = TALLOC ((n), t)
++ 6
+# define REGEX_TALLOC(n, t) ((t *) REGEX_ALLOCATE ((n) * sizeof (t)))
++ 6
+
++ 6
+# define BYTEWIDTH 8 /* In bits.  */
++ 6
+
++ 6
+# define STREQ(s1, s2) ((strcmp (s1, s2) == 0))
++ 6
+
++ 6
+# undef MAX
++ 6
+# undef MIN
++ 6
+# define MAX(a, b) ((a) > (b) ? (a) : (b))
++ 6
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
++ 6
+
++ 6
+typedef char boolean;
++ 6
+# define false 0
++ 6
+# define true 1
++ 6
+
++ 6
+static reg_errcode_t byte_regex_compile _RE_ARGS ((const char *pattern, size_t size,
++ 6
+                                                   reg_syntax_t syntax,
++ 6
+                                                   struct re_pattern_buffer *bufp));
++ 6
+
++ 6
+static int byte_re_match_2_internal PARAMS ((struct re_pattern_buffer *bufp,
++ 6
+					     const char *string1, int size1,
++ 6
+					     const char *string2, int size2,
++ 6
+					     int pos,
++ 6
+					     struct re_registers *regs,
++ 6
+					     int stop));
++ 6
+static int byte_re_search_2 PARAMS ((struct re_pattern_buffer *bufp,
++ 6
+				     const char *string1, int size1,
++ 6
+				     const char *string2, int size2,
++ 6
+				     int startpos, int range,
++ 6
+				     struct re_registers *regs, int stop));
++ 6
+static int byte_re_compile_fastmap PARAMS ((struct re_pattern_buffer *bufp));
++ 6
+
++ 6
+#ifdef MBS_SUPPORT
++ 6
+static reg_errcode_t wcs_regex_compile _RE_ARGS ((const char *pattern, size_t size,
++ 6
+                                                   reg_syntax_t syntax,
++ 6
+                                                   struct re_pattern_buffer *bufp));
++ 6
+
++ 6
+
++ 6
+static int wcs_re_match_2_internal PARAMS ((struct re_pattern_buffer *bufp,
++ 6
+					    const char *cstring1, int csize1,
++ 6
+					    const char *cstring2, int csize2,
++ 6
+					    int pos,
++ 6
+					    struct re_registers *regs,
++ 6
+					    int stop,
++ 6
+					    wchar_t *string1, int size1,
++ 6
+					    wchar_t *string2, int size2,
++ 6
+					    int *mbs_offset1, int *mbs_offset2));
++ 6
+static int wcs_re_search_2 PARAMS ((struct re_pattern_buffer *bufp,
++ 6
+				    const char *string1, int size1,
++ 6
+				    const char *string2, int size2,
++ 6
+				    int startpos, int range,
++ 6
+				    struct re_registers *regs, int stop));
++ 6
+static int wcs_re_compile_fastmap PARAMS ((struct re_pattern_buffer *bufp));
++ 6
+#endif
++ 6
+
++ 6
+/* These are the command codes that appear in compiled regular
++ 6
+   expressions.  Some opcodes are followed by argument bytes.  A
++ 6
+   command code can specify any interpretation whatsoever for its
++ 6
+   arguments.  Zero bytes may appear in the compiled regular expression.  */
++ 6
+
++ 6
+typedef enum
++ 6
+{
++ 6
+  no_op = 0,
++ 6
+
++ 6
+  /* Succeed right away--no more backtracking.  */
++ 6
+  succeed,
++ 6
+
++ 6
+        /* Followed by one byte giving n, then by n literal bytes.  */
++ 6
+  exactn,
++ 6
+
++ 6
+# ifdef MBS_SUPPORT
++ 6
+	/* Same as exactn, but contains binary data.  */
++ 6
+  exactn_bin,
++ 6
+# endif
++ 6
+
++ 6
+        /* Matches any (more or less) character.  */
++ 6
+  anychar,
++ 6
+
++ 6
+        /* Matches any one char belonging to specified set.  First
++ 6
+           following byte is number of bitmap bytes.  Then come bytes
++ 6
+           for a bitmap saying which chars are in.  Bits in each byte
++ 6
+           are ordered low-bit-first.  A character is in the set if its
++ 6
+           bit is 1.  A character too large to have a bit in the map is
++ 6
+           automatically not in the set.  */
++ 6
+        /* ifdef MBS_SUPPORT, following element is length of character
++ 6
+	   classes, length of collating symbols, length of equivalence
++ 6
+	   classes, length of character ranges, and length of characters.
++ 6
+	   Next, character class element, collating symbols elements,
++ 6
+	   equivalence class elements, range elements, and character
++ 6
+	   elements follow.
++ 6
+	   See regex_compile function.  */
++ 6
+  charset,
++ 6
+
++ 6
+        /* Same parameters as charset, but match any character that is
++ 6
+           not one of those specified.  */
++ 6
+  charset_not,
++ 6
+
++ 6
+        /* Start remembering the text that is matched, for storing in a
++ 6
+           register.  Followed by one byte with the register number, in
++ 6
+           the range 0 to one less than the pattern buffer's re_nsub
++ 6
+           field.  Then followed by one byte with the number of groups
++ 6
+           inner to this one.  (This last has to be part of the
++ 6
+           start_memory only because we need it in the on_failure_jump
++ 6
+           of re_match_2.)  */
++ 6
+  start_memory,
++ 6
+
++ 6
+        /* Stop remembering the text that is matched and store it in a
++ 6
+           memory register.  Followed by one byte with the register
++ 6
+           number, in the range 0 to one less than `re_nsub' in the
++ 6
+           pattern buffer, and one byte with the number of inner groups,
++ 6
+           just like `start_memory'.  (We need the number of inner
++ 6
+           groups here because we don't have any easy way of finding the
++ 6
+           corresponding start_memory when we're at a stop_memory.)  */
++ 6
+  stop_memory,
++ 6
+
++ 6
+        /* Match a duplicate of something remembered. Followed by one
++ 6
+           byte containing the register number.  */
++ 6
+  duplicate,
++ 6
+
++ 6
+        /* Fail unless at beginning of line.  */
++ 6
+  begline,
++ 6
+
++ 6
+        /* Fail unless at end of line.  */
++ 6
+  endline,
++ 6
+
++ 6
+        /* Succeeds if at beginning of buffer (if emacs) or at beginning
++ 6
+           of string to be matched (if not).  */
++ 6
+  begbuf,
++ 6
+
++ 6
+        /* Analogously, for end of buffer/string.  */
++ 6
+  endbuf,
++ 6
+
++ 6
+        /* Followed by two byte relative address to which to jump.  */
++ 6
+  jump,
++ 6
+
++ 6
+	/* Same as jump, but marks the end of an alternative.  */
++ 6
+  jump_past_alt,
++ 6
+
++ 6
+        /* Followed by two-byte relative address of place to resume at
++ 6
+           in case of failure.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  on_failure_jump,
++ 6
+
++ 6
+        /* Like on_failure_jump, but pushes a placeholder instead of the
++ 6
+           current string position when executed.  */
++ 6
+  on_failure_keep_string_jump,
++ 6
+
++ 6
+        /* Throw away latest failure point and then jump to following
++ 6
+           two-byte relative address.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  pop_failure_jump,
++ 6
+
++ 6
+        /* Change to pop_failure_jump if know won't have to backtrack to
++ 6
+           match; otherwise change to jump.  This is used to jump
++ 6
+           back to the beginning of a repeat.  If what follows this jump
++ 6
+           clearly won't match what the repeat does, such that we can be
++ 6
+           sure that there is no use backtracking out of repetitions
++ 6
+           already matched, then we change it to a pop_failure_jump.
++ 6
+           Followed by two-byte address.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  maybe_pop_jump,
++ 6
+
++ 6
+        /* Jump to following two-byte address, and push a dummy failure
++ 6
+           point. This failure point will be thrown away if an attempt
++ 6
+           is made to use it for a failure.  A `+' construct makes this
++ 6
+           before the first repeat.  Also used as an intermediary kind
++ 6
+           of jump when compiling an alternative.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  dummy_failure_jump,
++ 6
+
++ 6
+	/* Push a dummy failure point and continue.  Used at the end of
++ 6
+	   alternatives.  */
++ 6
+  push_dummy_failure,
++ 6
+
++ 6
+        /* Followed by two-byte relative address and two-byte number n.
++ 6
+           After matching N times, jump to the address upon failure.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  succeed_n,
++ 6
+
++ 6
+        /* Followed by two-byte relative address, and two-byte number n.
++ 6
+           Jump to the address N times, then fail.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  jump_n,
++ 6
+
++ 6
+        /* Set the following two-byte relative address to the
++ 6
+           subsequent two-byte number.  The address *includes* the two
++ 6
+           bytes of number.  */
++ 6
+        /* ifdef MBS_SUPPORT, the size of address is 1.  */
++ 6
+  set_number_at,
++ 6
+
++ 6
+  wordchar,	/* Matches any word-constituent character.  */
++ 6
+  notwordchar,	/* Matches any char that is not a word-constituent.  */
++ 6
+
++ 6
+  wordbeg,	/* Succeeds if at word beginning.  */
++ 6
+  wordend,	/* Succeeds if at word end.  */
++ 6
+
++ 6
+  wordbound,	/* Succeeds if at a word boundary.  */
++ 6
+  notwordbound	/* Succeeds if not at a word boundary.  */
++ 6
+
++ 6
+# ifdef emacs
++ 6
+  ,before_dot,	/* Succeeds if before point.  */
++ 6
+  at_dot,	/* Succeeds if at point.  */
++ 6
+  after_dot,	/* Succeeds if after point.  */
++ 6
+
++ 6
+	/* Matches any character whose syntax is specified.  Followed by
++ 6
+           a byte which contains a syntax code, e.g., Sword.  */
++ 6
+  syntaxspec,
++ 6
+
++ 6
+	/* Matches any character whose syntax is not that specified.  */
++ 6
+  notsyntaxspec
++ 6
+# endif /* emacs */
++ 6
+} re_opcode_t;
++ 6
+#endif /* not INSIDE_RECURSION */
++ 6
+
++ 6
+
++ 6
+#ifdef BYTE
++ 6
+# define CHAR_T char
++ 6
+# define UCHAR_T unsigned char
++ 6
+# define COMPILED_BUFFER_VAR bufp->buffer
++ 6
+# define OFFSET_ADDRESS_SIZE 2
++ 6
+# if defined (__STDC__) || defined (ALMOST_STDC) || defined (HAVE_STRINGIZE)
++ 6
+#  define PREFIX(name) byte_##name
++ 6
+# else
++ 6
+#  define PREFIX(name) byte_/**/name
++ 6
+# endif
++ 6
+# define ARG_PREFIX(name) name
++ 6
+# define PUT_CHAR(c) putchar (c)
++ 6
+#else
++ 6
+# ifdef WCHAR
++ 6
+#  define CHAR_T wchar_t
++ 6
+#  define UCHAR_T wchar_t
++ 6
+#  define COMPILED_BUFFER_VAR wc_buffer
++ 6
+#  define OFFSET_ADDRESS_SIZE 1 /* the size which STORE_NUMBER macro use */
++ 6
+#  define CHAR_CLASS_SIZE ((__alignof__(wctype_t)+sizeof(wctype_t))/sizeof(CHAR_T)+1)
++ 6
+#  if defined (__STDC__) || defined (ALMOST_STDC) || defined (HAVE_STRINGIZE)
++ 6
+#   define PREFIX(name) wcs_##name
++ 6
+#   define ARG_PREFIX(name) c##name
++ 6
+#  else
++ 6
+#   define PREFIX(name) wcs_/**/name
++ 6
+#   define ARG_PREFIX(name) c/**/name
++ 6
+#  endif
++ 6
+/* Should we use wide stream??  */
++ 6
+#  define PUT_CHAR(c) printf ("%C", c);
++ 6
+#  define TRUE 1
++ 6
+#  define FALSE 0
++ 6
+# else
++ 6
+#  ifdef MBS_SUPPORT
++ 6
+#   define WCHAR
++ 6
+#   define INSIDE_RECURSION
++ 6
+/* Extended regular expression matching and search library,
++ 6
+   version 0.12.
+= 39
+#ifdef HAVE_CONFIG_H
+= 40
+#endif
+= 41
+
+= 42
+
++ 42
+#ifndef PARAMS
++ 42
+# if defined __GNUC__ || (defined __STDC__ && __STDC__)
++ 42
+#  define PARAMS(args) args
++ 42
+# else
++ 42
+#  define PARAMS(args) ()
++ 42
+# endif  /* GCC.  */
++ 42
+#endif  /* Not PARAMS.  */
+= 44
+
+= 45
+
++ 45
+#ifdef BYTE
++ 45
+# define CHAR_T char
++ 45
+# define UCHAR_T unsigned char
++ 45
+# define COMPILED_BUFFER_VAR bufp->buffer
++ 45
+# define OFFSET_ADDRESS_SIZE 2
++ 45
+# if defined (__STDC__) || defined (ALMOST_STDC) || defined (HAVE_STRINGIZE)
++ 45
+#  define PREFIX(name) byte_##name
++ 45
+# else
++ 45
+#  define PREFIX(name) byte_/**/name
++ 45
+# endif
++ 45
+# define ARG_PREFIX(name) name
++ 45
+# define PUT_CHAR(c) putchar (c)
++ 45
+#else
++ 45
+# ifdef WCHAR
++ 45
+#  define CHAR_T wchar_t
++ 45
+#  define UCHAR_T wchar_t
++ 45
+#  define COMPILED_BUFFER_VAR wc_buffer
++ 45
+#  define OFFSET_ADDRESS_SIZE 1 /* the size which STORE_NUMBER macro use */
++ 45
+#  define CHAR_CLASS_SIZE ((__alignof__(wctype_t)+sizeof(wctype_t))/sizeof(CHAR_T)+1)
++ 45
+#  if defined (__STDC__) || defined (ALMOST_STDC) || defined (HAVE_STRINGIZE)
++ 45
+#   define PREFIX(name) wcs_##name
++ 45
+#   define ARG_PREFIX(name) c##name
++ 45
+#  else
++ 45
+#   define PREFIX(name) wcs_/**/name
++ 45
+#   define ARG_PREFIX(name) c/**/name
++ 45
+#  endif
++ 45
+/* Should we use wide stream??  */
++ 45
+#  define PUT_CHAR(c) printf ("%C", c);
++ 45
+#  define TRUE 1
++ 45
+#  define FALSE 0
++ 45
+# else
++ 45
+#  ifdef MBS_SUPPORT
++ 45
+#   define WCHAR
++ 45
+#   define INSIDE_RECURSION
++ 45
+/*#   include "regex.c"*/
++ 45
+#   undef INSIDE_RECURSION
++ 45
+#  endif
++ 45
+#  define BYTE
++ 45
+#  define INSIDE_RECURSION
++ 45
+/*#  include "regex.c"*/
++ 45
+#  undef INSIDE_RECURSION
++ 45
+# endif
++ 45
+#endif
+= 47
+#ifdef INSIDE_RECURSION
+= 48
+/* Common operations on the compiled pattern.  */
+= 50
+/* Store NUMBER in two contiguous bytes starting at DESTINATION.  */
+= 51
+/* ifdef MBS_SUPPORT, we store NUMBER in 1 element.  */
+= 53
+# ifdef WCHAR
+= 54
+#  define STORE_NUMBER(destination, number)				\
++ 54
+  do {									\
++ 54
+    *(destination) = (UCHAR_T)(number);				\
++ 54
+  } while (0)
++ 54
+# else /* BYTE */
++ 54
+#  define STORE_NUMBER(destination, number)				\
++ 54
+  do {									\
++ 54
+    (destination)[0] = (number) & 0377;					\
++ 54
+    (destination)[1] = (number) >> 8;					\
++ 54
+  } while (0)
++ 54
+# endif /* WCHAR */
+= 56
+/* Same as STORE_NUMBER, except increment DESTINATION to
+= 57
+   the byte after where the number is stored.  Therefore, DESTINATION
++ 57
+   must be an lvalue.  */
++ 57
+/* ifdef MBS_SUPPORT, we store NUMBER in 1 element.  */
++ 58
+# define STORE_NUMBER_AND_INCR(destination, number)			\
++ 58
+  do {									\
++ 58
+    STORE_NUMBER (destination, number);					\
++ 58
+    (destination) += OFFSET_ADDRESS_SIZE;				\
++ 58
+  } while (0)
++ 58
+
++ 58
+/* Put into DESTINATION a number stored in two contiguous bytes starting
++ 58
+   at SOURCE.  */
++ 58
+/* ifdef MBS_SUPPORT, we store NUMBER in 1 element.  */
++ 58
+
++ 58
+# ifdef WCHAR
++ 58
+#  define EXTRACT_NUMBER(destination, source)				\
++ 58
+  do {									\
++ 58
+    (destination) = *(source);						\
++ 58
+  } while (0)
++ 58
+# else /* BYTE */
++ 58
+#  define EXTRACT_NUMBER(destination, source)				\
++ 58
+  do {									\
++ 58
+    (destination) = *(source) & 0377;					\
++ 58
+    (destination) += SIGN_EXTEND_CHAR (*((source) + 1)) << 8;		\
++ 58
+  } while (0)
++ 58
+# endif
++ 58
+
++ 58
+# ifdef DEBUG
++ 58
+static void PREFIX(extract_number) _RE_ARGS ((int *dest, UCHAR_T *source));
++ 58
+static void
++ 58
+PREFIX(extract_number) (dest, source)
++ 58
+    int *dest;
++ 58
+    UCHAR_T *source;
++ 58
+{
++ 58
+#  ifdef WCHAR
++ 58
+  *dest = *source;
++ 58
+#  else /* BYTE */
++ 58
+  int temp = SIGN_EXTEND_CHAR (*(source + 1));
++ 58
+  *dest = *source & 0377;
++ 58
+  *dest += temp << 8;
++ 58
+#  endif
++ 58
+}
++ 58
+
++ 58
+#  ifndef EXTRACT_MACROS /* To debug the macros.  */
++ 58
+#   undef EXTRACT_NUMBER
++ 58
+#   define EXTRACT_NUMBER(dest, src) PREFIX(extract_number) (&dest, src)
++ 58
+#  endif /* not EXTRACT_MACROS */
++ 58
+
++ 58
+# endif /* DEBUG */
++ 58
+
++ 58
+/* Same as EXTRACT_NUMBER, except increment SOURCE to after the number.
++ 58
+   SOURCE must be an lvalue.  */
++ 58
+
++ 58
+# define EXTRACT_NUMBER_AND_INCR(destination, source)			\
++ 58
+  do {									\
++ 58
+    EXTRACT_NUMBER (destination, source);				\
++ 58
+    (source) += OFFSET_ADDRESS_SIZE; 					\
++ 58
+  } while (0)
++ 58
+
++ 58
+# ifdef DEBUG
++ 58
+static void PREFIX(extract_number_and_incr) _RE_ARGS ((int *destination,
++ 58
+						       UCHAR_T **source));
++ 58
+static void
++ 58
+PREFIX(extract_number_and_incr) (destination, source)
++ 58
+    int *destination;
++ 58
+    UCHAR_T **source;
++ 58
+{
++ 58
+  PREFIX(extract_number) (destination, *source);
++ 58
+  *source += OFFSET_ADDRESS_SIZE;
++ 58
+}
++ 58
+
++ 58
+#  ifndef EXTRACT_MACROS
++ 58
+#   undef EXTRACT_NUMBER_AND_INCR
++ 58
+#   define EXTRACT_NUMBER_AND_INCR(dest, src) \
++ 58
+  PREFIX(extract_number_and_incr) (&dest, &src)
++ 58
+#  endif /* not EXTRACT_MACROS */
++ 58
+
++ 58
+# endif /* DEBUG */
++ 58
+
++ 58
+
++ 58
+
++ 58
+/* If DEBUG is defined, Regex prints many voluminous messages about what
++ 58
+   it is doing (if the variable `debug' is nonzero).  If linked with the
++ 58
+   main program in `iregex.c', you can enter patterns and strings
++ 58
+   interactively.  And if linked with the main program in `main.c' and
++ 58
+   the other test files, you can run the already-written tests.  */
++ 58
+
++ 58
+# ifdef DEBUG
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+
++ 58
+/* We use standard I/O for debugging.  */
++ 58
+#   include <stdio.h>
++ 58
+
++ 58
+/* It is useful to test things that ``must'' be true when debugging.  */
++ 58
+#   include <assert.h>
++ 58
+
++ 58
+static int debug;
++ 58
+
++ 58
+#   define DEBUG_STATEMENT(e) e
++ 58
+#   define DEBUG_PRINT1(x) if (debug) printf (x)
++ 58
+#   define DEBUG_PRINT2(x1, x2) if (debug) printf (x1, x2)
++ 58
+#   define DEBUG_PRINT3(x1, x2, x3) if (debug) printf (x1, x2, x3)
++ 58
+#   define DEBUG_PRINT4(x1, x2, x3, x4) if (debug) printf (x1, x2, x3, x4)
++ 58
+#  endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+#  define DEBUG_PRINT_COMPILED_PATTERN(p, s, e) 			\
++ 58
+  if (debug) PREFIX(print_partial_compiled_pattern) (s, e)
++ 58
+#  define DEBUG_PRINT_DOUBLE_STRING(w, s1, sz1, s2, sz2)		\
++ 58
+  if (debug) PREFIX(print_double_string) (w, s1, sz1, s2, sz2)
++ 58
+
++ 58
+
++ 58
+/* Print the fastmap in human-readable form.  */
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+void
++ 58
+print_fastmap (fastmap)
++ 58
+    char *fastmap;
++ 58
+{
++ 58
+  unsigned was_a_range = 0;
++ 58
+  unsigned i = 0;
++ 58
+
++ 58
+  while (i < (1 << BYTEWIDTH))
++ 58
+    {
++ 58
+      if (fastmap[i++])
++ 58
+	{
++ 58
+	  was_a_range = 0;
++ 58
+          putchar (i - 1);
++ 58
+          while (i < (1 << BYTEWIDTH)  &&  fastmap[i])
++ 58
+            {
++ 58
+              was_a_range = 1;
++ 58
+              i++;
++ 58
+            }
++ 58
+	  if (was_a_range)
++ 58
+            {
++ 58
+              printf ("-");
++ 58
+              putchar (i - 1);
++ 58
+            }
++ 58
+        }
++ 58
+    }
++ 58
+  putchar ('\n');
++ 58
+}
++ 58
+#  endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+
++ 58
+/* Print a compiled pattern string in human-readable form, starting at
++ 58
+   the START pointer into it and ending just before the pointer END.  */
++ 58
+
++ 58
+void
++ 58
+PREFIX(print_partial_compiled_pattern) (start, end)
++ 58
+    UCHAR_T *start;
++ 58
+    UCHAR_T *end;
++ 58
+{
++ 58
+  int mcnt, mcnt2;
++ 58
+  UCHAR_T *p1;
++ 58
+  UCHAR_T *p = start;
++ 58
+  UCHAR_T *pend = end;
++ 58
+
++ 58
+  if (start == NULL)
++ 58
+    {
++ 58
+      printf ("(null)\n");
++ 58
+      return;
++ 58
+    }
++ 58
+
++ 58
+  /* Loop over pattern commands.  */
++ 58
+  while (p < pend)
++ 58
+    {
++ 58
+#  ifdef _LIBC
++ 58
+      printf ("%td:\t", p - start);
++ 58
+#  else
++ 58
+      printf ("%ld:\t", (long int) (p - start));
++ 58
+#  endif
++ 58
+
++ 58
+      switch ((re_opcode_t) *p++)
++ 58
+	{
++ 58
+        case no_op:
++ 58
+          printf ("/no_op");
++ 58
+          break;
++ 58
+
++ 58
+	case exactn:
++ 58
+	  mcnt = *p++;
++ 58
+          printf ("/exactn/%d", mcnt);
++ 58
+          do
++ 58
+	    {
++ 58
+              putchar ('/');
++ 58
+	      PUT_CHAR (*p++);
++ 58
+            }
++ 58
+          while (--mcnt);
++ 58
+          break;
++ 58
+
++ 58
+#  ifdef MBS_SUPPORT
++ 58
+	case exactn_bin:
++ 58
+	  mcnt = *p++;
++ 58
+	  printf ("/exactn_bin/%d", mcnt);
++ 58
+          do
++ 58
+	    {
++ 58
+	      printf("/%lx", (long int) *p++);
++ 58
+            }
++ 58
+          while (--mcnt);
++ 58
+          break;
++ 58
+#  endif /* MBS_SUPPORT */
++ 58
+
++ 58
+	case start_memory:
++ 58
+          mcnt = *p++;
++ 58
+          printf ("/start_memory/%d/%ld", mcnt, (long int) *p++);
++ 58
+          break;
++ 58
+
++ 58
+	case stop_memory:
++ 58
+          mcnt = *p++;
++ 58
+	  printf ("/stop_memory/%d/%ld", mcnt, (long int) *p++);
++ 58
+          break;
++ 58
+
++ 58
+	case duplicate:
++ 58
+	  printf ("/duplicate/%ld", (long int) *p++);
++ 58
+	  break;
++ 58
+
++ 58
+	case anychar:
++ 58
+	  printf ("/anychar");
++ 58
+	  break;
++ 58
+
++ 58
+	case charset:
++ 58
+        case charset_not:
++ 58
+          {
++ 58
+#  ifdef WCHAR
++ 58
+	    int i, length;
++ 58
+	    wchar_t *workp = p;
++ 58
+	    printf ("/charset [%s",
++ 58
+	            (re_opcode_t) *(workp - 1) == charset_not ? "^" : "");
++ 58
+	    p += 5;
++ 58
+	    length = *workp++; /* the length of char_classes */
++ 58
+	    for (i=0 ; i<length ; i++)
++ 58
+	      printf("[:%lx:]", (long int) *p++);
++ 58
+	    length = *workp++; /* the length of collating_symbol */
++ 58
+	    for (i=0 ; i<length ;)
++ 58
+	      {
++ 58
+		printf("[.");
++ 58
+		while(*p != 0)
++ 58
+		  PUT_CHAR((i++,*p++));
++ 58
+		i++,p++;
++ 58
+		printf(".]");
++ 58
+	      }
++ 58
+	    length = *workp++; /* the length of equivalence_class */
++ 58
+	    for (i=0 ; i<length ;)
++ 58
+	      {
++ 58
+		printf("[=");
++ 58
+		while(*p != 0)
++ 58
+		  PUT_CHAR((i++,*p++));
++ 58
+		i++,p++;
++ 58
+		printf("=]");
++ 58
+	      }
++ 58
+	    length = *workp++; /* the length of char_range */
++ 58
+	    for (i=0 ; i<length ; i++)
++ 58
+	      {
++ 58
+		wchar_t range_start = *p++;
++ 58
+		wchar_t range_end = *p++;
++ 58
+		printf("%C-%C", range_start, range_end);
++ 58
+	      }
++ 58
+	    length = *workp++; /* the length of char */
++ 58
+	    for (i=0 ; i<length ; i++)
++ 58
+	      printf("%C", *p++);
++ 58
+	    putchar (']');
++ 58
+#  else
++ 58
+            register int c, last = -100;
++ 58
+	    register int in_range = 0;
++ 58
+
++ 58
+	    printf ("/charset [%s",
++ 58
+	            (re_opcode_t) *(p - 1) == charset_not ? "^" : "");
++ 58
+
++ 58
+            assert (p + *p < pend);
++ 58
+
++ 58
+            for (c = 0; c < 256; c++)
++ 58
+	      if (c / 8 < *p
++ 58
+		  && (p[1 + (c/8)] & (1 << (c % 8))))
++ 58
+		{
++ 58
+		  /* Are we starting a range?  */
++ 58
+		  if (last + 1 == c && ! in_range)
++ 58
+		    {
++ 58
+		      putchar ('-');
++ 58
+		      in_range = 1;
++ 58
+		    }
++ 58
+		  /* Have we broken a range?  */
++ 58
+		  else if (last + 1 != c && in_range)
++ 58
+              {
++ 58
+		      putchar (last);
++ 58
+		      in_range = 0;
++ 58
+		    }
++ 58
+
++ 58
+		  if (! in_range)
++ 58
+		    putchar (c);
++ 58
+
++ 58
+		  last = c;
++ 58
+              }
++ 58
+
++ 58
+	    if (in_range)
++ 58
+	      putchar (last);
++ 58
+
++ 58
+	    putchar (']');
++ 58
+
++ 58
+	    p += 1 + *p;
++ 58
+#  endif /* WCHAR */
++ 58
+	  }
++ 58
+	  break;
++ 58
+
++ 58
+	case begline:
++ 58
+	  printf ("/begline");
++ 58
+          break;
++ 58
+
++ 58
+	case endline:
++ 58
+          printf ("/endline");
++ 58
+          break;
++ 58
+
++ 58
+	case on_failure_jump:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/on_failure_jump to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/on_failure_jump to %ld", (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+          break;
++ 58
+
++ 58
+	case on_failure_keep_string_jump:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/on_failure_keep_string_jump to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/on_failure_keep_string_jump to %ld",
++ 58
+		  (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+          break;
++ 58
+
++ 58
+	case dummy_failure_jump:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/dummy_failure_jump to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/dummy_failure_jump to %ld", (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+          break;
++ 58
+
++ 58
+	case push_dummy_failure:
++ 58
+          printf ("/push_dummy_failure");
++ 58
+          break;
++ 58
+
++ 58
+        case maybe_pop_jump:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/maybe_pop_jump to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/maybe_pop_jump to %ld", (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+	  break;
++ 58
+
++ 58
+        case pop_failure_jump:
++ 58
+	  PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/pop_failure_jump to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/pop_failure_jump to %ld", (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+	  break;
++ 58
+
++ 58
+        case jump_past_alt:
++ 58
+	  PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/jump_past_alt to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/jump_past_alt to %ld", (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+	  break;
++ 58
+
++ 58
+        case jump:
++ 58
+	  PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+#  ifdef _LIBC
++ 58
+  	  printf ("/jump to %td", p + mcnt - start);
++ 58
+#  else
++ 58
+  	  printf ("/jump to %ld", (long int) (p + mcnt - start));
++ 58
+#  endif
++ 58
+	  break;
++ 58
+
++ 58
+        case succeed_n:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+	  p1 = p + mcnt;
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt2, &p);
++ 58
+#  ifdef _LIBC
++ 58
+	  printf ("/succeed_n to %td, %d times", p1 - start, mcnt2);
++ 58
+#  else
++ 58
+	  printf ("/succeed_n to %ld, %d times",
++ 58
+		  (long int) (p1 - start), mcnt2);
++ 58
+#  endif
++ 58
+          break;
++ 58
+
++ 58
+        case jump_n:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+	  p1 = p + mcnt;
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt2, &p);
++ 58
+	  printf ("/jump_n to %d, %d times", p1 - start, mcnt2);
++ 58
+          break;
++ 58
+
++ 58
+        case set_number_at:
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt, &p);
++ 58
+	  p1 = p + mcnt;
++ 58
+          PREFIX(extract_number_and_incr) (&mcnt2, &p);
++ 58
+#  ifdef _LIBC
++ 58
+	  printf ("/set_number_at location %td to %d", p1 - start, mcnt2);
++ 58
+#  else
++ 58
+	  printf ("/set_number_at location %ld to %d",
++ 58
+		  (long int) (p1 - start), mcnt2);
++ 58
+#  endif
++ 58
+          break;
++ 58
+
++ 58
+        case wordbound:
++ 58
+	  printf ("/wordbound");
++ 58
+	  break;
++ 58
+
++ 58
+	case notwordbound:
++ 58
+	  printf ("/notwordbound");
++ 58
+          break;
++ 58
+
++ 58
+	case wordbeg:
++ 58
+	  printf ("/wordbeg");
++ 58
+	  break;
++ 58
+
++ 58
+	case wordend:
++ 58
+	  printf ("/wordend");
++ 58
+	  break;
++ 58
+
++ 58
+#  ifdef emacs
++ 58
+	case before_dot:
++ 58
+	  printf ("/before_dot");
++ 58
+          break;
++ 58
+
++ 58
+	case at_dot:
++ 58
+	  printf ("/at_dot");
++ 58
+          break;
++ 58
+
++ 58
+	case after_dot:
++ 58
+	  printf ("/after_dot");
++ 58
+          break;
++ 58
+
++ 58
+	case syntaxspec:
++ 58
+          printf ("/syntaxspec");
++ 58
+	  mcnt = *p++;
++ 58
+	  printf ("/%d", mcnt);
++ 58
+          break;
++ 58
+
++ 58
+	case notsyntaxspec:
++ 58
+          printf ("/notsyntaxspec");
++ 58
+	  mcnt = *p++;
++ 58
+	  printf ("/%d", mcnt);
++ 58
+	  break;
++ 58
+#  endif /* emacs */
++ 58
+
++ 58
+	case wordchar:
++ 58
+	  printf ("/wordchar");
++ 58
+          break;
++ 58
+
++ 58
+	case notwordchar:
++ 58
+	  printf ("/notwordchar");
++ 58
+          break;
++ 58
+
++ 58
+	case begbuf:
++ 58
+	  printf ("/begbuf");
++ 58
+          break;
++ 58
+
++ 58
+	case endbuf:
++ 58
+	  printf ("/endbuf");
++ 58
+          break;
++ 58
+
++ 58
+        default:
++ 58
+          printf ("?%ld", (long int) *(p-1));
++ 58
+	}
++ 58
+
++ 58
+      putchar ('\n');
++ 58
+    }
++ 58
+
++ 58
+#  ifdef _LIBC
++ 58
+  printf ("%td:\tend of pattern.\n", p - start);
++ 58
+#  else
++ 58
+  printf ("%ld:\tend of pattern.\n", (long int) (p - start));
++ 58
+#  endif
++ 58
+}
++ 58
+
++ 58
+
++ 58
+void
++ 58
+PREFIX(print_compiled_pattern) (bufp)
++ 58
+    struct re_pattern_buffer *bufp;
++ 58
+{
++ 58
+  UCHAR_T *buffer = (UCHAR_T*) bufp->buffer;
++ 58
+
++ 58
+  PREFIX(print_partial_compiled_pattern) (buffer, buffer
++ 58
+				  + bufp->used / sizeof(UCHAR_T));
++ 58
+  printf ("%ld bytes used/%ld bytes allocated.\n",
++ 58
+	  bufp->used, bufp->allocated);
++ 58
+
++ 58
+  if (bufp->fastmap_accurate && bufp->fastmap)
++ 58
+    {
++ 58
+      printf ("fastmap: ");
++ 58
+      print_fastmap (bufp->fastmap);
++ 58
+    }
++ 58
+
++ 58
+#  ifdef _LIBC
++ 58
+  printf ("re_nsub: %Zd\t", bufp->re_nsub);
++ 58
+#  else
++ 58
+  printf ("re_nsub: %ld\t", (long int) bufp->re_nsub);
++ 58
+#  endif
++ 58
+  printf ("regs_alloc: %d\t", bufp->regs_allocated);
++ 58
+  printf ("can_be_null: %d\t", bufp->can_be_null);
++ 58
+  printf ("newline_anchor: %d\n", bufp->newline_anchor);
++ 58
+  printf ("no_sub: %d\t", bufp->no_sub);
++ 58
+  printf ("not_bol: %d\t", bufp->not_bol);
++ 58
+  printf ("not_eol: %d\t", bufp->not_eol);
++ 58
+  printf ("syntax: %lx\n", bufp->syntax);
++ 58
+  /* Perhaps we should print the translate table?  */
++ 58
+}
++ 58
+
++ 58
+
++ 58
+void
++ 58
+PREFIX(print_double_string) (where, string1, size1, string2, size2)
++ 58
+    const CHAR_T *where;
++ 58
+    const CHAR_T *string1;
++ 58
+    const CHAR_T *string2;
++ 58
+    int size1;
++ 58
+    int size2;
++ 58
+{
++ 58
+  int this_char;
++ 58
+
++ 58
+  if (where == NULL)
++ 58
+    printf ("(null)");
++ 58
+  else
++ 58
+    {
++ 58
+      int cnt;
++ 58
+
++ 58
+      if (FIRST_STRING_P (where))
++ 58
+        {
++ 58
+          for (this_char = where - string1; this_char < size1; this_char++)
++ 58
+	    PUT_CHAR (string1[this_char]);
++ 58
+
++ 58
+          where = string2;
++ 58
+        }
++ 58
+
++ 58
+      cnt = 0;
++ 58
+      for (this_char = where - string2; this_char < size2; this_char++)
++ 58
+	{
++ 58
+	  PUT_CHAR (string2[this_char]);
++ 58
+	  if (++cnt > 100)
++ 58
+	    {
++ 58
+	      fputs ("...", stdout);
++ 58
+	      break;
++ 58
+	    }
++ 58
+	}
++ 58
+    }
++ 58
+}
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+void
++ 58
+printchar (c)
++ 58
+     int c;
++ 58
+{
++ 58
+  putc (c, stderr);
++ 58
+}
++ 58
+#  endif
++ 58
+
++ 58
+# else /* not DEBUG */
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+#   undef assert
++ 58
+#   define assert(e)
++ 58
+
++ 58
+#   define DEBUG_STATEMENT(e)
++ 58
+#   define DEBUG_PRINT1(x)
++ 58
+#   define DEBUG_PRINT2(x1, x2)
++ 58
+#   define DEBUG_PRINT3(x1, x2, x3)
++ 58
+#   define DEBUG_PRINT4(x1, x2, x3, x4)
++ 58
+#  endif /* not DEFINED_ONCE */
++ 58
+#  define DEBUG_PRINT_COMPILED_PATTERN(p, s, e)
++ 58
+#  define DEBUG_PRINT_DOUBLE_STRING(w, s1, sz1, s2, sz2)
++ 58
+
++ 58
+# endif /* not DEBUG */
++ 58
+
++ 58
+
++ 58
+
++ 58
+# ifdef WCHAR
++ 58
+/* This  convert a multibyte string to a wide character string.
++ 58
+   And write their correspondances to offset_buffer(see below)
++ 58
+   and write whether each wchar_t is binary data to is_binary.
++ 58
+   This assume invalid multibyte sequences as binary data.
++ 58
+   We assume offset_buffer and is_binary is already allocated
++ 58
+   enough space.  */
++ 58
+
++ 58
+static size_t convert_mbs_to_wcs (CHAR_T *dest, const unsigned char* src,
++ 58
+				  size_t len, int *offset_buffer,
++ 58
+				  char *is_binary);
++ 58
+static size_t
++ 58
+convert_mbs_to_wcs (dest, src, len, offset_buffer, is_binary)
++ 58
+     CHAR_T *dest;
++ 58
+     const unsigned char* src;
++ 58
+     size_t len; /* the length of multibyte string.  */
++ 58
+
++ 58
+     /* It hold correspondances between src(char string) and
++ 58
+	dest(wchar_t string) for optimization.
++ 58
+	e.g. src  = "xxxyzz"
++ 58
+             dest = {'X', 'Y', 'Z'}
++ 58
+	      (each "xxx", "y" and "zz" represent one multibyte character
++ 58
+	       corresponding to 'X', 'Y' and 'Z'.)
++ 58
+	  offset_buffer = {0, 0+3("xxx"), 0+3+1("y"), 0+3+1+2("zz")}
++ 58
+	  	        = {0, 3, 4, 6}
++ 58
+     */
++ 58
+     int *offset_buffer;
++ 58
+     char *is_binary;
++ 58
+{
++ 58
+  wchar_t *pdest = dest;
++ 58
+  const unsigned char *psrc = src;
++ 58
+  size_t wc_count = 0;
++ 58
+
++ 58
+  mbstate_t mbs;
++ 58
+  int i, consumed;
++ 58
+  size_t mb_remain = len;
++ 58
+  size_t mb_count = 0;
++ 58
+
++ 58
+  /* Initialize the conversion state.  */
++ 58
+  memset (&mbs, 0, sizeof (mbstate_t));
++ 58
+
++ 58
+  offset_buffer[0] = 0;
++ 58
+  for( ; mb_remain > 0 ; ++wc_count, ++pdest, mb_remain -= consumed,
++ 58
+	 psrc += consumed)
++ 58
+    {
++ 58
+#ifdef _LIBC
++ 58
+      consumed = __mbrtowc (pdest, psrc, mb_remain, &mbs);
++ 58
+#else
++ 58
+      consumed = mbrtowc (pdest, psrc, mb_remain, &mbs);
++ 58
+#endif
++ 58
+
++ 58
+      if (consumed <= 0)
++ 58
+	/* failed to convert. maybe src contains binary data.
++ 58
+	   So we consume 1 byte manualy.  */
++ 58
+	{
++ 58
+	  *pdest = *psrc;
++ 58
+	  consumed = 1;
++ 58
+	  is_binary[wc_count] = TRUE;
++ 58
+	}
++ 58
+      else
++ 58
+	is_binary[wc_count] = FALSE;
++ 58
+      /* In sjis encoding, we use yen sign as escape character in
++ 58
+	 place of reverse solidus. So we convert 0x5c(yen sign in
++ 58
+	 sjis) to not 0xa5(yen sign in UCS2) but 0x5c(reverse
++ 58
+	 solidus in UCS2).  */
++ 58
+      if (consumed == 1 && (int) *psrc == 0x5c && (int) *pdest == 0xa5)
++ 58
+	*pdest = (wchar_t) *psrc;
++ 58
+
++ 58
+      offset_buffer[wc_count + 1] = mb_count += consumed;
++ 58
+    }
++ 58
+
++ 58
+  /* Fill remain of the buffer with sentinel.  */
++ 58
+  for (i = wc_count + 1 ; i <= len ; i++)
++ 58
+    offset_buffer[i] = mb_count + 1;
++ 58
+
++ 58
+  return wc_count;
++ 58
+}
++ 58
+
++ 58
+# endif /* WCHAR */
++ 58
+
++ 58
+#else /* not INSIDE_RECURSION */
++ 58
+
++ 58
+/* Set by `re_set_syntax' to the current regexp syntax to recognize.  Can
++ 58
+   also be assigned to arbitrarily: each pattern buffer stores its own
++ 58
+   syntax, so it can be changed between regex compilations.  */
++ 58
+/* This has no initializer because initialized variables in Emacs
++ 58
+   become read-only after dumping.  */
++ 58
+reg_syntax_t re_syntax_options;
++ 58
+
++ 58
+
++ 58
+/* Specify the precise syntax of regexps for compilation.  This provides
++ 58
+   for compatibility for various utilities which historically have
++ 58
+   different, incompatible syntaxes.
++ 58
+
++ 58
+   The argument SYNTAX is a bit mask comprised of the various bits
++ 58
+   defined in regex.h.  We return the old syntax.  */
++ 58
+
++ 58
+reg_syntax_t
++ 58
+re_set_syntax (syntax)
++ 58
+    reg_syntax_t syntax;
++ 58
+{
++ 58
+  reg_syntax_t ret = re_syntax_options;
++ 58
+
++ 58
+  re_syntax_options = syntax;
++ 58
+# ifdef DEBUG
++ 58
+  if (syntax & RE_DEBUG)
++ 58
+    debug = 1;
++ 58
+  else if (debug) /* was on but now is not */
++ 58
+    debug = 0;
++ 58
+# endif /* DEBUG */
++ 58
+  return ret;
++ 58
+}
++ 58
+# ifdef _LIBC
++ 58
+weak_alias (__re_set_syntax, re_set_syntax)
++ 58
+# endif
++ 58
+
++ 58
+/* This table gives an error message for each of the error codes listed
++ 58
+   in regex.h.  Obviously the order here has to be same as there.
++ 58
+   POSIX doesn't require that we do anything for REG_NOERROR,
++ 58
+   but why not be nice?  */
++ 58
+
++ 58
+static const char *re_error_msgid[] =
++ 58
+  {
++ 58
+    gettext_noop ("Success"),	/* REG_NOERROR */
++ 58
+    gettext_noop ("No match"),	/* REG_NOMATCH */
++ 58
+    gettext_noop ("Invalid regular expression"), /* REG_BADPAT */
++ 58
+    gettext_noop ("Invalid collation character"), /* REG_ECOLLATE */
++ 58
+    gettext_noop ("Invalid character class name"), /* REG_ECTYPE */
++ 58
+    gettext_noop ("Trailing backslash"), /* REG_EESCAPE */
++ 58
+    gettext_noop ("Invalid back reference"), /* REG_ESUBREG */
++ 58
+    gettext_noop ("Unmatched [ or [^"),	/* REG_EBRACK */
++ 58
+    gettext_noop ("Unmatched ( or \\("), /* REG_EPAREN */
++ 58
+    gettext_noop ("Unmatched \\{"), /* REG_EBRACE */
++ 58
+    gettext_noop ("Invalid content of \\{\\}"), /* REG_BADBR */
++ 58
+    gettext_noop ("Invalid range end"),	/* REG_ERANGE */
++ 58
+    gettext_noop ("Memory exhausted"), /* REG_ESPACE */
++ 58
+    gettext_noop ("Invalid preceding regular expression"), /* REG_BADRPT */
++ 58
+    gettext_noop ("Premature end of regular expression"), /* REG_EEND */
++ 58
+    gettext_noop ("Regular expression too big"), /* REG_ESIZE */
++ 58
+    gettext_noop ("Unmatched ) or \\)") /* REG_ERPAREN */
++ 58
+  };
++ 58
+
++ 58
+#endif /* INSIDE_RECURSION */
++ 58
+
++ 58
+#ifndef DEFINED_ONCE
++ 58
+/* Avoiding alloca during matching, to placate r_alloc.  */
++ 58
+
++ 58
+/* Define MATCH_MAY_ALLOCATE unless we need to make sure that the
++ 58
+   searching and matching functions should not call alloca.  On some
++ 58
+   systems, alloca is implemented in terms of malloc, and if we're
++ 58
+   using the relocating allocator routines, then malloc could cause a
++ 58
+   relocation, which might (if the strings being searched are in the
++ 58
+   ralloc heap) shift the data out from underneath the regexp
++ 58
+   routines.
++ 58
+
++ 58
+   Here's another reason to avoid allocation: Emacs
++ 58
+   processes input from X in a signal handler; processing X input may
++ 58
+   call malloc; if input arrives while a matching routine is calling
++ 58
+   malloc, then we're scrod.  But Emacs can't just block input while
++ 58
+   calling matching routines; then we don't notice interrupts when
++ 58
+   they come in.  So, Emacs blocks input around all regexp calls
++ 58
+   except the matching calls, which it leaves unprotected, in the
++ 58
+   faith that they will not malloc.  */
++ 58
+
++ 58
+/* Normally, this is fine.  */
++ 58
+# define MATCH_MAY_ALLOCATE
++ 58
+
++ 58
+/* When using GNU C, we are not REALLY using the C alloca, no matter
++ 58
+   what config.h may say.  So don't take precautions for it.  */
++ 58
+# ifdef __GNUC__
++ 58
+#  undef C_ALLOCA
++ 58
+# endif
++ 58
+
++ 58
+/* The match routines may not allocate if (1) they would do it with malloc
++ 58
+   and (2) it's not safe for them to use malloc.
++ 58
+   Note that if REL_ALLOC is defined, matching would not use malloc for the
++ 58
+   failure stack, but we would still use it for the register vectors;
++ 58
+   so REL_ALLOC should not affect this.  */
++ 58
+# if (defined C_ALLOCA || defined REGEX_MALLOC) && defined emacs
++ 58
+#  undef MATCH_MAY_ALLOCATE
++ 58
+# endif
++ 58
+#endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+#ifdef INSIDE_RECURSION
++ 58
+/* Failure stack declarations and macros; both re_compile_fastmap and
++ 58
+   re_match_2 use a failure stack.  These have to be macros because of
++ 58
+   REGEX_ALLOCATE_STACK.  */
++ 58
+
++ 58
+
++ 58
+/* Number of failure points for which to initially allocate space
++ 58
+   when matching.  If this number is exceeded, we allocate more
++ 58
+   space, so it is not a hard limit.  */
++ 58
+# ifndef INIT_FAILURE_ALLOC
++ 58
+#  define INIT_FAILURE_ALLOC 5
++ 58
+# endif
++ 58
+
++ 58
+/* Roughly the maximum number of failure points on the stack.  Would be
++ 58
+   exactly that if always used MAX_FAILURE_ITEMS items each time we failed.
++ 58
+   This is a variable only so users of regex can assign to it; we never
++ 58
+   change it ourselves.  */
++ 58
+
++ 58
+# ifdef INT_IS_16BIT
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+#   if defined MATCH_MAY_ALLOCATE
++ 58
+/* 4400 was enough to cause a crash on Alpha OSF/1,
++ 58
+   whose default stack limit is 2mb.  */
++ 58
+long int re_max_failures = 4000;
++ 58
+#   else
++ 58
+long int re_max_failures = 2000;
++ 58
+#   endif
++ 58
+#  endif
++ 58
+
++ 58
+union PREFIX(fail_stack_elt)
++ 58
+{
++ 58
+  UCHAR_T *pointer;
++ 58
+  long int integer;
++ 58
+};
++ 58
+
++ 58
+typedef union PREFIX(fail_stack_elt) PREFIX(fail_stack_elt_t);
++ 58
+
++ 58
+typedef struct
++ 58
+{
++ 58
+  PREFIX(fail_stack_elt_t) *stack;
++ 58
+  unsigned long int size;
++ 58
+  unsigned long int avail;		/* Offset of next open position.  */
++ 58
+} PREFIX(fail_stack_type);
++ 58
+
++ 58
+# else /* not INT_IS_16BIT */
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+#   if defined MATCH_MAY_ALLOCATE
++ 58
+/* 4400 was enough to cause a crash on Alpha OSF/1,
++ 58
+   whose default stack limit is 2mb.  */
++ 58
+int re_max_failures = 4000;
++ 58
+#   else
++ 58
+int re_max_failures = 2000;
++ 58
+#   endif
++ 58
+#  endif
++ 58
+
++ 58
+union PREFIX(fail_stack_elt)
++ 58
+{
++ 58
+  UCHAR_T *pointer;
++ 58
+  int integer;
++ 58
+};
++ 58
+
++ 58
+typedef union PREFIX(fail_stack_elt) PREFIX(fail_stack_elt_t);
++ 58
+
++ 58
+typedef struct
++ 58
+{
++ 58
+  PREFIX(fail_stack_elt_t) *stack;
++ 58
+  unsigned size;
++ 58
+  unsigned avail;			/* Offset of next open position.  */
++ 58
+} PREFIX(fail_stack_type);
++ 58
+
++ 58
+# endif /* INT_IS_16BIT */
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+#  define FAIL_STACK_EMPTY()     (fail_stack.avail == 0)
++ 58
+#  define FAIL_STACK_PTR_EMPTY() (fail_stack_ptr->avail == 0)
++ 58
+#  define FAIL_STACK_FULL()      (fail_stack.avail == fail_stack.size)
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Define macros to initialize and free the failure stack.
++ 58
+   Do `return -2' if the alloc fails.  */
++ 58
+
++ 58
+# ifdef MATCH_MAY_ALLOCATE
++ 58
+#  define INIT_FAIL_STACK()						\
++ 58
+  do {									\
++ 58
+    fail_stack.stack = (PREFIX(fail_stack_elt_t) *)		\
++ 58
+      REGEX_ALLOCATE_STACK (INIT_FAILURE_ALLOC * sizeof (PREFIX(fail_stack_elt_t))); \
++ 58
+									\
++ 58
+    if (fail_stack.stack == NULL)				\
++ 58
+      return -2;							\
++ 58
+									\
++ 58
+    fail_stack.size = INIT_FAILURE_ALLOC;			\
++ 58
+    fail_stack.avail = 0;					\
++ 58
+  } while (0)
++ 58
+
++ 58
+#  define RESET_FAIL_STACK()  REGEX_FREE_STACK (fail_stack.stack)
++ 58
+# else
++ 58
+#  define INIT_FAIL_STACK()						\
++ 58
+  do {									\
++ 58
+    fail_stack.avail = 0;					\
++ 58
+  } while (0)
++ 58
+
++ 58
+#  define RESET_FAIL_STACK()
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Double the size of FAIL_STACK, up to approximately `re_max_failures' items.
++ 58
+
++ 58
+   Return 1 if succeeds, and 0 if either ran out of memory
++ 58
+   allocating space for it or it was already too large.
++ 58
+
++ 58
+   REGEX_REALLOCATE_STACK requires `destination' be declared.   */
++ 58
+
++ 58
+# define DOUBLE_FAIL_STACK(fail_stack)					\
++ 58
+  ((fail_stack).size > (unsigned) (re_max_failures * MAX_FAILURE_ITEMS)	\
++ 58
+   ? 0									\
++ 58
+   : ((fail_stack).stack = (PREFIX(fail_stack_elt_t) *)			\
++ 58
+        REGEX_REALLOCATE_STACK ((fail_stack).stack, 			\
++ 58
+          (fail_stack).size * sizeof (PREFIX(fail_stack_elt_t)),	\
++ 58
+          ((fail_stack).size << 1) * sizeof (PREFIX(fail_stack_elt_t))),\
++ 58
+									\
++ 58
+      (fail_stack).stack == NULL					\
++ 58
+      ? 0								\
++ 58
+      : ((fail_stack).size <<= 1, 					\
++ 58
+         1)))
++ 58
+
++ 58
+
++ 58
+/* Push pointer POINTER on FAIL_STACK.
++ 58
+   Return 1 if was able to do so and 0 if ran out of memory allocating
++ 58
+   space to do so.  */
++ 58
+# define PUSH_PATTERN_OP(POINTER, FAIL_STACK)				\
++ 58
+  ((FAIL_STACK_FULL ()							\
++ 58
+    && !DOUBLE_FAIL_STACK (FAIL_STACK))					\
++ 58
+   ? 0									\
++ 58
+   : ((FAIL_STACK).stack[(FAIL_STACK).avail++].pointer = POINTER,	\
++ 58
+      1))
++ 58
+
++ 58
+/* Push a pointer value onto the failure stack.
++ 58
+   Assumes the variable `fail_stack'.  Probably should only
++ 58
+   be called from within `PUSH_FAILURE_POINT'.  */
++ 58
+# define PUSH_FAILURE_POINTER(item)					\
++ 58
+  fail_stack.stack[fail_stack.avail++].pointer = (UCHAR_T *) (item)
++ 58
+
++ 58
+/* This pushes an integer-valued item onto the failure stack.
++ 58
+   Assumes the variable `fail_stack'.  Probably should only
++ 58
+   be called from within `PUSH_FAILURE_POINT'.  */
++ 58
+# define PUSH_FAILURE_INT(item)					\
++ 58
+  fail_stack.stack[fail_stack.avail++].integer = (item)
++ 58
+
++ 58
+/* Push a fail_stack_elt_t value onto the failure stack.
++ 58
+   Assumes the variable `fail_stack'.  Probably should only
++ 58
+   be called from within `PUSH_FAILURE_POINT'.  */
++ 58
+# define PUSH_FAILURE_ELT(item)					\
++ 58
+  fail_stack.stack[fail_stack.avail++] =  (item)
++ 58
+
++ 58
+/* These three POP... operations complement the three PUSH... operations.
++ 58
+   All assume that `fail_stack' is nonempty.  */
++ 58
+# define POP_FAILURE_POINTER() fail_stack.stack[--fail_stack.avail].pointer
++ 58
+# define POP_FAILURE_INT() fail_stack.stack[--fail_stack.avail].integer
++ 58
+# define POP_FAILURE_ELT() fail_stack.stack[--fail_stack.avail]
++ 58
+
++ 58
+/* Used to omit pushing failure point id's when we're not debugging.  */
++ 58
+# ifdef DEBUG
++ 58
+#  define DEBUG_PUSH PUSH_FAILURE_INT
++ 58
+#  define DEBUG_POP(item_addr) *(item_addr) = POP_FAILURE_INT ()
++ 58
+# else
++ 58
+#  define DEBUG_PUSH(item)
++ 58
+#  define DEBUG_POP(item_addr)
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Push the information about the state we will need
++ 58
+   if we ever fail back to it.
++ 58
+
++ 58
+   Requires variables fail_stack, regstart, regend, reg_info, and
++ 58
+   num_regs_pushed be declared.  DOUBLE_FAIL_STACK requires `destination'
++ 58
+   be declared.
++ 58
+
++ 58
+   Does `return FAILURE_CODE' if runs out of memory.  */
++ 58
+
++ 58
+# define PUSH_FAILURE_POINT(pattern_place, string_place, failure_code)	\
++ 58
+  do {									\
++ 58
+    char *destination;							\
++ 58
+    /* Must be int, so when we don't save any registers, the arithmetic	\
++ 58
+       of 0 + -1 isn't done as unsigned.  */				\
++ 58
+    /* Can't be int, since there is not a shred of a guarantee that int	\
++ 58
+       is wide enough to hold a value of something to which pointer can	\
++ 58
+       be assigned */							\
++ 58
+    active_reg_t this_reg;						\
++ 58
+    									\
++ 58
+    DEBUG_STATEMENT (failure_id++);					\
++ 58
+    DEBUG_STATEMENT (nfailure_points_pushed++);				\
++ 58
+    DEBUG_PRINT2 ("\nPUSH_FAILURE_POINT #%u:\n", failure_id);		\
++ 58
+    DEBUG_PRINT2 ("  Before push, next avail: %d\n", (fail_stack).avail);\
++ 58
+    DEBUG_PRINT2 ("                     size: %d\n", (fail_stack).size);\
++ 58
+									\
++ 58
+    DEBUG_PRINT2 ("  slots needed: %ld\n", NUM_FAILURE_ITEMS);		\
++ 58
+    DEBUG_PRINT2 ("     available: %d\n", REMAINING_AVAIL_SLOTS);	\
++ 58
+									\
++ 58
+    /* Ensure we have enough space allocated for what we will push.  */	\
++ 58
+    while (REMAINING_AVAIL_SLOTS < NUM_FAILURE_ITEMS)			\
++ 58
+      {									\
++ 58
+        if (!DOUBLE_FAIL_STACK (fail_stack))				\
++ 58
+          return failure_code;						\
++ 58
+									\
++ 58
+        DEBUG_PRINT2 ("\n  Doubled stack; size now: %d\n",		\
++ 58
+		       (fail_stack).size);				\
++ 58
+        DEBUG_PRINT2 ("  slots available: %d\n", REMAINING_AVAIL_SLOTS);\
++ 58
+      }									\
++ 58
+									\
++ 58
+    /* Push the info, starting with the registers.  */			\
++ 58
+    DEBUG_PRINT1 ("\n");						\
++ 58
+									\
++ 58
+    if (1)								\
++ 58
+      for (this_reg = lowest_active_reg; this_reg <= highest_active_reg; \
++ 58
+	   this_reg++)							\
++ 58
+	{								\
++ 58
+	  DEBUG_PRINT2 ("  Pushing reg: %lu\n", this_reg);		\
++ 58
+	  DEBUG_STATEMENT (num_regs_pushed++);				\
++ 58
+									\
++ 58
+	  DEBUG_PRINT2 ("    start: %p\n", regstart[this_reg]);		\
++ 58
+	  PUSH_FAILURE_POINTER (regstart[this_reg]);			\
++ 58
+									\
++ 58
+	  DEBUG_PRINT2 ("    end: %p\n", regend[this_reg]);		\
++ 58
+	  PUSH_FAILURE_POINTER (regend[this_reg]);			\
++ 58
+									\
++ 58
+	  DEBUG_PRINT2 ("    info: %p\n      ",				\
++ 58
+			reg_info[this_reg].word.pointer);		\
++ 58
+	  DEBUG_PRINT2 (" match_null=%d",				\
++ 58
+			REG_MATCH_NULL_STRING_P (reg_info[this_reg]));	\
++ 58
+	  DEBUG_PRINT2 (" active=%d", IS_ACTIVE (reg_info[this_reg]));	\
++ 58
+	  DEBUG_PRINT2 (" matched_something=%d",			\
++ 58
+			MATCHED_SOMETHING (reg_info[this_reg]));	\
++ 58
+	  DEBUG_PRINT2 (" ever_matched=%d",				\
++ 58
+			EVER_MATCHED_SOMETHING (reg_info[this_reg]));	\
++ 58
+	  DEBUG_PRINT1 ("\n");						\
++ 58
+	  PUSH_FAILURE_ELT (reg_info[this_reg].word);			\
++ 58
+	}								\
++ 58
+									\
++ 58
+    DEBUG_PRINT2 ("  Pushing  low active reg: %ld\n", lowest_active_reg);\
++ 58
+    PUSH_FAILURE_INT (lowest_active_reg);				\
++ 58
+									\
++ 58
+    DEBUG_PRINT2 ("  Pushing high active reg: %ld\n", highest_active_reg);\
++ 58
+    PUSH_FAILURE_INT (highest_active_reg);				\
++ 58
+									\
++ 58
+    DEBUG_PRINT2 ("  Pushing pattern %p:\n", pattern_place);		\
++ 58
+    DEBUG_PRINT_COMPILED_PATTERN (bufp, pattern_place, pend);		\
++ 58
+    PUSH_FAILURE_POINTER (pattern_place);				\
++ 58
+									\
++ 58
+    DEBUG_PRINT2 ("  Pushing string %p: `", string_place);		\
++ 58
+    DEBUG_PRINT_DOUBLE_STRING (string_place, string1, size1, string2,   \
++ 58
+				 size2);				\
++ 58
+    DEBUG_PRINT1 ("'\n");						\
++ 58
+    PUSH_FAILURE_POINTER (string_place);				\
++ 58
+									\
++ 58
+    DEBUG_PRINT2 ("  Pushing failure id: %u\n", failure_id);		\
++ 58
+    DEBUG_PUSH (failure_id);						\
++ 58
+  } while (0)
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+/* This is the number of items that are pushed and popped on the stack
++ 58
+   for each register.  */
++ 58
+#  define NUM_REG_ITEMS  3
++ 58
+
++ 58
+/* Individual items aside from the registers.  */
++ 58
+#  ifdef DEBUG
++ 58
+#   define NUM_NONREG_ITEMS 5 /* Includes failure point id.  */
++ 58
+#  else
++ 58
+#   define NUM_NONREG_ITEMS 4
++ 58
+#  endif
++ 58
+
++ 58
+/* We push at most this many items on the stack.  */
++ 58
+/* We used to use (num_regs - 1), which is the number of registers
++ 58
+   this regexp will save; but that was changed to 5
++ 58
+   to avoid stack overflow for a regexp with lots of parens.  */
++ 58
+#  define MAX_FAILURE_ITEMS (5 * NUM_REG_ITEMS + NUM_NONREG_ITEMS)
++ 58
+
++ 58
+/* We actually push this many items.  */
++ 58
+#  define NUM_FAILURE_ITEMS				\
++ 58
+  (((0							\
++ 58
+     ? 0 : highest_active_reg - lowest_active_reg + 1)	\
++ 58
+    * NUM_REG_ITEMS)					\
++ 58
+   + NUM_NONREG_ITEMS)
++ 58
+
++ 58
+/* How many items can still be added to the stack without overflowing it.  */
++ 58
+#  define REMAINING_AVAIL_SLOTS ((fail_stack).size - (fail_stack).avail)
++ 58
+# endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+
++ 58
+/* Pops what PUSH_FAIL_STACK pushes.
++ 58
+
++ 58
+   We restore into the parameters, all of which should be lvalues:
++ 58
+     STR -- the saved data position.
++ 58
+     PAT -- the saved pattern position.
++ 58
+     LOW_REG, HIGH_REG -- the highest and lowest active registers.
++ 58
+     REGSTART, REGEND -- arrays of string positions.
++ 58
+     REG_INFO -- array of information about each subexpression.
++ 58
+
++ 58
+   Also assumes the variables `fail_stack' and (if debugging), `bufp',
++ 58
+   `pend', `string1', `size1', `string2', and `size2'.  */
++ 58
+# define POP_FAILURE_POINT(str, pat, low_reg, high_reg, regstart, regend, reg_info)\
++ 58
+{									\
++ 58
+  DEBUG_STATEMENT (unsigned failure_id;)				\
++ 58
+  active_reg_t this_reg;						\
++ 58
+  const UCHAR_T *string_temp;						\
++ 58
+									\
++ 58
+  assert (!FAIL_STACK_EMPTY ());					\
++ 58
+									\
++ 58
+  /* Remove failure points and point to how many regs pushed.  */	\
++ 58
+  DEBUG_PRINT1 ("POP_FAILURE_POINT:\n");				\
++ 58
+  DEBUG_PRINT2 ("  Before pop, next avail: %d\n", fail_stack.avail);	\
++ 58
+  DEBUG_PRINT2 ("                    size: %d\n", fail_stack.size);	\
++ 58
+									\
++ 58
+  assert (fail_stack.avail >= NUM_NONREG_ITEMS);			\
++ 58
+									\
++ 58
+  DEBUG_POP (&failure_id);						\
++ 58
+  DEBUG_PRINT2 ("  Popping failure id: %u\n", failure_id);		\
++ 58
+									\
++ 58
+  /* If the saved string location is NULL, it came from an		\
++ 58
+     on_failure_keep_string_jump opcode, and we want to throw away the	\
++ 58
+     saved NULL, thus retaining our current position in the string.  */	\
++ 58
+  string_temp = POP_FAILURE_POINTER ();					\
++ 58
+  if (string_temp != NULL)						\
++ 58
+    str = (const CHAR_T *) string_temp;					\
++ 58
+									\
++ 58
+  DEBUG_PRINT2 ("  Popping string %p: `", str);				\
++ 58
+  DEBUG_PRINT_DOUBLE_STRING (str, string1, size1, string2, size2);	\
++ 58
+  DEBUG_PRINT1 ("'\n");							\
++ 58
+									\
++ 58
+  pat = (UCHAR_T *) POP_FAILURE_POINTER ();				\
++ 58
+  DEBUG_PRINT2 ("  Popping pattern %p:\n", pat);			\
++ 58
+  DEBUG_PRINT_COMPILED_PATTERN (bufp, pat, pend);			\
++ 58
+									\
++ 58
+  /* Restore register info.  */						\
++ 58
+  high_reg = (active_reg_t) POP_FAILURE_INT ();				\
++ 58
+  DEBUG_PRINT2 ("  Popping high active reg: %ld\n", high_reg);		\
++ 58
+									\
++ 58
+  low_reg = (active_reg_t) POP_FAILURE_INT ();				\
++ 58
+  DEBUG_PRINT2 ("  Popping  low active reg: %ld\n", low_reg);		\
++ 58
+									\
++ 58
+  if (1)								\
++ 58
+    for (this_reg = high_reg; this_reg >= low_reg; this_reg--)		\
++ 58
+      {									\
++ 58
+	DEBUG_PRINT2 ("    Popping reg: %ld\n", this_reg);		\
++ 58
+									\
++ 58
+	reg_info[this_reg].word = POP_FAILURE_ELT ();			\
++ 58
+	DEBUG_PRINT2 ("      info: %p\n",				\
++ 58
+		      reg_info[this_reg].word.pointer);			\
++ 58
+									\
++ 58
+	regend[this_reg] = (const CHAR_T *) POP_FAILURE_POINTER ();	\
++ 58
+	DEBUG_PRINT2 ("      end: %p\n", regend[this_reg]);		\
++ 58
+									\
++ 58
+	regstart[this_reg] = (const CHAR_T *) POP_FAILURE_POINTER ();	\
++ 58
+	DEBUG_PRINT2 ("      start: %p\n", regstart[this_reg]);		\
++ 58
+      }									\
++ 58
+  else									\
++ 58
+    {									\
++ 58
+      for (this_reg = highest_active_reg; this_reg > high_reg; this_reg--) \
++ 58
+	{								\
++ 58
+	  reg_info[this_reg].word.integer = 0;				\
++ 58
+	  regend[this_reg] = 0;						\
++ 58
+	  regstart[this_reg] = 0;					\
++ 58
+	}								\
++ 58
+      highest_active_reg = high_reg;					\
++ 58
+    }									\
++ 58
+									\
++ 58
+  set_regs_matched_done = 0;						\
++ 58
+  DEBUG_STATEMENT (nfailure_points_popped++);				\
++ 58
+} /* POP_FAILURE_POINT */
++ 58
+
++ 58
+/* Structure for per-register (a.k.a. per-group) information.
++ 58
+   Other register information, such as the
++ 58
+   starting and ending positions (which are addresses), and the list of
++ 58
+   inner groups (which is a bits list) are maintained in separate
++ 58
+   variables.
++ 58
+
++ 58
+   We are making a (strictly speaking) nonportable assumption here: that
++ 58
+   the compiler will pack our bit fields into something that fits into
++ 58
+   the type of `word', i.e., is something that fits into one item on the
++ 58
+   failure stack.  */
++ 58
+
++ 58
+
++ 58
+/* Declarations and macros for re_match_2.  */
++ 58
+union PREFIX(fail_stack_elt)
++ 58
+{
++ 58
+  UCHAR_T *pointer;
++ 58
+  long int integer;
++ 58
+};
++ 58
+
++ 58
+typedef union PREFIX(fail_stack_elt) PREFIX(fail_stack_elt_t);
++ 58
+
++ 58
+typedef struct
++ 58
+{
++ 58
+  PREFIX(fail_stack_elt_t) *stack;
++ 58
+  unsigned long int size;
++ 58
+  unsigned long int avail;		/* Offset of next open position.  */
++ 58
+} PREFIX(fail_stack_type);
++ 58
+
++ 58
+# else /* not INT_IS_16BIT */
++ 58
+
++ 58
+#  ifndef DEFINED_ONCE
++ 58
+#   if defined MATCH_MAY_ALLOCATE
++ 58
+/* 4400 was enough to cause a crash on Alpha OSF/1,
++ 58
+   whose default stack limit is 2mb.  */
++ 58
+int re_max_failures = 4000;
++ 58
+#   else
++ 58
+int re_max_failures = 2000;
++ 58
+#   endif
++ 58
+#  endif
++ 58
+
++ 58
+union PREFIX(fail_stack_elt)
++ 58
+{
++ 58
+  UCHAR_T *pointer;
++ 58
+  int integer;
++ 58
+};
++ 58
+
++ 58
+typedef union PREFIX(fail_stack_elt) PREFIX(fail_stack_elt_t);
++ 58
+
++ 58
+typedef struct
++ 58
+{
++ 58
+  PREFIX(fail_stack_elt_t) *stack;
++ 58
+  unsigned size;
++ 58
+  unsigned avail;			/* Offset of next open position.  */
++ 58
+} PREFIX(fail_stack_type);
++ 58
+
++ 58
+# endif /* INT_IS_16BIT */
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+#  define FAIL_STACK_EMPTY()     (fail_stack.avail == 0)
++ 58
+#  define FAIL_STACK_PTR_EMPTY() (fail_stack_ptr->avail == 0)
++ 58
+#  define FAIL_STACK_FULL()      (fail_stack.avail == fail_stack.size)
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Define macros to initialize and free the failure stack.
++ 58
+   Do `return -2' if the alloc fails.  */
++ 58
+
++ 58
+# ifdef MATCH_MAY_ALLOCATE
++ 58
+#  define INIT_FAIL_STACK()						\
++ 58
+  do {									\
++ 58
+    fail_stack.stack = (PREFIX(fail_stack_elt_t) *)		\
++ 58
+      REGEX_ALLOCATE_STACK (INIT_FAILURE_ALLOC * sizeof (PREFIX(fail_stack_elt_t))); \
++ 58
+									\
++ 58
+    if (fail_stack.stack == NULL)				\
++ 58
+      return -2;							\
++ 58
+									\
++ 58
+    fail_stack.size = INIT_FAILURE_ALLOC;			\
++ 58
+    fail_stack.avail = 0;					\
++ 58
+  } while (0)
++ 58
+
++ 58
+#  define RESET_FAIL_STACK()  REGEX_FREE_STACK (fail_stack.stack)
++ 58
+# else
++ 58
+#  define INIT_FAIL_STACK()						\
++ 58
+  do {									\
++ 58
+    fail_stack.avail = 0;					\
++ 58
+  } while (0)
++ 58
+
++ 58
+#  define RESET_FAIL_STACK()
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Double the size of FAIL_STACK, up to approximately `re_max_failures' items.
++ 58
+
++ 58
+   Return 1 if succeeds, and 0 if either ran out of memory
++ 58
+   allocating space for it or it was already too large.
++ 58
+
++ 58
+   REGEX_REALLOCATE_STACK requires `destination' be declared.   */
++ 58
+
++ 58
+# define DOUBLE_FAIL_STACK(fail_stack)					\
++ 58
+  ((fail_stack).size > (unsigned) (re_max_failures * MAX_FAILURE_ITEMS)	\
++ 58
+   ? 0									\
++ 58
+   : ((fail_stack).stack = (PREFIX(fail_stack_elt_t) *)			\
++ 58
+        REGEX_REALLOCATE_STACK ((fail_stack).stack, 			\
++ 58
+          (fail_stack).size * sizeof (PREFIX(fail_stack_elt_t)),	\
++ 58
+          ((fail_stack).size << 1) * sizeof (PREFIX(fail_stack_elt_t))),\
++ 58
+									\
++ 58
+      (fail_stack).stack == NULL					\
++ 58
+      ? 0								\
++ 58
+      : ((fail_stack).size <<= 1, 					\
++ 58
+         1)))
++ 58
+
++ 58
+
++ 58
+/* Push pointer POINTER on FAIL_STACK.
++ 58
+   Return 1 if was able to do so and 0 if ran out of memory allocating
++ 58
+   space to do so.  */
++ 58
+# define PUSH_PATTERN_OP(POINTER, FAIL_STACK)				\
++ 58
+  ((FAIL_STACK_FULL ()							\
++ 58
+    && !DOUBLE_FAIL_STACK (FAIL_STACK))					\
++ 58
+   ? 0									\
++ 58
+   : ((FAIL_STACK).stack[(FAIL_STACK).avail++].pointer = POINTER,	\
++ 58
+      1))
++ 58
+
++ 58
+/* Push a pointer value onto the failure stack.
++ 58
+   Assumes the variable `fail_stack'.  Probably should only
++ 58
+   be called from within `PUSH_FAILURE_POINT'.  */
++ 58
+# define PUSH_FAILURE_POINTER(item)					\
++ 58
+  fail_stack.stack[fail_stack.avail++].pointer = (UCHAR_T *) (item)
++ 58
+
++ 58
+/* This pushes an integer-valued item onto the failure stack.
++ 58
+   Assumes the variable `fail_stack'.  Probably should only
++ 58
+   be called from within `PUSH_FAILURE_POINT'.  */
++ 58
+# define PUSH_FAILURE_INT(item)					\
++ 58
+  fail_stack.stack[fail_stack.avail++].integer = (item)
++ 58
+
++ 58
+/* Push a fail_stack_elt_t value onto the failure stack.
++ 58
+   Assumes the variable `fail_stack'.  Probably should only
++ 58
+   be called from within `PUSH_FAILURE_POINT'.  */
++ 58
+# define PUSH_FAILURE_ELT(item)					\
++ 58
+  fail_stack.stack[fail_stack.avail++] =  (item)
++ 58
+
++ 58
+/* These three POP... operations complement the three PUSH... operations.
++ 58
+   All assume that `fail_stack' is nonempty.  */
++ 58
+# define POP_FAILURE_POINTER() fail_stack.stack[--fail_stack.avail].pointer
++ 58
+# define POP_FAILURE_INT() fail_stack.stack[--fail_stack.avail].integer
++ 58
+# define POP_FAILURE_ELT() fail_stack.stack[--fail_stack.avail]
++ 58
+
++ 58
+/* Used to omit pushing failure point id's when we're not debugging.  */
++ 58
+# ifdef DEBUG
++ 58
+#  define DEBUG_PUSH PUSH_FAILURE_INT
++ 58
+#  define DEBUG_POP(item_addr) *(item_addr) = POP_FAILURE_INT ()
++ 58
+# else
++ 58
+#  define DEBUG_PUSH(item)
++ 58
+#  define DEBUG_POP(item_addr)
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Push the information about the state we will need
++ 58
+   if we ever fail back to it.
++ 58
+
++ 58
+   Requires variables fail_stack, regstart, regend, reg_info, and
++ 58
+   num_regs_pushed be declared.  DOUBLE_FAIL_STACK requires `destination'
++ 58
+   be declared.
++ 58
+
++ 58
+   Does `return FAILURE_CODE' if runs out of memory.  */
++ 58
+
++ 58
+# define PUSH_FAILURE_POINT(pattern_place, string_place, failure_code)	\
++ 58
+  do {									\
++ 58
+    char *destination;							\
++ 58
+    /* Must be int, so when we don't save any registers, the arithmetic	\
++ 58
+       of 0 + -1 isn't done as unsigned.  */				\
++ 58
+    /* Can't be int, since there is not a shred of a guarantee that int	\
++ 58
+       is wide enough to hold a value of something to which pointer can	\
++ 58
+       be assigned */							\
++ 58
+    active_reg_t this_reg;						\
++ 58
+    									\
++ 58
+ 
++ 58
+typedef union
++ 58
+{
++ 58
+  PREFIX(fail_stack_elt_t) word;
++ 58
+  struct
++ 58
+  {
++ 58
+      /* This field is one if this group can match the empty string,
++ 58
+         zero if not.  If not yet determined,  `MATCH_NULL_UNSET_VALUE'.  */
++ 58
+# define MATCH_NULL_UNSET_VALUE 3
++ 58
+    unsigned match_null_string_p : 2;
++ 58
+    unsigned is_active : 1;
++ 58
+    unsigned matched_something : 1;
++ 58
+    unsigned ever_matched_something : 1;
++ 58
+  } bits;
++ 58
+} PREFIX(register_info_type);
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+#  define REG_MATCH_NULL_STRING_P(R)  ((R).bits.match_null_string_p)
++ 58
+#  define IS_ACTIVE(R)  ((R).bits.is_active)
++ 58
+#  define MATCHED_SOMETHING(R)  ((R).bits.matched_something)
++ 58
+#  define EVER_MATCHED_SOMETHING(R)  ((R).bits.ever_matched_something)
++ 58
+
++ 58
+
++ 58
+/* Call this when have matched a real character; it sets `matched' flags
++ 58
+   for the subexpressions which we are currently inside.  Also records
++ 58
+   that those subexprs have matched.  */
++ 58
+#  define SET_REGS_MATCHED()						\
++ 58
+  do									\
++ 58
+    {									\
++ 58
+      if (!set_regs_matched_done)					\
++ 58
+	{								\
++ 58
+	  active_reg_t r;						\
++ 58
+	  set_regs_matched_done = 1;					\
++ 58
+	  for (r = lowest_active_reg; r <= highest_active_reg; r++)	\
++ 58
+	    {								\
++ 58
+	      MATCHED_SOMETHING (reg_info[r])				\
++ 58
+		= EVER_MATCHED_SOMETHING (reg_info[r])			\
++ 58
+		= 1;							\
++ 58
+	    }								\
++ 58
+	}								\
++ 58
+    }									\
++ 58
+  while (0)
++ 58
+# endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+/* Registers are set to a sentinel when they haven't yet matched.  */
++ 58
+static CHAR_T PREFIX(reg_unset_dummy);
++ 58
+# define REG_UNSET_VALUE (&PREFIX(reg_unset_dummy))
++ 58
+# define REG_UNSET(e) ((e) == REG_UNSET_VALUE)
++ 58
+
++ 58
+/* Subroutine declarations and macros for regex_compile.  */
++ 58
+static void PREFIX(store_op1) _RE_ARGS ((re_opcode_t op, UCHAR_T *loc, int arg));
++ 58
+static void PREFIX(store_op2) _RE_ARGS ((re_opcode_t op, UCHAR_T *loc,
++ 58
+				 int arg1, int arg2));
++ 58
+static void PREFIX(insert_op1) _RE_ARGS ((re_opcode_t op, UCHAR_T *loc,
++ 58
+				  int arg, UCHAR_T *end));
++ 58
+static void PREFIX(insert_op2) _RE_ARGS ((re_opcode_t op, UCHAR_T *loc,
++ 58
+				  int arg1, int arg2, UCHAR_T *end));
++ 58
+static boolean PREFIX(at_begline_loc_p) _RE_ARGS ((const CHAR_T *pattern,
++ 58
+					   const CHAR_T *p,
++ 58
+					   reg_syntax_t syntax));
++ 58
+static boolean PREFIX(at_endline_loc_p) _RE_ARGS ((const CHAR_T *p,
++ 58
+					   const CHAR_T *pend,
++ 58
+					   reg_syntax_t syntax));
++ 58
+# ifdef WCHAR
++ 58
+static reg_errcode_t wcs_compile_range _RE_ARGS ((CHAR_T range_start,
++ 58
+						  const CHAR_T **p_ptr,
++ 58
+						  const CHAR_T *pend,
++ 58
+						  char *translate,
++ 58
+						  reg_syntax_t syntax,
++ 58
+						  UCHAR_T *b,
++ 58
+						  CHAR_T *char_set));
++ 58
+static void insert_space _RE_ARGS ((int num, CHAR_T *loc, CHAR_T *end));
++ 58
+# else /* BYTE */
++ 58
+static reg_errcode_t byte_compile_range _RE_ARGS ((unsigned int range_start,
++ 58
+						   const char **p_ptr,
++ 58
+						   const char *pend,
++ 58
+						   char *translate,
++ 58
+						   reg_syntax_t syntax,
++ 58
+						   unsigned char *b));
++ 58
+# endif /* WCHAR */
++ 58
+
++ 58
+/* Fetch the next character in the uncompiled pattern---translating it
++ 58
+   if necessary.  Also cast from a signed character in the constant
++ 58
+   string passed to us by the user to an unsigned char that we can use
++ 58
+   as an array index (in, e.g., `translate').  */
++ 58
+/* ifdef MBS_SUPPORT, we translate only if character <= 0xff,
++ 58
+   because it is impossible to allocate 4GB array for some encodings
++ 58
+   which have 4 byte character_set like UCS4.  */
++ 58
+# ifndef PATFETCH
++ 58
+#  ifdef WCHAR
++ 58
+#   define PATFETCH(c)							\
++ 58
+  do {if (p == pend) return REG_EEND;					\
++ 58
+    c = (UCHAR_T) *p++;							\
++ 58
+    if (translate && (c <= 0xff)) c = (UCHAR_T) translate[c];		\
++ 58
+  } while (0)
++ 58
+#  else /* BYTE */
++ 58
+#   define PATFETCH(c)							\
++ 58
+  do {if (p == pend) return REG_EEND;					\
++ 58
+    c = (unsigned char) *p++;						\
++ 58
+    if (translate) c = (unsigned char) translate[c];			\
++ 58
+  } while (0)
++ 58
+#  endif /* WCHAR */
++ 58
+# endif
++ 58
+
++ 58
+/* Fetch the next character in the uncompiled pattern, with no
++ 58
+   translation.  */
++ 58
+# define PATFETCH_RAW(c)						\
++ 58
+  do {if (p == pend) return REG_EEND;					\
++ 58
+    c = (UCHAR_T) *p++; 	       					\
++ 58
+  } while (0)
++ 58
+
++ 58
+/* Go backwards one character in the pattern.  */
++ 58
+# define PATUNFETCH p--
++ 58
+
++ 58
+
++ 58
+/* If `translate' is non-null, return translate[D], else just D.  We
++ 58
+   cast the subscript to translate because some data is declared as
++ 58
+   `char *', to avoid warnings when a string constant is passed.  But
++ 58
+   when we use a character as a subscript we must make it unsigned.  */
++ 58
+/* ifdef MBS_SUPPORT, we translate only if character <= 0xff,
++ 58
+   because it is impossible to allocate 4GB array for some encodings
++ 58
+   which have 4 byte character_set like UCS4.  */
++ 58
+
++ 58
+# ifndef TRANSLATE
++ 58
+#  ifdef WCHAR
++ 58
+#   define TRANSLATE(d) \
++ 58
+  ((translate && ((UCHAR_T) (d)) <= 0xff) \
++ 58
+   ? (char) translate[(unsigned char) (d)] : (d))
++ 58
+# else /* BYTE */
++ 58
+#   define TRANSLATE(d) \
++ 58
+  (translate ? (char) translate[(unsigned char) (d)] : (d))
++ 58
+#  endif /* WCHAR */
++ 58
+# endif
++ 58
+
++ 58
+
++ 58
+/* Macros for outputting the compiled pattern into `buffer'.  */
++ 58
+
++ 58
+/* If the buffer isn't allocated when it comes in, use this.  */
++ 58
+# define INIT_BUF_SIZE  (32 * sizeof(UCHAR_T))
++ 58
+
++ 58
+/* Make sure we have at least N more bytes of space in buffer.  */
++ 58
+# ifdef WCHAR
++ 58
+#  define GET_BUFFER_SPACE(n)						\
++ 58
+    while (((unsigned long)b - (unsigned long)COMPILED_BUFFER_VAR	\
++ 58
+            + (n)*sizeof(CHAR_T)) > bufp->allocated)			\
++ 58
+      EXTEND_BUFFER ()
++ 58
+# else /* BYTE */
++ 58
+#  define GET_BUFFER_SPACE(n)						\
++ 58
+    while ((unsigned long) (b - bufp->buffer + (n)) > bufp->allocated)	\
++ 58
+      EXTEND_BUFFER ()
++ 58
+# endif /* WCHAR */
++ 58
+
++ 58
+/* Make sure we have one more byte of buffer space and then add C to it.  */
++ 58
+# define BUF_PUSH(c)							\
++ 58
+  do {									\
++ 58
+    GET_BUFFER_SPACE (1);						\
++ 58
+    *b++ = (UCHAR_T) (c);						\
++ 58
+  } while (0)
++ 58
+
++ 58
+
++ 58
+/* Ensure we have two more bytes of buffer space and then append C1 and C2.  */
++ 58
+# define BUF_PUSH_2(c1, c2)						\
++ 58
+  do {									\
++ 58
+    GET_BUFFER_SPACE (2);						\
++ 58
+    *b++ = (UCHAR_T) (c1);						\
++ 58
+    *b++ = (UCHAR_T) (c2);						\
++ 58
+  } while (0)
++ 58
+
++ 58
+
++ 58
+/* As with BUF_PUSH_2, except for three bytes.  */
++ 58
+# define BUF_PUSH_3(c1, c2, c3)						\
++ 58
+  do {									\
++ 58
+    GET_BUFFER_SPACE (3);						\
++ 58
+    *b++ = (UCHAR_T) (c1);						\
++ 58
+    *b++ = (UCHAR_T) (c2);						\
++ 58
+    *b++ = (UCHAR_T) (c3);						\
++ 58
+  } while (0)
++ 58
+
++ 58
+/* Store a jump with opcode OP at LOC to location TO.  We store a
++ 58
+   relative address offset by the three bytes the jump itself occupies.  */
++ 58
+# define STORE_JUMP(op, loc, to) \
++ 58
+ PREFIX(store_op1) (op, loc, (int) ((to) - (loc) - (1 + OFFSET_ADDRESS_SIZE)))
++ 58
+
++ 58
+/* Likewise, for a two-argument jump.  */
++ 58
+# define STORE_JUMP2(op, loc, to, arg) \
++ 58
+  PREFIX(store_op2) (op, loc, (int) ((to) - (loc) - (1 + OFFSET_ADDRESS_SIZE)), arg)
++ 58
+
++ 58
+/* Like `STORE_JUMP', but for inserting.  Assume `b' is the buffer end.  */
++ 58
+# define INSERT_JUMP(op, loc, to) \
++ 58
+  PREFIX(insert_op1) (op, loc, (int) ((to) - (loc) - (1 + OFFSET_ADDRESS_SIZE)), b)
++ 58
+
++ 58
+/* Like `STORE_JUMP2', but for inserting.  Assume `b' is the buffer end.  */
++ 58
+# define INSERT_JUMP2(op, loc, to, arg) \
++ 58
+  PREFIX(insert_op2) (op, loc, (int) ((to) - (loc) - (1 + OFFSET_ADDRESS_SIZE)),\
++ 58
+	      arg, b)
++ 58
+
++ 58
+/* This is not an arbitrary limit: the arguments which represent offsets
++ 58
+   into the pattern are two bytes long.  So if 2^16 bytes turns out to
++ 58
+   be too small, many things would have to change.  */
++ 58
+/* Any other compiler which, like MSC, has allocation limit below 2^16
++ 58
+   bytes will have to use approach similar to what was done below for
++ 58
+   MSC and drop MAX_BUF_SIZE a bit.  Otherwise you may end up
++ 58
+   reallocating to 0 bytes.  Such thing is not going to work too well.
++ 58
+   You have been warned!!  */
++ 58
+# ifndef DEFINED_ONCE
++ 58
+#  if defined _MSC_VER  && !defined WIN32
++ 58
+/* Microsoft C 16-bit versions limit malloc to approx 65512 bytes.
++ 58
+   The REALLOC define eliminates a flurry of conversion warnings,
++ 58
+   but is not required. */
++ 58
+#   define MAX_BUF_SIZE  65500L
++ 58
+#   define REALLOC(p,s) realloc ((p), (size_t) (s))
++ 58
+#  else
++ 58
+#   define MAX_BUF_SIZE (1L << 16)
++ 58
+#   define REALLOC(p,s) realloc ((p), (s))
++ 58
+#  endif
++ 58
+
++ 58
+/* Extend the buffer by twice its current size via realloc and
++ 58
+   reset the pointers that pointed into the old block to point to the
++ 58
+   correct places in the new one.  If extending the buffer results in it
++ 58
+   being larger than MAX_BUF_SIZE, then flag memory exhausted.  */
++ 58
+#  if __BOUNDED_POINTERS__
++ 58
+#   define SET_HIGH_BOUND(P) (__ptrhigh (P) = __ptrlow (P) + bufp->allocated)
++ 58
+#   define MOVE_BUFFER_POINTER(P) \
++ 58
+  (__ptrlow (P) += incr, SET_HIGH_BOUND (P), __ptrvalue (P) += incr)
++ 58
+#   define ELSE_EXTEND_BUFFER_HIGH_BOUND	\
++ 58
+  else						\
++ 58
+    {						\
++ 58
+      SET_HIGH_BOUND (b);			\
++ 58
+      SET_HIGH_BOUND (begalt);			\
++ 58
+      if (fixup_alt_jump)			\
++ 58
+	SET_HIGH_BOUND (fixup_alt_jump);	\
++ 58
+      if (laststart)				\
++ 58
+	SET_HIGH_BOUND (laststart);		\
++ 58
+      if (pending_exact)			\
++ 58
+	SET_HIGH_BOUND (pending_exact);		\
++ 58
+    }
++ 58
+#  else
++ 58
+#   define MOVE_BUFFER_POINTER(P) (P) += incr
++ 58
+#   define ELSE_EXTEND_BUFFER_HIGH_BOUND
++ 58
+#  endif
++ 58
+# endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+# ifdef WCHAR
++ 58
+#  define EXTEND_BUFFER()						\
++ 58
+  do {									\
++ 58
+    UCHAR_T *old_buffer = COMPILED_BUFFER_VAR;				\
++ 58
+    int wchar_count;							\
++ 58
+    if (bufp->allocated + sizeof(UCHAR_T) > MAX_BUF_SIZE)		\
++ 58
+      return REG_ESIZE;							\
++ 58
+    bufp->allocated <<= 1;						\
++ 58
+    if (bufp->allocated > MAX_BUF_SIZE)					\
++ 58
+      bufp->allocated = MAX_BUF_SIZE;					\
++ 58
+    /* How many characters the new buffer can have?  */			\
++ 58
+    wchar_count = bufp->allocated / sizeof(UCHAR_T);			\
++ 58
+    if (wchar_count == 0) wchar_count = 1;				\
++ 58
+    /* Truncate the buffer to CHAR_T align.  */			\
++ 58
+    bufp->allocated = wchar_count * sizeof(UCHAR_T);			\
++ 58
+    RETALLOC (COMPILED_BUFFER_VAR, wchar_count, UCHAR_T);		\
++ 58
+    bufp->buffer = (char*)COMPILED_BUFFER_VAR;				\
++ 58
+    if (COMPILED_BUFFER_VAR == NULL)					\
++ 58
+      return REG_ESPACE;						\
++ 58
+    /* If the buffer moved, move all the pointers into it.  */		\
++ 58
+    if (old_buffer != COMPILED_BUFFER_VAR)				\
++ 58
+      {									\
++ 58
+	int incr = COMPILED_BUFFER_VAR - old_buffer;			\
++ 58
+	MOVE_BUFFER_POINTER (b);					\
++ 58
+	MOVE_BUFFER_POINTER (begalt);					\
++ 58
+	if (fixup_alt_jump)						\
++ 58
+	  MOVE_BUFFER_POINTER (fixup_alt_jump);				\
++ 58
+	if (laststart)							\
++ 58
+	  MOVE_BUFFER_POINTER (laststart);				\
++ 58
+	if (pending_exact)						\
++ 58
+	  MOVE_BUFFER_POINTER (pending_exact);				\
++ 58
+      }									\
++ 58
+    ELSE_EXTEND_BUFFER_HIGH_BOUND					\
++ 58
+  } while (0)
++ 58
+# else /* BYTE */
++ 58
+#  define EXTEND_BUFFER()						\
++ 58
+  do {									\
++ 58
+    UCHAR_T *old_buffer = COMPILED_BUFFER_VAR;				\
++ 58
+    if (bufp->allocated == MAX_BUF_SIZE)				\
++ 58
+      return REG_ESIZE;							\
++ 58
+    bufp->allocated <<= 1;						\
++ 58
+    if (bufp->allocated > MAX_BUF_SIZE)					\
++ 58
+      bufp->allocated = MAX_BUF_SIZE;					\
++ 58
+    bufp->buffer = (UCHAR_T *) REALLOC (COMPILED_BUFFER_VAR,		\
++ 58
+						bufp->allocated);	\
++ 58
+    if (COMPILED_BUFFER_VAR == NULL)					\
++ 58
+      return REG_ESPACE;						\
++ 58
+    /* If the buffer moved, move all the pointers into it.  */		\
++ 58
+    if (old_buffer != COMPILED_BUFFER_VAR)				\
++ 58
+      {									\
++ 58
+	int incr = COMPILED_BUFFER_VAR - old_buffer;			\
++ 58
+	MOVE_BUFFER_POINTER (b);					\
++ 58
+	MOVE_BUFFER_POINTER (begalt);					\
++ 58
+	if (fixup_alt_jump)						\
++ 58
+	  MOVE_BUFFER_POINTER (fixup_alt_jump);				\
++ 58
+	if (laststart)							\
++ 58
+	  MOVE_BUFFER_POINTER (laststart);				\
++ 58
+	if (pending_exact)						\
++ 58
+	  MOVE_BUFFER_POINTER (pending_exact);				\
++ 58
+      }									\
++ 58
+    ELSE_EXTEND_BUFFER_HIGH_BOUND					\
++ 58
+  } while (0)
++ 58
+# endif /* WCHAR */
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+/* Since we have one byte reserved for the register number argument to
++ 58
+   {start,stop}_memory, the maximum number of groups we can report
++ 58
+   things about is what fits in that byte.  */
++ 58
+#  define MAX_REGNUM 255
++ 58
+
++ 58
+/* But patterns can have more than `MAX_REGNUM' registers.  We just
++ 58
+   ignore the excess.  */
++ 58
+typedef unsigned regnum_t;
++ 58
+
++ 58
+
++ 58
+/* Macros for the compile stack.  */
++ 58
+
++ 58
+/* Since offsets can go either forwards or backwards, this type needs to
++ 58
+   be able to hold values from -(MAX_BUF_SIZE - 1) to MAX_BUF_SIZE - 1.  */
++ 58
+/* int may be not enough when sizeof(int) == 2.  */
++ 58
+typedef long pattern_offset_t;
++ 58
+
++ 58
+typedef struct
++ 58
+{
++ 58
+  pattern_offset_t begalt_offset;
++ 58
+  pattern_offset_t fixup_alt_jump;
++ 58
+  pattern_offset_t inner_group_offset;
++ 58
+  pattern_offset_t laststart_offset;
++ 58
+  regnum_t regnum;
++ 58
+} compile_stack_elt_t;
++ 58
+
++ 58
+
++ 58
+typedef struct
++ 58
+{
++ 58
+  compile_stack_elt_t *stack;
++ 58
+  unsigned size;
++ 58
+  unsigned avail;			/* Offset of next open position.  */
++ 58
+} compile_stack_type;
++ 58
+
++ 58
+
++ 58
+#  define INIT_COMPILE_STACK_SIZE 32
++ 58
+
++ 58
+#  define COMPILE_STACK_EMPTY  (compile_stack.avail == 0)
++ 58
+#  define COMPILE_STACK_FULL  (compile_stack.avail == compile_stack.size)
++ 58
+
++ 58
+/* The next available element.  */
++ 58
+#  define COMPILE_STACK_TOP (compile_stack.stack[compile_stack.avail])
++ 58
+
++ 58
+# endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+/* Set the bit for character C in a list.  */
++ 58
+# ifndef DEFINED_ONCE
++ 58
+#  define SET_LIST_BIT(c)                               \
++ 58
+  (b[((unsigned char) (c)) / BYTEWIDTH]               \
++ 58
+   |= 1 << (((unsigned char) c) % BYTEWIDTH))
++ 58
+# endif /* DEFINED_ONCE */
++ 58
+
++ 58
+/* Get the next unsigned number in the uncompiled pattern.  */
++ 58
+# define GET_UNSIGNED_NUMBER(num) \
++ 58
+  {									\
++ 58
+    while (p != pend)							\
++ 58
+      {									\
++ 58
+	PATFETCH (c);							\
++ 58
+	if (c < '0' || c > '9')						\
++ 58
+	  break;							\
++ 58
+	if (num <= RE_DUP_MAX)						\
++ 58
+	  {								\
++ 58
+	    if (num < 0)						\
++ 58
+	      num = 0;							\
++ 58
+	    num = num * 10 + c - '0';					\
++ 58
+	  }								\
++ 58
+      }									\
++ 58
+  }
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+#  if defined _LIBC || WIDE_CHAR_SUPPORT
++ 58
+/* The GNU C library provides support for user-defined character classes
++ 58
+   and the functions from ISO C amendement 1.  */
++ 58
+#   ifdef CHARCLASS_NAME_MAX
++ 58
+#    define CHAR_CLASS_MAX_LENGTH CHARCLASS_NAME_MAX
++ 58
+#   else
++ 58
+/* This shouldn't happen but some implementation might still have this
++ 58
+   problem.  Use a reasonable default value.  */
++ 58
+#    define CHAR_CLASS_MAX_LENGTH 256
++ 58
+#   endif
++ 58
+
++ 58
+#   ifdef _LIBC
++ 58
+#    define IS_CHAR_CLASS(string) __wctype (string)
++ 58
+#   else
++ 58
+#    define IS_CHAR_CLASS(string) wctype (string)
++ 58
+#   endif
++ 58
+#  else
++ 58
+#   define CHAR_CLASS_MAX_LENGTH  6 /* Namely, `xdigit'.  */
++ 58
+
++ 58
+#   define IS_CHAR_CLASS(string)					\
++ 58
+   (STREQ (string, "alpha") || STREQ (string, "upper")			\
++ 58
+    || STREQ (string, "lower") || STREQ (string, "digit")		\
++ 58
+    || STREQ (string, "alnum") || STREQ (string, "xdigit")		\
++ 58
+    || STREQ (string, "space") || STREQ (string, "print")		\
++ 58
+    || STREQ (string, "punct") || STREQ (string, "graph")		\
++ 58
+    || STREQ (string, "cntrl") || STREQ (string, "blank"))
++ 58
+#  endif
++ 58
+# endif /* DEFINED_ONCE */
++ 58
+
++ 58
+# ifndef MATCH_MAY_ALLOCATE
++ 58
+
++ 58
+/* If we cannot allocate large objects within re_match_2_internal,
++ 58
+   we make the fail stack and register vectors global.
++ 58
+   The fail stack, we grow to the maximum size when a regexp
++ 58
+   is compiled.
++ 58
+   The register vectors, we adjust in size each time we
++ 58
+   compile a regexp, according to the number of registers it needs.  */
++ 58
+
++ 58
+static PREFIX(fail_stack_type) fail_stack;
++ 58
+
++ 58
+/* Size with which the following vectors are currently allocated.
++ 58
+   That is so we can make them bigger as needed,
++ 58
+   but never make them smaller.  */
++ 58
+#  ifdef DEFINED_ONCE
++ 58
+static int regs_allocated_size;
++ 58
+
++ 58
+static const char **     regstart, **     regend;
++ 58
+static const char ** old_regstart, ** old_regend;
++ 58
+static const char **best_regstart, **best_regend;
++ 58
+static const char **reg_dummy;
++ 58
+#  endif /* DEFINED_ONCE */
++ 58
+
++ 58
+static PREFIX(register_info_type) *PREFIX(reg_info);
++ 58
+static PREFIX(register_info_type) *PREFIX(reg_info_dummy);
++ 58
+
++ 58
+/* Make the register vectors big enough for NUM_REGS registers,
++ 58
+   but don't make them smaller.  */
++ 58
+
++ 58
+static void
++ 58
+PREFIX(regex_grow_registers) (num_regs)
++ 58
+     int num_regs;
++ 58
+{
++ 58
+  if (num_regs > regs_allocated_size)
++ 58
+    {
++ 58
+      RETALLOC_IF (regstart,	 num_regs, const char *);
++ 58
+      RETALLOC_IF (regend,	 num_regs, const char *);
++ 58
+      RETALLOC_IF (old_regstart, num_regs, const char *);
++ 58
+      RETALLOC_IF (old_regend,	 num_regs, const char *);
++ 58
+      RETALLOC_IF (best_regstart, num_regs, const char *);
++ 58
+      RETALLOC_IF (best_regend,	 num_regs, const char *);
++ 58
+      RETALLOC_IF (PREFIX(reg_info), num_regs, PREFIX(register_info_type));
++ 58
+      RETALLOC_IF (reg_dummy,	 num_regs, const char *);
++ 58
+      RETALLOC_IF (PREFIX(reg_info_dummy), num_regs, PREFIX(register_info_type));
++ 58
+
++ 58
+      regs_allocated_size = num_regs;
++ 58
+    }
++ 58
+}
++ 58
+
++ 58
+# endif /* not MATCH_MAY_ALLOCATE */
++ 58
+
++ 58
+# ifndef DEFINED_ONCE
++ 58
+static boolean group_in_compile_stack _RE_ARGS ((compile_stack_type
++ 58
+						 compile_stack,
++ 58
+						 regnum_t regnum));
++ 58
+# endif /* not DEFINED_ONCE */
++ 58
+
++ 58
+/* `regex_compile' compiles PATTERN (of length SIZE) according to SYNTAX.
++ 58
+   Returns one of error codes defined in `regex.h', or zero for success.
++ 58
+
++ 58
+   Assumes the `allocated' (and perhaps `buffer') and `translate'
++ 58
+   fields are set in BUFP on entry.
++ 58
+
++ 58
+   If it succeeds, results are put in BUFP (if it returns an error, the
++ 58
+   contents of BUFP are undefined):
++ 58
+     `buffer' is the compiled pattern;
++ 58
+     `syntax' is set to SYNTAX;
++ 58
+     `used' is set to the length of the compiled pattern;
++ 58
+     `fastmap_accurate' is zero;
++ 58
+     `re_nsub' is the number of subexpressions in PATTERN;
++ 58
+     `not_bol' and `not_eol' are zero;
++ 58
+
++ 58
+   The `fastmap' and `newline_anchor' fields are neither
++ 58
+   examined nor set.  */
++ 58
+
++ 58
+/* Return, freeing storage we allocated.  */
++ 58
+# ifdef WCHAR
++ 58
+#  define FREE_STACK_RETURN(value)		\
++ 58
+  return (free(pattern), free(mbs_offset), free(is_binary), free (compile_stack.stack), value)
++ 58
+# else
++ 58
+#  define FREE_STACK_RETURN(value)		\
++ 58
+  return (free (compile_stack.stack), value)
++ 58
+# endif /* WCHAR */
++ 58
+
++ 58
+static reg_errcode_t
++ 58
+PREFIX(regex_compile) (ARG_PREFIX(pattern), ARG_PREFIX(size), syntax, bufp)
++ 58
+     const char *ARG_PREFIX(pattern);
++ 58
+     size_t ARG_PREFIX(size);
++ 58
+     reg_syntax_t syntax;
++ 58
+     struct re_pattern_buffer *bufp;
++ 58
+{
++ 58
+  /* We fetch characters from PATTERN here.  Even though PATTERN is
++ 58
+     `char *' (i.e., signed), we declare these variables as unsigned, so
++ 58
+     they can be reliably used as array indices.  */
++ 58
+  register UCHAR_T c, c1;
++ 58
+
++ 58
+#ifdef WCHAR
++ 58
+  /* A temporary space to keep wchar_t pattern and compiled pattern.  */
++ 58
+  CHAR_T *pattern, *COMPILED_BUFFER_VAR;
++ 58
+  size_t size;
++ 58
+  /* offset buffer for optimization. See convert_mbs_to_wc.  */
++ 58
+  int *mbs_offset = NULL;
++ 58
+  /* It hold whether each wchar_t is binary data or not.  */
++ 58
+  char *is_binary = NULL;
++ 58
+  /* A flag whether exactn is handling binary data or not.  */
++ 58
+  char is_exactn_bin = FALSE;
++ 58
+#endif /* WCHAR */
++ 58
+
++ 58
+  /* A random temporary spot in PATTERN.  */
++ 58
+  const CHAR_T *p1;
++ 58
+
++ 58
+  /* Points to the end of the buffer, where we should append.  */
++ 58
+  register UCHAR_T *b;
++ 58
+
++ 58
+  /* Keeps track of unclosed groups.  */
++ 58
+  compile_stack_type compile_stack;
++ 58
+
++ 58
+  /* Points to the current (ending) position in the pattern.  */
++ 58
+#ifdef WCHAR
++ 58
+  const CHAR_T *p;
++ 58
+  const CHAR_T *pend;
++ 58
+#else /* BYTE */
++ 58
+  const CHAR_T *p = pattern;
++ 58
+  const CHAR_T *pend = pattern + size;
++ 58
+#endif /* WCHAR */
++ 58
+
++ 58
+  /* How to translate the characters in the pattern.  */
++ 58
+  RE_TRANSLATE_TYPE translate = bufp->translate;
++ 58
+
++ 58
+  /* Address of the count-byte of the most recently inserted `exactn'
++ 58
+     command.  This makes it possible to tell if a new exact-match
++ 58
+     character can be added to that command or if the character requires
++ 58
+     a new `exactn' command.  */
++ 58
+  UCHAR_T *pending_exact = 0;
++ 58
+
++ 58
+  /* Address of start of the most recently finished expression.
++ 58
+     This tells, e.g., postfix * where to find the start of its
++ 58
+     operand.  Reset at the beginning of groups and alternatives.  */
++ 58
+  UCHAR_T *laststart = 0;
++ 58
+
++ 58
+  /* Address of beginning of regexp, or inside of last group.  */
++ 58
+  UCHAR_T *begalt;
++ 58
+
++ 58
+  /* Address of the place where a forward jump should go to the end of
++ 58
+     the containing expression.  Each alternative of an `or' -- except the
++ 58
+     last -- ends with a forward jump of this sort.  */
++ 58
+  UCHAR_T *fixup_alt_jump = 0;
++ 58
+
++ 58
+  /* Counts open-groups as they are encountered.  Remembered for the
++ 58
+     matching close-group on the compile stack, so the same register
++ 58
+     number is put in the stop_memory as the start_memory.  */
++ 58
+  regnum_t regnum = 0;
++ 58
+
++ 58
+#ifdef WCHAR
++ 58
+  /* Initialize the wchar_t PATTERN and offset_buffer.  */
++ 58
+  p = pend = pattern = TALLOC(csize + 1, CHAR_T);
++ 58
+  mbs_offset = TALLOC(csize + 1, int);
++ 58
+  is_binary = TALLOC(csize + 1, char);
++ 58
+  if (pattern == NULL || mbs_offset == NULL || is_binary == NULL)
++ 58
+    {
++ 58
+      free(pattern);
++ 58
+      free(mbs_offset);
++ 58
+      free(is_binary);
++ 58
+      return REG_ESPACE;
++ 58
+    }
++ 58
+  pattern[csize] = L'\0';	/* sentinel */
++ 58
+  size = convert_mbs_to_wcs(pattern, cpattern, csize, mbs_offset, is_binary);
++ 58
+  pend = p + size;
++ 58
+  if (size < 0)
++ 58
+    {
++ 58
+      free(pattern);
++ 58
+      free(mbs_offset);
++ 58
+      free(is_binary);
++ 58
+      return REG_BADPAT;
++ 58
+    }
++ 58
+#endif
++ 58
+
++ 58
+#ifdef DEBUG
++ 58
+  DEBUG_PRINT1 ("\nCompiling pattern: ");
++ 58
+  if (debug)
++ 58
+    {
++ 58
+      unsigned debug_count;
++ 58
+
++ 58
+      for (debug_count = 0; debug_count < size; debug_count++)
++ 58
+        PUT_CHAR (pattern[debug_count]);
++ 58
+      putchar ('\n');
++ 58
+    }
++ 58
+#endif /* DEBUG */
++ 58
+
++ 58
+  /* Initialize the compile stack.  */
++ 58
+  compile_stack.stack = TALLOC (INIT_COMPILE_STACK_SIZE, compile_stack_elt_t);
++ 58
+  if (compile_stack.stack == NULL)
++ 58
+    {
++ 58
+#ifdef WCHAR
++ 58
+      free(pattern);
++ 58
+      free(mbs_offset);
++ 58
+      free(is_binary);
++ 58
+#endif
++ 58
+      return REG_ESPACE;
++ 58
+    }
++ 58
+
++ 58
+  compile_stack.size = INIT_COMPILE_STACK_SIZE;
++ 58
+  compile_stack.avail = 0;
++ 58
+
++ 58
+  /* Initialize the pattern buffer.  */
++ 58
+  bufp->syntax = syntax;
++ 58
+  bufp->fastmap_accurate = 0;
++ 58
+  bufp->not_bol = bufp->not_eol = 0;
++ 58
+
++ 58
+  /* Set `used' to zero, so that if we return an error, the pattern
++ 58
+     printer (for debugging) will think there's no pattern.  We reset it
++ 58
+     at the end.  */
++ 58
+  bufp->used = 0;
++ 58
+
++ 58
+  /* Always count groups, whether or not bufp->no_sub is set.  */
++ 58
+  bufp->re_nsub = 0;
++ 58
+
++ 58
+#if !defined emacs && !defined SYNTAX_TABLE
++ 58
+  /* Initialize the syntax table.  */
++ 58
+   init_syntax_once ();
++ 58
+#endif
++ 58
+
++ 58
+  if (bufp->allocated == 0)
++ 58
+    {
++ 58
+      if (bufp->buffer)
++ 58
+	{ /* If zero allocated, but buffer is non-null, try to realloc
++ 58
+             enough space.  This loses if buffer's address is bogus, but
++ 58
+             that is the user's responsibility.  */
++ 58
+#ifdef WCHAR
++ 58
+	  /* Free bufp->buffer and allocate an array for wchar_t pattern
++ 58
+	     buffer.  */
++ 58
+          free(bufp->buffer);
++ 58
+          COMPILED_BUFFER_VAR = TALLOC (INIT_BUF_SIZE/sizeof(UCHAR_T),
++ 58
+					UCHAR_T);
++ 58
+#else
++ 58
+          RETALLOC (COMPILED_BUFFER_VAR, INIT_BUF_SIZE, UCHAR_T);
++ 58
+#endif /* WCHAR */
++ 58
+        }
++ 58
+      else
++ 58
+        { /* Caller did not allocate a buffer.  Do it for them.  */
++ 58
+          COMPILED_BUFFER_VAR = TALLOC (INIT_BUF_SIZE / sizeof(UCHAR_T),
++ 58
+					UCHAR_T);
++ 58
+        }
++ 58
+
++ 58
+      if (!COMPILED_BUFFER_VAR) FREE_STACK_RETURN (REG_ESPACE);
++ 58
+#ifdef WCHAR
++ 58
+      bufp->buffer = (char*)COMPILED_BUFFER_VAR;
++ 58
+#endif /* WCHAR */
++ 58
+      bufp->allocated = INIT_BUF_SIZE;
++ 58
+    }
++ 58
+#ifdef WCHAR
++ 58
+  else
++ 58
+    COMPILED_BUFFER_VAR = (UCHAR_T*) bufp->buffer;
++ 58
+#endif
++ 58
+
++ 58
+  begalt = b = COMPILED_BUFFER_VAR;
++ 58
+
++ 58
+  /* Loop through the uncompiled pattern until we're at the end.  */
++ 58
+  while (p != pend)
++ 58
+    {
++ 58
+      PATFETCH (c);
++ 58
+
++ 58
+      switch (c)
++ 58
+        {
++ 58
+        case '^':
++ 58
+          {
++ 58
+            if (   /* If at start of pattern, it's an operator.  */
++ 58
+                   p == pattern + 1
++ 58
+                   /* If context independent, it's an operator.  */
++ 58
+                || syntax & RE_CONTEXT_INDEP_ANCHORS
++ 58
+                   /* Otherwise, depends on what's come before.  */
++ 58
+                || PREFIX(at_begline_loc_p) (pattern, p, syntax))
++ 58
+              BUF_PUSH (begline);
++ 58
+            else
++ 58
+              goto normal_char;
++ 58
+          }
++ 58
+          break;
++ 58
+
++ 58
+
++ 58
+        case '$':
++ 58
+          {
++ 58
+            if (   /* If at end of pattern, it's an operator.  */
++ 58
+                   p == pend
++ 58
+                   /* If context independent, it's an operator.  */
++ 58
+                || syntax & RE_CONTEXT_INDEP_ANCHORS
++ 58
+                   /* Otherwise, depends on what's next.  */
++ 58
+                || PREFIX(at_endline_loc_p) (p, pend, syntax))
++ 58
+               BUF_PUSH (endline);
++ 58
+             else
++ 58
+               goto normal_char;
++ 58
+           }
++ 58
+           break;
++ 58
+
++ 58
+
++ 58
+	case '+':
++ 58
+        case '?':
++ 58
+          if ((syntax & RE_BK_PLUS_QM)
++ 58
+              || (syntax & RE_LIMITED_OPS))
++ 58
+            goto normal_char;
++ 58
+        handle_plus:
++ 58
+        case '*':
++ 58
+          /* If there is no previous pattern... */
++ 58
+          if (!laststart)
++ 58
+            {
++ 58
+              if (syntax & RE_CONTEXT_INVALID_OPS)
++ 58
+                FREE_STACK_RETURN (REG_BADRPT);
++ 58
+              else if (!(syntax & RE_CONTEXT_INDEP_OPS))
++ 58
+                goto normal_char;
++ 58
+            }
++ 58
+
++ 58
+          {
++ 58
+            /* Are we optimizing this jump?  */
++ 58
+            boolean keep_string_p = false;
++ 58
+
++ 58
+            /* 1 means zero (many) matches is allowed.  */
++ 58
+            char zero_times_ok = 0, many_times_ok = 0;
++ 58
+
++ 58
+            /* If there is a sequence of repetition chars, collapse it
++ 58
+               down to just one (the right one).  We can't combine
++ 58
+               interval operators with these because of, e.g., `a{2}*',
++ 58
+               which should only match an even number of `a's.  */
++ 58
+
++ 58
+            for (;;)
++ 58
+              {
++ 58
+                zero_times_ok |= c != '+';
++ 58
+                many_times_ok |= c != '?';
++ 58
+
++ 58
+                if (p == pend)
++ 58
+                  break;
++ 58
+
++ 58
+                PATFETCH (c);
++ 58
+
++ 58
+                if (c == '*'
++ 58
+                    || (!(syntax & RE_BK_PLUS_QM) && (c == '+' || c == '?')))
++ 58
+                  ;
++ 58
+
++ 58
+                else if (syntax & RE_BK_PLUS_QM  &&  c == '\\')
++ 58
+                  {
++ 58
+                    if (p == pend) FREE_STACK_RETURN (REG_EESCAPE);
++ 58
+
++ 58
+                    PATFETCH (c1);
++ 58
+                    if (!(c1 == '+' || c1 == '?'))
++ 58
+                      {
++ 58
+                        PATUNFETCH;
++ 58
+                        PATUNFETCH;
++ 58
+                        break;
++ 58
+                      }
++ 58
+
++ 58
+                    c = c1;
++ 58
+                  }
++ 58
+                else
++ 58
+                  {
++ 58
+                    PATUNFETCH;
++ 58
+                    break;
++ 58
+                  }
++ 58
+
++ 58
+                /* If we get here, we found another repeat character.  */
++ 58
+               }
++ 58
+
++ 58
+            /* Star, etc. applied to an empty pattern is equivalent
++ 58
+               to an empty pattern.  */
++ 58
+            if (!laststart)
++ 58
+              break;
++ 58
+
++ 58
+            /* Now we know whether or not zero matches is allowed
++ 58
+               and also whether or not two or more matches is allowed.  */
++ 58
+            if (many_times_ok)
++ 58
+              { /* More than one repetition is allowed, so put in at the
++ 58
+                   end a backward relative jump from `b' to before the next
++ 58
+                   jump we're going to put in below (which jumps from
++ 58
+                   laststart to after this jump).
++ 58
+
++ 58
+                   But if we are at the `*' in the exact sequence `.*\n',
++ 58
+                   insert an unconditional jump backwards to the .,
++ 58
+                   instead of the beginning of the loop.  This way we only
++ 58
+                   push a failure point once, instead of every time
++ 58
+                   through the loop.  */
++ 58
+                assert (p - 1 > pattern);
++ 58
+
++ 58
+                /* Allocate the space for the jump.  */
++ 58
+                GET_BUFFER_SPACE (1 + OFFSET_ADDRESS_SIZE);
++ 58
+
++ 58
+                /* We know we are not at the first character of the pattern,
++ 58
+                   because laststart was nonzero.  And we've already
++ 58
+                   incremented `p', by the way, to be the character after
++ 58
+                   the `*'.  Do we have to do something analogous here
++ 58
+                   for null bytes, because of RE_DOT_NOT_NULL?  */
++ 58
+                if (TRANSLATE (*(p - 2)) == TRANSLATE ('.')
++ 58
+		    && zero_times_ok
++ 58
+                    && p < pend && TRANSLATE (*p) == TRANSLATE ('\n')
++ 58
+                    && !(syntax & RE_DOT_NEWLINE))
++ 58
+                  { /* We have .*\n.  */
++ 58
+                    STORE_JUMP (jump, b, laststart);
++ 58
+                    keep_string_p = true;
++ 58
+                  }
++ 58
+                else
++ 58
+                  /* Anything else.  */
++ 58
+                  STORE_JUMP (maybe_pop_jump, b, laststart -
++ 58
+			      (1 + OFFSET_ADDRESS_SIZE));
++ 58
+
++ 58
+                /* We've added more stuff to the buffer.  */
++ 58
+                b += 1 + OFFSET_ADDRESS_SIZE;
++ 58
+              }
++ 58
+
++ 58
+            /* On failure, jump from laststart to b + 3, which will be the
++ 58
+               end of the buffer after this jump is inserted.  */
++ 58
+	    /* ifdef WCHAR, 'b + 1 + OFFSET_ADDRESS_SIZE' instead of
++ 58
+	       'b + 3'.  */
++ 58
+            GET_BUFFER_SPACE (1 + OFFSET_ADDRESS_SIZE);
++ 58
+            INSERT_JUMP (keep_string_p ? on_failure_keep_string_jump
++ 58
+                                       : on_failure_jump,
++ 58
+                         laststart, b + 1 + OFFSET_ADDRESS_SIZE);
++ 58
+            pending_exact = 0;
++ 58
+            b += 1 + OFFSET_ADDRESS_SIZE;
++ 58
+
++ 58
+            if (!zero_times_ok)
++ 58
+              {
++ 58
+                /* At least one repetition is required, so insert a
++ 58
+                   `dummy_failure_jump' before the initial
++ 58
+                   `on_failure_jump' instruction of the loop. This
++ 58
+                   effects a skip over that instruction the first time
++ 58
+                   we hit that loop.  */
++ 58
+                GET_BUFFER_SPACE (1 + OFFSET_ADDRESS_SIZE);
++ 58
+                INSERT_JUMP (dummy_failure_jump, laststart, laststart +
++ 58
+			     2 + 2 * OFFSET_ADDRESS_SIZE);
++ 58
+                b += 1 + OFFSET_ADDRESS_SIZE;
++ 58
+              }
++ 58
+            }
++ 58
+	  break;
++ 58
+
++ 58
+
++ 58
+	case '.':
++ 58
+          laststart = b;
++ 58
+          BUF_PUSH (anychar);
++ 58
+          break;
++ 58
+
++ 58
+
++ 58
+        case '[':
++ 58
+          {
++ 58
+            boolean had_char_class = false;
++ 58
+#ifdef WCHAR
++ 58
+	    CHAR_T range_start = 0xffffffff;
++ 58
+#else
++ 58
+	    unsigned int range_start = 0xffffffff;
++ 58
+#endif
++ 58
+            if (p == pend) FREE_STACK_RETURN (REG_EBRACK);
++ 58
+
++ 58
+#ifdef WCHAR
++ 58
+	    /* We assume a charset(_not) structure as a wchar_t array.
++ 58
+	       charset[0] = (re_opcode_t) charset(_not)
++ 58
+               charset[1] = l (= length of char_classes)
++ 58
+               charset[2] = m (= length of collating_symbols)
++ 58
+               charset[3] = n (= length of equivalence_classes)
++ 58
+	       charset[4] = o (= length of char_ranges)
++ 58
+	       charset[5] = p (= length of chars)
++ 58
+
++ 58
+               charset[6] = char_class (wctype_t)
++ 58
+               charset[6+CHAR_CLASS_SIZE] = char_class (wctype_t)
++ 58
+                         ...
++ 58
+               charset[l+5]  = char_class (wctype_t)
++ 58
+
++ 58
+               charset[l+6]  = collating_symbol (wchar_t)
++ 58
+                            ...
++ 58
+               charset[l+m+5]  = collating_symbol (wchar_t)
++ 58
+					ifdef _LIBC we use the index if
++ 58
+					_NL_COLLATE_SYMB_EXTRAMB instead of
++ 58
+					wchar_t string.
++ 58
+
++ 58
+               charset[l+m+6]  = equivalence_classes (wchar_t)
++ 58
+                              ...
++ 58
+               charset[l+m+n+5]  = equivalence_classes (wchar_t)
++ 58
+					ifdef _LIBC we use the index in
++ 58
+					_NL_COLLATE_WEIGHT instead of
++ 58
+					wchar_t string.
++ 58
+
++ 58
+	       charset[l+m+n+6] = range_start
++ 58
+	       charset[l+m+n+7] = range_end
++ 58
+	                       ...
++ 58
+	       charset[l+m+n+2o+4] = range_start
++ 58
+	       charset[l+m+n+2o+5] = range_end
++ 58
+					ifdef _LIBC we use the value looked up
++ 58
+					in _NL_COLLATE_COLLSEQ instead of
++ 58
+					wchar_t character.
++ 58
+
++ 58
+	       charset[l+m+n+2o+6] = char
++ 58
+	                          ...
++ 58
+	       charset[l+m+n+2o+p+5] = char
++ 58
+
++ 58
+	     */
++ 58
+
++ 58
+	    /* We need at least 6 spaces: the opcode, the length of
++ 58
+               char_classes, the length of collating_symbols, the length of
++ 58
+               equivalence_classes, the length of char_ranges, the length of
++ 58
+               chars.  */
++ 58
+	    GET_BUFFER_SPACE (6);
++ 58
+
++ 58
+	    /* Save b as laststart. And We use laststart as the pointer
++ 58
+	       to the first element of the charset here.
++ 58
+	       In other words, laststart[i] indicates charset[i].  */
++ 58
+            laststart = b;
++ 58
+
++ 58
+            /* We test `*p == '^' twice, instead of using an if
++ 58
+               statement, so we only need one BUF_PUSH.  */
++ 58
+            BUF_PUSH (*p == '^' ? charset_not : charset);
++ 58
+            if (*p == '^')
++ 58
+              p++;
++ 58
+                /* See if we're at the beginning of a possible character
++ 58
+                   class.  */
++ 58
+                else if (syntax & RE_CHAR_CLASSES && c == '[' && *p == ':')
++ 58
+                  { /* Leave room for the null.  */
++ 58
+                    char str[CHAR_CLASS_MAX_LENGTH + 1];
++ 58
+
++ 58
+                    PATFETCH (c);
++ 58
+                    c1 = 0;
++ 58
+
++ 58
+                    /* If pattern is `[[:'.  */
++ 58
+                    if (p == pend) FREE_STACK_RETURN (REG_EBRACK);
++ 58
+
++ 58
+                    for (;;)
++ 58
+                      {
++ 58
+                        PATFETCH (c);
++ 58
+                        if ((c == ':' && *p == ']') || p == pend)
++ 58
+                          break;
++ 58
+			if (c1 < CHAR_CLASS_MAX_LENGTH)
++ 58
+			  str[c1++] = c;
++ 58
+			else
++ 58
+			  /* This is in any case an invalid class name.  */
++ 58
+			  str[0] = '\0';
++ 58
+                      }
+D 59 4941
