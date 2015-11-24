@@ -2,19 +2,15 @@
 
 DIR=$1
 
-echo >> log_file
-echo $DIR >> log_file 
+./bin/computePatchOpt $DIR/source $DIR/target > $DIR/patchCompute
+./bin/applyPatch $DIR/patchCompute $DIR/source > $DIR/sourcePatched
+diff $DIR/sourcePatched $DIR/target > $DIR/diffShow
 
-(time ./bin/computePatchOpt $DIR/source $DIR/target) 2>> log_file
-./bin/applyPatch P $DIR/source > G
-diff -Z G $DIR/target > diff_show
-
-if [ -s diff_show ]
+if [ -s $DIR/diffShow ]
 then
 	tput setaf 1; echo $DIR : [TEST FAILED]	
 	cat diff_show 
 else
 	tput setaf 2; echo $DIR : [TEST PASSED]
 fi
-
 tput setaf 7
