@@ -5,3 +5,10 @@
 bin/applypatch
 bin/computePatchOpt
 *\#*
+G
+
+log_file
+
+diff_show
+
+benchmark/benchmark_02/diffShow

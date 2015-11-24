@@ -10,40 +10,18 @@
 
 using namespace std;
 
-string toString(int Number){
+static vector<string> originalLines;
+static vector<string> targetLines;
+static int N;
+static int M;
+
+inline string toString(int Number){
     return static_cast<ostringstream*>( &(ostringstream() << Number) )->str();
 }
 
-int main(int argc, char* argv[]) {
-
-    ifstream oFile(argv[1]);
-    ifstream tFile(argv[2]);
-
-    vector<string> originalLines;
-    vector<string> targetLines;
-    vector<string> patchLines;
-
-    string line;
-    while (getline(oFile, line))
-	originalLines.push_back(line);
-
-    while (getline(tFile, line))
-	targetLines.push_back(line);
-
-    const int N = originalLines.size();
-    const int M = targetLines.size();
-
-    // Choices :
-    // 0 -> ERREUR !
-    // 1 -> add
-    // 2 -> substitution
-    // 3 -> deletion
-    // 4 -> D-deletion
-    // 5 -> identity
-
-    vector<vector <int> > costMin(N+1,vector<int>(M+1));
-    vector<vector <int> > choicesMade(N+1, vector<int>(M+1));
-    vector<vector <int> > nbLinesDeleted(N+1, vector<int>(M+1));
+inline void initCosts(vector < vector<int> > &costMin,
+	       vector < vector<int> > &choicesMade,
+	       vector < vector<int> > &nbLinesDeleted) {
 
     costMin[1][0] = 10;
     choicesMade[1][0] = 3;
@@ -58,6 +36,11 @@ int main(int argc, char* argv[]) {
 	choicesMade[0][j] = 1;
     }
 
+}
+
+inline void computeCosts(vector < vector<int> > &costMin,
+		  vector < vector<int> > &choicesMade,
+		  vector < vector<int> > &nbLinesDeleted) {
     vector<int> listMinD;
     int Ca, Cs, Cd, CD, minD, indexMinD, indexCostMin;
 
@@ -95,7 +78,12 @@ int main(int argc, char* argv[]) {
 		nbLinesDeleted[i][j] = indexMinD;
 	}
     }
+}
 
+inline void generatePatch(vector < vector<int> > &choicesMade,
+		   vector < vector<int> > &nbLinesDeleted) {
+
+    vector<string> patchLines;
     int i = N, j = M;
     while (i > 0 || j > 0) {
 	switch (choicesMade[i][j]){
@@ -131,4 +119,36 @@ int main(int argc, char* argv[]) {
 
     for (uint i = 0; i < patchLines.size(); ++i)
 	cout << patchLines[i];
+}
+
+int main(int argc, char* argv[]) {
+
+    ifstream oFile(argv[1]);
+    ifstream tFile(argv[2]);
+
+    string line;
+    while (getline(oFile, line))
+	originalLines.push_back(line);
+
+    while (getline(tFile, line))
+	targetLines.push_back(line);
+
+    N = originalLines.size();
+    M = targetLines.size();
+
+    // Choices :
+    // 0 -> ERREUR !
+    // 1 -> add
+    // 2 -> substitution
+    // 3 -> deletion
+    // 4 -> D-deletion
+    // 5 -> identity
+
+    vector<vector <int> > costMin(N+1,vector<int>(M+1));
+    vector<vector <int> > choicesMade(N+1, vector<int>(M+1));
+    vector<vector <int> > nbLinesDeleted(N+1, vector<int>(M+1));
+
+    initCosts(costMin, choicesMade, nbLinesDeleted);
+    computeCosts(costMin, choicesMade, nbLinesDeleted);
+    generatePatch(choicesMade, nbLinesDeleted);
 }
