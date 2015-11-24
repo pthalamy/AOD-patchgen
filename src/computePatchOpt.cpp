@@ -2,8 +2,8 @@
  *  @brief Computes an optimal patch between two files F1 and F2
  *
  *
- *  @author Pierre THALAMY (ISI2)
  *  @author Ben LEROUX (ISI1)
+ *  @author Pierre THALAMY (ISI2)
  *
  */
 
@@ -19,10 +19,17 @@
 
 using namespace std;
 
-static vector<string> originalLines;
-static vector<string> targetLines;
+/** \brief number of lines in source file */
 static int N;
+/** \brief number of lines in target file */
 static int M;
+/** \brief Lines from source file */
+static vector<string> originalLines;
+/** \brief Lines from target file */
+static vector<string> targetLines;
+
+/** @brief Represents a type of operational choice
+ */
 
 typedef enum {
     OpChoiceError = 0,
@@ -43,7 +50,7 @@ inline string toString(int Number){
     return static_cast<ostringstream*>( &(ostringstream() << Number) )->str();
 }
 
-/** @brief Initializes the cost, choices and number of deleted lines matrices
+/** @brief Initializes the cost, choice and number of deleted lines matrices
  *  to the
  *
  *  @param s The string to be printed.
@@ -69,9 +76,17 @@ inline void initCosts(vector < vector<int> > &costMin,
 
 }
 
+/** @brief Computes the remaining of the content of the cost, choice
+ *  and number of deleted lines
+ *
+ *  @param costMin the cost matrix
+ *  @param choicesMade the choice matrix
+ *  @param nbLinesDeleted a matrix that indicates the number of lines to delete to go from line i to j
+ *  @return Void.
+ */
 inline void computeCosts(vector < vector<int> > &costMin,
-		  vector < vector<int> > &choicesMade,
-		  vector < vector<int> > &nbLinesDeleted) {
+			 vector < vector<int> > &choicesMade,
+			 vector < vector<int> > &nbLinesDeleted) {
     vector<int> listMinD;
     int Ca, Cs, Cd, CD, minD, indexMinD, indexCostMin;
 
@@ -95,7 +110,8 @@ inline void computeCosts(vector < vector<int> > &costMin,
 	    minD = *min_element(listMinD.begin(), listMinD.end());
 	    indexMinD = distance(listMinD.begin(), find(listMinD.begin(), listMinD.end(), minD)) + 1;
 
-	    int values[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs, costMin[i-1][j] + Cd, minD + CD};
+	    int values[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
+			    costMin[i-1][j] + Cd, minD + CD};
 	    vector<int> list (values, values + sizeof(values)/sizeof(int));
 	    costMin[i][j] = *min_element(list.begin(), list.end());
 
@@ -111,8 +127,14 @@ inline void computeCosts(vector < vector<int> > &costMin,
     }
 }
 
+/** @brief Generate the patch based on the content of the choice and number of lines deleted matrices
+ *  and print it to stdout
+ *  @param choicesMade the choice matrix
+ *  @param nbLinesDeleted a matrix that indicates the number of lines to delete to go from line i to j
+ *  @return Void.
+ */
 inline void generatePatch(vector < vector<int> > &choicesMade,
-		   vector < vector<int> > &nbLinesDeleted) {
+			  vector < vector<int> > &nbLinesDeleted) {
 
     vector<string> patchLines;
     int i = N, j = M;
@@ -148,12 +170,14 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
 	}
     }
 
+    // Print to stdout
     for (uint i = 0; i < patchLines.size(); ++i)
 	cout << patchLines[i];
 }
 
 int main(int argc, char* argv[]) {
 
+    // Read both files and store content in String vectors indexed by line number
     ifstream oFile(argv[1]);
     ifstream tFile(argv[2]);
 
