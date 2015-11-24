@@ -1,3 +1,12 @@
+/** @file computePatchOpt.cpp
+ *  @brief Computes an optimal patch between two files F1 and F2
+ *
+ *
+ *  @author Pierre THALAMY (ISI2)
+ *  @author Ben LEROUX (ISI1)
+ *
+ */
+
 #include <iostream>
 #include <string.h>
 #include <fstream>
@@ -15,25 +24,47 @@ static vector<string> targetLines;
 static int N;
 static int M;
 
+typedef enum {
+    OpChoiceError = 0,
+    OpChoiceAdd = 1,
+    OpChoiceSub = 2,
+    OpChoiceDel = 3,
+    OpChoiceDDel = 4,
+    OpChoiceID = 5
+} OpChoice;
+
+/** @brief Converts a number into a string
+ *
+ *
+ *  @param Number the number to convert to string
+ *  @return a string representation of the parameter
+ */
 inline string toString(int Number){
     return static_cast<ostringstream*>( &(ostringstream() << Number) )->str();
 }
 
+/** @brief Initializes the cost, choices and number of deleted lines matrices
+ *  to the
+ *
+ *  @param s The string to be printed.
+ *  @param len The length of the string s.
+ *  @return Void.
+ */
 inline void initCosts(vector < vector<int> > &costMin,
 	       vector < vector<int> > &choicesMade,
 	       vector < vector<int> > &nbLinesDeleted) {
 
     costMin[1][0] = 10;
-    choicesMade[1][0] = 3;
+    choicesMade[1][0] = OpChoiceDel;
     for (int i = 2; i <= N; ++i) {
 	costMin[i][0] = 15;
-	choicesMade[i][0] = 4;
+	choicesMade[i][0] = OpChoiceDDel;
 	nbLinesDeleted[i][0] = i;
     }
 
     for (int j = 1; j <= M; ++j) {
 	costMin[0][j] = costMin[0][j-1] + 10 + targetLines[j-1].size() + 1;
-	choicesMade[0][j] = 1;
+	choicesMade[0][j] = OpChoiceAdd;
     }
 
 }
@@ -87,30 +118,30 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
     int i = N, j = M;
     while (i > 0 || j > 0) {
 	switch (choicesMade[i][j]){
-	case 0:
+	case OpChoiceError:
 	    patchLines.insert(patchLines.begin(), "No choices possible\n");
 	    break;
-	case 1:
+	case OpChoiceAdd:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
 	    patchLines.insert(patchLines.begin(), "+ " + toString(i) + '\n');
 	    --j;
 	    break;
-	case 2:
+	case OpChoiceSub:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
 	    patchLines.insert(patchLines.begin(), "= " + toString(i) + '\n');
 	    --i;
 	    --j;
 	    break;
-	case 3:
+	case OpChoiceDel:
 	    patchLines.insert(patchLines.begin(), "d " + toString(i) + '\n');
 	    --i;
 	    break;
-	case 4:
+	case OpChoiceDDel:
 	    patchLines.insert(patchLines.begin(), "D " + toString(i+1 - nbLinesDeleted[i][j]) +
 			      " " + toString(nbLinesDeleted[i][j]) + '\n');
 	    i -= nbLinesDeleted[i][j];
 	    break;
-	case 5:
+	case OpChoiceID:
 	    --i;
 	    --j;
 	    break;
@@ -135,14 +166,6 @@ int main(int argc, char* argv[]) {
 
     N = originalLines.size();
     M = targetLines.size();
-
-    // Choices :
-    // 0 -> ERREUR !
-    // 1 -> add
-    // 2 -> substitution
-    // 3 -> deletion
-    // 4 -> D-deletion
-    // 5 -> identity
 
     vector<vector <int> > costMin(N+1,vector<int>(M+1));
     vector<vector <int> > choicesMade(N+1, vector<int>(M+1));
