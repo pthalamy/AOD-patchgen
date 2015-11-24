@@ -198,4 +198,7 @@ int main(int argc, char* argv[]) {
     initCosts(costMin, choicesMade, nbLinesDeleted);
     computeCosts(costMin, choicesMade, nbLinesDeleted);
     generatePatch(choicesMade, nbLinesDeleted);
+
+    close(oFile);
+    close(tFile);
 }
