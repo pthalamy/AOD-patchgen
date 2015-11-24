@@ -14,3 +14,5 @@ else
 	tput setaf 2; echo $DIR : [TEST PASSED]
 fi
 tput setaf 7
+
+rm -f $DIR/patchCompute $DIR/sourcePatched $DIR/diffShow
