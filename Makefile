@@ -3,8 +3,8 @@ CC=gcc
 CXX=g++
 LATEXC=pdflatex
 DOCC=doxygen
-CFLAGS=-Wall #-g
-CXXFLAGS=g++ -Ofast -Wall
+CFLAGS=-Wall
+CXXFLAGS=g++ -Ofast -Wall -std=c++11
 
 REFDIR=.
 SRCDIR=$(REFDIR)/src
