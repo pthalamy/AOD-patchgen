@@ -21,9 +21,9 @@
 using namespace std;
 
 /** \brief number of lines in source file */
-static int N = 0;
+static int N;
 /** \brief number of lines in target file */
-static int M = 0;
+static int M;
 /** \brief Lines from source file */
 static vector<string> originalLines;
 /** \brief Lines from target file */
@@ -33,12 +33,11 @@ static vector<string> targetLines;
  */
 
 typedef enum {
-    OpChoiceError = 0,
-    OpChoiceAdd = 1,
-    OpChoiceSub = 2,
-    OpChoiceDel = 3,
-    OpChoiceDDel = 4,
-    OpChoiceID = 5
+    OpChoiceAdd = 0,
+    OpChoiceSub = 1,
+    OpChoiceDel = 2,
+    OpChoiceDDel = 3,
+    OpChoiceID = 4
 } OpChoice;
 
 /** @brief Initializes the cost, choice and number of deleted lines matrices
@@ -48,24 +47,24 @@ typedef enum {
  *  @param len The length of the string s.
  *  @return Void.
  */
-inline void initCosts(vector < vector<int> > &costMin,
-		      vector < vector<int> > &choicesMade,
-		      vector < vector<int> > &nbLinesDeleted) {
+// inline void initCosts(vector < vector<int> > &costMin,
+// 		      vector < vector<int> > &choicesMade,
+// 		      vector < vector<int> > &nbLinesDeleted) {
 
-    costMin[1][0] = 10;
-    choicesMade[1][0] = OpChoiceDel;
-    for (int i = 2; i <= N; ++i) {
-	costMin[i][0] = 15;
-	choicesMade[i][0] = OpChoiceDDel;
-	nbLinesDeleted[i][0] = i;
-    }
+//     costMin[1][0] = 10;
+//     choicesMade[1][0] = OpChoiceDel;
+//     for (int i = 2; i <= N; ++i) {
+//     	costMin[i][0] = 15;
+//     	choicesMade[i][0] = OpChoiceDDel;
+//     	nbLinesDeleted[i][0] = i;
+//     }
 
-    for (int j = 1; j <= M; ++j) {
-	costMin[0][j] = costMin[0][j-1] + 10 + targetLines[j-1].size() + 1;
-	choicesMade[0][j] = OpChoiceAdd;
-    }
+//     for (int j = 1; j <= M; ++j) {
+//     	costMin[0][j] = costMin[0][j-1] + 10 + targetLines[j-1].size() + 1;
+//     	choicesMade[0][j] = OpChoiceAdd;
+//     }
 
-}
+// }
 
 /** @brief Computes the remaining of the content of the cost, choice
  *  and number of deleted lines
@@ -80,15 +79,31 @@ inline void computeCosts(vector < vector<int> > &costMin,
 			 vector < vector<int> > &nbLinesDeleted) {
     // vector<int> listMinD;
     int Ca, Cs, Cd, CD, minD, indexCostMin, indexMinD, newMinD, currentIndex;
+    int *costMin_ptr;
 
-    for (int j = 1; j <= M; ++j) {
+    for (int j = 0; j <= M; ++j) {
+
+	if (j > 0) {
+	    costMin[0][j] = costMin[0][j-1] + 10 + targetLines[j-1].size() + 1;
+	    choicesMade[0][j] = OpChoiceAdd;
+	}
 
 	minD = INT_MAX;
 	indexMinD = 0;
 	currentIndex = 0;
-	// listMinD.clear();
 
 	for (int i = 1; i <= N; ++i) {
+
+	    if (j == 0 && i > 1) {
+	    	costMin[i][0] = 15;
+		choicesMade[i][0] = OpChoiceDDel;
+		nbLinesDeleted[i][0] = i;
+		continue;
+	    } else if (i == 0 && j > 0) {
+		costMin[0][j] = costMin[0][j-1] + 10 + targetLines[j-1].size() + 1;
+		choicesMade[0][j] = OpChoiceAdd;
+		continue;
+	    }
 
 	    currentIndex++;
 
@@ -102,42 +117,36 @@ inline void computeCosts(vector < vector<int> > &costMin,
 	    CD = 15;
 
 	    // Calculate min for D-deletion
-	    // listMinD.push_back(costMin[i-1][j]);
 	    newMinD = min(minD, costMin[i-1][j]);
 	    if (newMinD == costMin[i-1][j])
 		indexMinD = currentIndex;
 	    minD = newMinD;
 
 
-	    // indexMinD = distance(listMinD.begin(), find(listMinD.begin(), listMinD.end(), minD)) + 1;
 
-	    // int values[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
-	    // 		    costMin[i-1][j] + Cd, minD + CD};
-	    // vector<int> list (values, values + sizeof(values)/sizeof(int));
-	    // costMin[i][j] = *min_element(list.begin(), list.end());
-	    costMin[i][j] = min({costMin[i][j-1] + Ca,
-			costMin[i-1][j-1] + Cs,
-			costMin[i-1][j] + Cd,
-			minD + CD});
+	    int currentCosts[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
+	    			 costMin[i-1][j] + Cd, minD + CD};
+	    costMin_ptr = min_element(currentCosts, currentCosts + 4);
+	    costMin[i][j] = *costMin_ptr;
+	    // indexCostMin = (costMin_ptr - currentCosts) / sizeof(int);
+	    // LAST LINE SHOULD BE USABLE INSTEAD OF CONDITONNAL CHECKS. BUT DOESNT WORK. WHY?
+
 	    if (costMin[i][j] == costMin[i][j-1] + Ca)
-		indexCostMin = 1;
+		indexCostMin = OpChoiceAdd;
 	    else if (costMin[i][j] == costMin[i-1][j-1] + Cs)
 		if (Cs != 0)
-		    indexCostMin = 2;
+		    indexCostMin = OpChoiceSub;
 		else
-		    indexCostMin = 5;
+		    indexCostMin = OpChoiceID;
 	    else if (costMin[i][j] == costMin[i-1][j] + Cd)
-		indexCostMin = 3;
+		indexCostMin = OpChoiceDel;
 	    else
-		indexCostMin = 4;
+		indexCostMin = OpChoiceDDel;
 
-	    // indexCostMin = distance(list.begin(), find(list.begin(), list.end(), costMin[i][j])) + 1;
-	    // if (indexCostMin == 2 && Cs == 0)
-	    // 	indexCostMin = 5;
 
 	    choicesMade[i][j] = indexCostMin;
 
-	    if (indexCostMin == 4)
+	    if (indexCostMin == OpChoiceDDel)
 		nbLinesDeleted[i][j] = indexMinD;
 	}
     }
@@ -156,9 +165,9 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
     int i = N, j = M;
     while (i > 0 || j > 0) {
 	switch (choicesMade[i][j]){
-	case OpChoiceError:
-	    patchLines.insert(patchLines.begin(), "No choices possible\n");
-	    break;
+	// case OpChoiceError:
+	//     patchLines.insert(patchLines.begin(), "No choices possible\n");
+	//     break;
 	case OpChoiceAdd:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
 	    patchLines.insert(patchLines.begin(), "+ " + to_string(i) + '\n');
@@ -182,6 +191,10 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
 	case OpChoiceID:
 	    --i;
 	    --j;
+	    break;
+	default:
+	    cerr << "ENUM ERROR!\n";
+	    exit(1);
 	    break;
 	}
     }
@@ -211,11 +224,14 @@ int main(int argc, char* argv[]) {
     vector<vector <int> > choicesMade(N+1, vector<int>(M+1));
     vector<vector <int> > nbLinesDeleted(N+1, vector<int>(M+1));
 
-    initCosts(costMin, choicesMade, nbLinesDeleted);
+    // initCosts(costMin, choicesMade, nbLinesDeleted);
+    costMin[1][0] = 10;
+    choicesMade[1][0] = OpChoiceDel;
+
     computeCosts(costMin, choicesMade, nbLinesDeleted);
     generatePatch(choicesMade, nbLinesDeleted);
 
-    cout << "\nCoût: " << costMin[N][M] << "\n";
+    // cout << "\nCoût: " << costMin[N][M] << "\n";
 
     oFile.close();
     tFile.close();
