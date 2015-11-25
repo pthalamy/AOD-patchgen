@@ -16,13 +16,14 @@
 #include <algorithm>
 #include <iterator>
 #include <ctime>
+#include <climits>
 
 using namespace std;
 
 /** \brief number of lines in source file */
-static int N;
+static int N = 0;
 /** \brief number of lines in target file */
-static int M;
+static int M = 0;
 /** \brief Lines from source file */
 static vector<string> originalLines;
 /** \brief Lines from target file */
@@ -40,16 +41,6 @@ typedef enum {
     OpChoiceID = 5
 } OpChoice;
 
-/** @brief Converts a number into a string
- *
- *
- *  @param Number the number to convert to string
- *  @return a string representation of the parameter
- */
-inline string toString(int Number){
-    return static_cast<ostringstream*>( &(ostringstream() << Number) )->str();
-}
-
 /** @brief Initializes the cost, choice and number of deleted lines matrices
  *  to the
  *
@@ -58,8 +49,8 @@ inline string toString(int Number){
  *  @return Void.
  */
 inline void initCosts(vector < vector<int> > &costMin,
-	       vector < vector<int> > &choicesMade,
-	       vector < vector<int> > &nbLinesDeleted) {
+		      vector < vector<int> > &choicesMade,
+		      vector < vector<int> > &nbLinesDeleted) {
 
     costMin[1][0] = 10;
     choicesMade[1][0] = OpChoiceDel;
@@ -87,14 +78,19 @@ inline void initCosts(vector < vector<int> > &costMin,
 inline void computeCosts(vector < vector<int> > &costMin,
 			 vector < vector<int> > &choicesMade,
 			 vector < vector<int> > &nbLinesDeleted) {
-    vector<int> listMinD;
-    int Ca, Cs, Cd, CD, minD, indexMinD, indexCostMin;
+    // vector<int> listMinD;
+    int Ca, Cs, Cd, CD, minD, indexCostMin, indexMinD, newMinD, currentIndex;
 
     for (int j = 1; j <= M; ++j) {
 
-	listMinD.clear();
+	minD = INT_MAX;
+	indexMinD = 0;
+	currentIndex = 0;
+	// listMinD.clear();
 
 	for (int i = 1; i <= N; ++i) {
+
+	    currentIndex++;
 
             // Define coef
 	    Ca = 10 + targetLines[j-1].size() + 1;
@@ -106,18 +102,38 @@ inline void computeCosts(vector < vector<int> > &costMin,
 	    CD = 15;
 
 	    // Calculate min for D-deletion
-	    listMinD.push_back(costMin[i-1][j]);
-	    minD = *min_element(listMinD.begin(), listMinD.end());
-	    indexMinD = distance(listMinD.begin(), find(listMinD.begin(), listMinD.end(), minD)) + 1;
+	    // listMinD.push_back(costMin[i-1][j]);
+	    newMinD = min(minD, costMin[i-1][j]);
+	    if (newMinD == costMin[i-1][j])
+		indexMinD = currentIndex;
+	    minD = newMinD;
 
-	    int values[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
-			    costMin[i-1][j] + Cd, minD + CD};
-	    vector<int> list (values, values + sizeof(values)/sizeof(int));
-	    costMin[i][j] = *min_element(list.begin(), list.end());
 
-	    indexCostMin = distance(list.begin(), find(list.begin(), list.end(), costMin[i][j])) + 1;
-	    if (indexCostMin == 2 && Cs == 0)
-		indexCostMin = 5;
+	    // indexMinD = distance(listMinD.begin(), find(listMinD.begin(), listMinD.end(), minD)) + 1;
+
+	    // int values[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
+	    // 		    costMin[i-1][j] + Cd, minD + CD};
+	    // vector<int> list (values, values + sizeof(values)/sizeof(int));
+	    // costMin[i][j] = *min_element(list.begin(), list.end());
+	    costMin[i][j] = min({costMin[i][j-1] + Ca,
+			costMin[i-1][j-1] + Cs,
+			costMin[i-1][j] + Cd,
+			minD + CD});
+	    if (costMin[i][j] == costMin[i][j-1] + Ca)
+		indexCostMin = 1;
+	    else if (costMin[i][j] == costMin[i-1][j-1] + Cs)
+		if (Cs != 0)
+		    indexCostMin = 2;
+		else
+		    indexCostMin = 5;
+	    else if (costMin[i][j] == costMin[i-1][j] + Cd)
+		indexCostMin = 3;
+	    else
+		indexCostMin = 4;
+
+	    // indexCostMin = distance(list.begin(), find(list.begin(), list.end(), costMin[i][j])) + 1;
+	    // if (indexCostMin == 2 && Cs == 0)
+	    // 	indexCostMin = 5;
 
 	    choicesMade[i][j] = indexCostMin;
 
@@ -145,22 +161,22 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
 	    break;
 	case OpChoiceAdd:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
-	    patchLines.insert(patchLines.begin(), "+ " + toString(i) + '\n');
+	    patchLines.insert(patchLines.begin(), "+ " + to_string(i) + '\n');
 	    --j;
 	    break;
 	case OpChoiceSub:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
-	    patchLines.insert(patchLines.begin(), "= " + toString(i) + '\n');
+	    patchLines.insert(patchLines.begin(), "= " + to_string(i) + '\n');
 	    --i;
 	    --j;
 	    break;
 	case OpChoiceDel:
-	    patchLines.insert(patchLines.begin(), "d " + toString(i) + '\n');
+	    patchLines.insert(patchLines.begin(), "d " + to_string(i) + '\n');
 	    --i;
 	    break;
 	case OpChoiceDDel:
-	    patchLines.insert(patchLines.begin(), "D " + toString(i+1 - nbLinesDeleted[i][j]) +
-			      " " + toString(nbLinesDeleted[i][j]) + '\n');
+	    patchLines.insert(patchLines.begin(), "D " + to_string(i+1 - nbLinesDeleted[i][j]) +
+			      " " + to_string(nbLinesDeleted[i][j]) + '\n');
 	    i -= nbLinesDeleted[i][j];
 	    break;
 	case OpChoiceID:
@@ -183,10 +199,10 @@ int main(int argc, char* argv[]) {
 
     string line;
     while (getline(oFile, line))
-	originalLines.push_back(line);
+    	originalLines.push_back(line);
 
     while (getline(tFile, line))
-	targetLines.push_back(line);
+    	targetLines.push_back(line);
 
     N = originalLines.size();
     M = targetLines.size();
@@ -199,6 +215,8 @@ int main(int argc, char* argv[]) {
     computeCosts(costMin, choicesMade, nbLinesDeleted);
     generatePatch(choicesMade, nbLinesDeleted);
 
-    close(oFile);
-    close(tFile);
+    cout << "\nCoût: " << costMin[N][M] << "\n";
+
+    oFile.close();
+    tFile.close();
 }
