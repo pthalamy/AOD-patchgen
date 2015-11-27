@@ -35,9 +35,9 @@ static vector<string> targetLines;
 typedef enum {
     OpChoiceAdd = 0,
     OpChoiceSub = 1,
-    OpChoiceDel = 2,
-    OpChoiceDDel = 3,
-    OpChoiceID = 4
+    OpChoiceID = 2,
+    OpChoiceDel = 3,
+    OpChoiceDDel = 4
 } OpChoice;
 
 
@@ -58,15 +58,13 @@ inline string toString(int Number){
  *  @return Void.
  */
 inline void initCosts(vector < vector<int> > &costMin,
-		      vector < vector<int> > &choicesMade,
-		      vector < vector<int> > &nbLinesDeleted) {
+		      vector < vector<int> > &choicesMade) {
 
     costMin[1][0] = 10;
     choicesMade[1][0] = OpChoiceDel;
     for (int i = 2; i <= N; ++i) {
     	costMin[i][0] = 15;
-    	choicesMade[i][0] = OpChoiceDDel;
-    	nbLinesDeleted[i][0] = i;
+    	choicesMade[i][0] = OpChoiceDDel + i;
     }
 
     for (int j = 1; j <= M; ++j) {
@@ -85,8 +83,7 @@ inline void initCosts(vector < vector<int> > &costMin,
  *  @return Void.
  */
 inline void computeCosts(vector < vector<int> > &costMin,
-			 vector < vector<int> > &choicesMade,
-			 vector < vector<int> > &nbLinesDeleted) {
+			 vector < vector<int> > &choicesMade) {
     // vector<int> listMinD;
     int Ca, Cs, Cd, CD, minD, indexCostMin, indexMinD, newMinD, currentIndex;
     int *costMin_ptr;
@@ -142,7 +139,7 @@ inline void computeCosts(vector < vector<int> > &costMin,
 	    choicesMade[i][j] = indexCostMin;
 
 	    if (indexCostMin == OpChoiceDDel)
-		nbLinesDeleted[i][j] = indexMinD;
+		choicesMade[i][j] += indexMinD;
 	}
     }
 }
@@ -153,8 +150,7 @@ inline void computeCosts(vector < vector<int> > &costMin,
  *  @param nbLinesDeleted a matrix that indicates the number of lines to delete to go from line i to j
  *  @return Void.
  */
-inline void generatePatch(vector < vector<int> > &choicesMade,
-			  vector < vector<int> > &nbLinesDeleted) {
+inline void generatePatch(vector < vector<int> > &choicesMade) {
 
     vector<string> patchLines;
     int i = N, j = M;
@@ -175,18 +171,15 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
 	    patchLines.insert(patchLines.begin(), "d " + toString(i) + '\n');
 	    --i;
 	    break;
-	case OpChoiceDDel:
-	    patchLines.insert(patchLines.begin(), "D " + toString(i+1 - nbLinesDeleted[i][j]) +
-			      " " + toString(nbLinesDeleted[i][j]) + '\n');
-	    i -= nbLinesDeleted[i][j];
-	    break;
 	case OpChoiceID:
 	    --i;
 	    --j;
 	    break;
-	default:
-	    cerr << "ENUM ERROR!" << endl;
-	    exit(EXIT_FAILURE);
+	default: //DDelection
+	    patchLines.insert(patchLines.begin(), "D " +
+			      toString(i+1 - choicesMade[i][j] + OpChoiceDDel) +
+			      " " + toString(choicesMade[i][j] - OpChoiceDDel) + '\n');
+	    i -= (choicesMade[i][j] - OpChoiceDDel);
 	    break;
 	}
     }
@@ -214,14 +207,11 @@ int main(int argc, char* argv[]) {
 
     vector<vector <int> > costMin(N+1,vector<int>(M+1));
     vector<vector <int> > choicesMade(N+1, vector<int>(M+1));
-    vector<vector <int> > nbLinesDeleted(N+1, vector<int>(M+1));
 
-    initCosts(costMin, choicesMade, nbLinesDeleted);
-    costMin[1][0] = 10;
-    choicesMade[1][0] = OpChoiceDel;
+    initCosts(costMin, choicesMade);
 
-    computeCosts(costMin, choicesMade, nbLinesDeleted);
-    generatePatch(choicesMade, nbLinesDeleted);
+    computeCosts(costMin, choicesMade);
+    generatePatch(choicesMade);
 
     ofstream result("costPatch");
     result << "Coût : " << costMin[N][M] << "\n"; 
