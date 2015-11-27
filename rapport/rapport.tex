@@ -32,7 +32,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Principe de notre  programme (1 point)}
 
-Notre programme remplit deux matrices de tailles égales aux nombres de lignes + 1 présendans les fichiers source et cible. Chaque case (i, j) de la première matrice représente le coût minimal du patch transformant le fichier source en fichier cible jusqu'aux lignes i et j respectivement. La deuxième matrice conserve en mémoire le dernier choix optimal réalisé pour arriver jusqu'à ces lignes.
+Notre programme remplit deux matrices de tailles égales aux nombres de lignes + 1 présentent dans les fichiers source et cible. Chaque case (i, j) de la première matrice représente le coût minimal du patch transformant le fichier source en fichier cible jusqu'aux lignes i et j respectivement. La deuxième matrice conserve en mémoire le dernier choix optimal réalisé pour arriver jusqu'à ces lignes.
 
 Ensuite on parcourt la matrice des choix en partant de la case de plus haut indices, puis on détermine les opérations effectuées et on décrémente en fonction les indices (i,j) afin d'arriver au point (0, 0).
 
@@ -40,7 +40,7 @@ Nous avons utilisé une méthode itérative dans toutes nos boucles.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analyse du coût théorique (3 points)}
-Nous avons remarqué que l'essentiel du temps d'exécution de notre algorithme correspond au temps passé au remplissage des matrices. En effet en dehors du remplissage, on ne passe que peu de temps à lire les fichiers, initialiser les matrices ou même écrire le patch. De plus on effectue 12 opérations élémentaires dans les boucles imbriqués de remplissage.\\
+Nous avons remarqué que l'essentiel du temps d'exécution de notre algorithme correspond au temps passé au remplissage des matrices. En effet en dehors du remplissage, on ne passe que peu de temps à lire les fichiers, initialiser les matrices ou même écrire le patch. De plus on effectue 12 opérations élémentaires dans les boucles imbriquées de remplissage.\\
 Lecture : $O(n_1+n_2)$\\
 Initialisation : $O(n_1+n_2)$\\
 Écriture du patch : $O(\sqrt{n_1+n_2})$ \\
@@ -116,7 +116,7 @@ Coût total théorique : $O(2(n_1+n_2) + \sqrt{n_1+n_2} + 12.n_1.n_2)$
 \subsection{Analyse des résultats expérimentaux}
 On remarque que $n_1$ et $n_2$ sont très proche. On peut alors prendre $N = \max{n_1, n_2}$ et grâce aux calculs théoriques estimer que le temps d'exécution est fonction de N de cette façon : $16.N^2 +7.N$  (Ajout du max des opérations effectuées et des défauts de cache)
 
-Cependant lorsque le nombre de ligne max des fichiers double on devrait multiplier le temps d'exécution par un facteur de $\frac{78}{23} \simeq 3,4$. Or on remarque plutôt que le temps d'exécution est multiplié par 6. On en conclut que les résultats théoriques et expérimentaux ne coïncide pas, soit parce que nos calculs de coût sont trop approximatif, soit que d'autres variables entrent dans le calcul du coup d'exécution.
+Cependant lorsque le nombre de ligne max des fichiers double on devrait multiplier le temps d'exécution par un facteur de $\frac{78}{23} \simeq 3,4$. Or on remarque plutôt que le temps d'exécution est multiplié par 6. On en conclut que les résultats théoriques et expérimentaux ne coïncident pas, soit parce que nos calculs de coût sont trop approximatifs, soit que d'autres variables entrent dans le calcul du coup d'exécution.
 
 \end{document}
 %% Fin mise au format
