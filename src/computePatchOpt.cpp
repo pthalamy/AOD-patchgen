@@ -80,7 +80,6 @@ inline void computeCosts(vector < vector<int> > &costMin,
     // vector<int> listMinD;
     int Ca, Cs, Cd, CD, minD, indexCostMin, indexMinD, newMinD, currentIndex;
     int *costMin_ptr;
-
     
     
     for (int j = 1; j <= M; ++j) {
@@ -214,8 +213,9 @@ int main(int argc, char* argv[]) {
     computeCosts(costMin, choicesMade, nbLinesDeleted);
     generatePatch(choicesMade, nbLinesDeleted);
 
-    // cout << "\nCoût: " << costMin[N][M] << "\n";
-
+    ofstream result("costPatch");
+    result << "Coût : " << costMin[N][M] << "\n"; 
+    
     oFile.close();
     tFile.close();
 }
