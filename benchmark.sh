@@ -1,6 +1,6 @@
 #!/bin/bash
 
-TIMEFORMAT="%U"
+TIMEFORMAT="%R"
 
 for bench in ./benchmark/benchmark*
 do
