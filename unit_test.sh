@@ -16,4 +16,4 @@ else
 fi
 tput setaf 7
 
-rm -f $DIR/patchCompute $DIR/sourcePatched $DIR/diffShow
+rm -f $DIR/patchCompute $DIR/sourcePatched $DIR/diffShow costPatch
