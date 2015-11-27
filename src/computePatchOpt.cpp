@@ -31,7 +31,6 @@ static vector<string> targetLines;
 
 /** @brief Represents a type of operational choice
  */
-
 typedef enum {
     OpChoiceAdd = 0,
     OpChoiceSub = 1,
@@ -50,11 +49,10 @@ inline string toString(int Number){
    return static_cast<ostringstream*>( &(ostringstream() << Number) )->str();
 }
 
-/** @brief Initializes the cost, choice and number of deleted lines matrices
- *  to the
+/** @brief Initializes the constant values from the cost and choices matrices
  *
- *  @param s The string to be printed.
- *  @param len The length of the string s.
+ *  @param costMin the cost matrix
+ *  @param choicesMade the choices matrix
  *  @return Void.
  */
 inline void initCosts(vector < vector<int> > &costMin,
@@ -74,39 +72,36 @@ inline void initCosts(vector < vector<int> > &costMin,
 
 }
 
-/** @brief Computes the remaining of the content of the cost, choice
- *  and number of deleted lines
+/** @brief Iteratively computes the content of the choices matrix so as to minimize
+ *  the values of the cost matrix
  *
  *  @param costMin the cost matrix
- *  @param choicesMade the choice matrix
- *  @param nbLinesDeleted a matrix that indicates the number of lines to delete to go from line i to j
+ *  @param choicesMade the choices matrix
  *  @return Void.
  */
 inline void computeCosts(vector < vector<int> > &costMin,
 			 vector < vector<int> > &choicesMade) {
-    // vector<int> listMinD;
-    int Ca, Cs, Cd, CD, minD, indexCostMin, indexMinD, newMinD, currentIndex;
-    int *costMin_ptr;
-    
-    
+    int Ca, Cs, minD, indexMinD, newMinD, currentIndex;
+    const int Cd = 10;		// Cost of a single deletion
+    const int CD = 15;		// Cost of multiple deletion
+
+
     for (int j = 1; j <= M; ++j) {
 
-	minD = INT_MAX;
-	indexMinD = 0;
-	currentIndex = 0;
-	
+	minD = INT_MAX;		// Minimum cost of multiple deletion
+	indexMinD = 0;		// Index of line with min deletion from it
+	currentIndex = 0;	// Current index of considered line
+	Ca = 10 + targetLines[j-1].size() + 1; // Cost of adding line j from target file
+
 	for (int i = 1; i <= N; ++i) {
-	    
+
 	    currentIndex++;
 
-            // Define coef
-	    Ca = 10 + targetLines[j-1].size() + 1;
+            // Compute cost of substitution operation
 	    if (originalLines[i-1] != targetLines[j-1])
 		Cs = 10 + targetLines[j-1].size() + 1;
 	    else
 		Cs = 0;
-	    Cd = 10;
-	    CD = 15;
 
 	    // Calculate min for D-deletion
 	    newMinD = min(minD, costMin[i-1][j]);
@@ -114,37 +109,33 @@ inline void computeCosts(vector < vector<int> > &costMin,
 		indexMinD = currentIndex;
 	    minD = newMinD;
 
-
+	    // Find out what operation has minimum cost
 	    int currentCosts[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
 				  costMin[i-1][j] + Cd, minD + CD};
-	    costMin_ptr = min_element(currentCosts, currentCosts + 4);
-	    costMin[i][j] = *costMin_ptr;
+	    costMin[i][j] = *min_element(currentCosts, currentCosts + 4);
 
-	    if (costMin[i][j] == costMin[i][j-1] + Ca)
-		indexCostMin = OpChoiceAdd;
+	    // Proceed with minimum-cost choice
+	    if (costMin[i][j] == costMin[i][j-1] + Ca) // Addition
+		choicesMade[i][j] = OpChoiceAdd;
 	    else if (costMin[i][j] == costMin[i-1][j-1] + Cs)
 		if (Cs != 0)
-		    indexCostMin = OpChoiceSub;
+		    choicesMade[i][j] = OpChoiceSub; // Substitution
 		else
-		    indexCostMin = OpChoiceID;
+		    choicesMade[i][j] = OpChoiceID; // Identity
 	    else if (costMin[i][j] == costMin[i-1][j] + Cd)
-		indexCostMin = OpChoiceDel;
-	    else
-		indexCostMin = OpChoiceDDel;
+		choicesMade[i][j] = OpChoiceDel; // Single Deletion
+	    else {
+		choicesMade[i][j] = OpChoiceDDel; // Multiple Deletions
+		choicesMade[i][j] += indexMinD;	  // Number of deleted lines
+	    }
 
-
-	    choicesMade[i][j] = indexCostMin;
-
-	    if (indexCostMin == OpChoiceDDel)
-		choicesMade[i][j] += indexMinD;
 	}
     }
 }
 
-/** @brief Generate the patch based on the content of the choice and number of lines deleted matrices
+/** @brief Generate the patch based on the content of the choices matrix
  *  and print it to stdout
- *  @param choicesMade the choice matrix
- *  @param nbLinesDeleted a matrix that indicates the number of lines to delete to go from line i to j
+ *  @param choicesMade the choices matrix
  *  @return Void.
  */
 inline void generatePatch(vector < vector<int> > &choicesMade) {
@@ -176,7 +167,7 @@ inline void generatePatch(vector < vector<int> > &choicesMade) {
 	    patchLines.insert(patchLines.begin(), "D " +
 			      toString(i+1 - choicesMade[i][j] + OpChoiceDDel) +
 			      " " + toString(choicesMade[i][j] - OpChoiceDDel) + '\n');
-	    i -= (choicesMade[i][j] - OpChoiceDDel);
+	    i -= (choicesMade[i][j] - OpChoiceDDel); // Decrement by number of deleted lines
 	    break;
 	}
     }
@@ -186,6 +177,11 @@ inline void generatePatch(vector < vector<int> > &choicesMade) {
 	cout << patchLines[i];
 }
 
+/** @brief The main function
+ *
+ *  @param No arguments
+ *  @return int
+ */
 int main(int argc, char* argv[]) {
 
     // Read both files and store content in String vectors indexed by line number
@@ -202,17 +198,15 @@ int main(int argc, char* argv[]) {
     N = originalLines.size();
     M = targetLines.size();
 
+    // Initialize and compute cost and choices matrices
     vector<vector <int> > costMin(N+1,vector<int>(M+1));
     vector<vector <int> > choicesMade(N+1, vector<int>(M+1));
 
     initCosts(costMin, choicesMade);
-
     computeCosts(costMin, choicesMade);
+
     generatePatch(choicesMade);
 
-    ofstream result("costPatch");
-    result << "Coût : " << costMin[N][M] << "\n"; 
-    
     oFile.close();
     tFile.close();
 }
