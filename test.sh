@@ -20,4 +20,6 @@ do
     rm -f $DIR/patchCompute $DIR/sourcePatched $DIR/diffShow
 done
 
+rm -f costPatch
+
 tput setaf 7;
