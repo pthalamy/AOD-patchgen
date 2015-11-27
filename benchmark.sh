@@ -8,7 +8,6 @@ do
 
     for i in `seq 0 4`
     do
-        t=$(time ./bin/computePatchOpt "$bench"/source "$bench"/target > /dev/null 2>1&)
-	echo $t
+        t=$(time ./bin/computePatchOpt "$bench"/source "$bench"/target > /dev/null)
     done
 done
