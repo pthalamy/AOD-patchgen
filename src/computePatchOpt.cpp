@@ -40,6 +40,16 @@ typedef enum {
     OpChoiceID = 4
 } OpChoice;
 
+
+/** @brief Convert integer into string
+ *
+ *  @param Number The integer to convert
+ *  @return The string from the integer
+ */
+inline string toString(int Number){
+   return static_cast<ostringstream*>( &(ostringstream() << Number) )->str();
+}
+
 /** @brief Initializes the cost, choice and number of deleted lines matrices
  *  to the
  *
@@ -152,22 +162,22 @@ inline void generatePatch(vector < vector<int> > &choicesMade,
 	switch (choicesMade[i][j]){
 	case OpChoiceAdd:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
-	    patchLines.insert(patchLines.begin(), "+ " + to_string(i) + '\n');
+	    patchLines.insert(patchLines.begin(), "+ " + toString(i) + '\n');
 	    --j;
 	    break;
 	case OpChoiceSub:
 	    patchLines.insert(patchLines.begin(), targetLines[j-1] + '\n');
-	    patchLines.insert(patchLines.begin(), "= " + to_string(i) + '\n');
+	    patchLines.insert(patchLines.begin(), "= " + toString(i) + '\n');
 	    --i;
 	    --j;
 	    break;
 	case OpChoiceDel:
-	    patchLines.insert(patchLines.begin(), "d " + to_string(i) + '\n');
+	    patchLines.insert(patchLines.begin(), "d " + toString(i) + '\n');
 	    --i;
 	    break;
 	case OpChoiceDDel:
-	    patchLines.insert(patchLines.begin(), "D " + to_string(i+1 - nbLinesDeleted[i][j]) +
-			      " " + to_string(nbLinesDeleted[i][j]) + '\n');
+	    patchLines.insert(patchLines.begin(), "D " + toString(i+1 - nbLinesDeleted[i][j]) +
+			      " " + toString(nbLinesDeleted[i][j]) + '\n');
 	    i -= nbLinesDeleted[i][j];
 	    break;
 	case OpChoiceID:
