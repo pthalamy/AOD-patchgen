@@ -4,7 +4,7 @@ CXX=g++
 LATEXC=pdflatex
 DOCC=doxygen
 CFLAGS=-Wall
-CXXFLAGS=g++ -O3 -Wall
+CXXFLAGS=-O3 -Wall
 
 REFDIR=.
 SRCDIR=$(REFDIR)/src
@@ -14,6 +14,7 @@ REPORTDIR=$(REFDIR)/rapport
 
 LATEXSOURCE=$(wildcard $(REPORTDIR)/*.tex)
 CSOURCE=$(wildcard $(SRCDIR)/applyPatch.c)
+CXXSOURCE=$(wildcard $(SRCDIR)/computePatchOpt.cpp)
 PDF=$(LATEXSOURCE:.tex=.pdf)
 
 
@@ -23,20 +24,21 @@ all: binary report doc
 $(BINDIR)/applyPatch: $(CSOURCE)
 	$(CC) $(CFLAGS)  $^ -o $@
 
+$(BINDIR)/computePatchOpt: $(CXXSOURCE)
+	$(CXX) $(CXXFLAGS) $^ -o $@
+
 %.pdf: $(LATEXSOURCE)
 	$(LATEXC) -output-directory $(REPORTDIR) $^
 
 $(DOCDIR)/index.html: $(SRCDIR)/Doxyfile $(CSOURCE)
 	$(DOCC) $(SRCDIR)/Doxyfile
 
+
 binary: $(BINDIR)/applyPatch $(BINDIR)/computePatchOpt
 
 report: $(PDF)
 
 doc: $(DOCDIR)/index.html
-
-$(BINDIR)/computePatchOpt: $(SRCDIR)/computePatchOpt.cpp
-	$(CXXFLAGS) $(SRCDIR)/computePatchOpt.cpp -o $(BINDIR)/computePatchOpt
 
 clean:
 	rm -rf $(DOCDIR) $(BINDIR)/* $(REPORTDIR)/*.aux $(REPORTDIR)/*.log  $(REPORTDIR)/rapport.pdf
