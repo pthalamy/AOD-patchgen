@@ -179,7 +179,8 @@ inline void generatePatch(vector < vector<int> > &choicesMade) {
 
 /** @brief The main function
  *
- *  @param No arguments
+ *  @param argc number of arguments
+ *  @param argv array of string arguments
  *  @return int
  */
 int main(int argc, char* argv[]) {
