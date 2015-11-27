@@ -115,13 +115,10 @@ inline void computeCosts(vector < vector<int> > &costMin,
 	    minD = newMinD;
 
 
-
 	    int currentCosts[] = {costMin[i][j-1] + Ca, costMin[i-1][j-1] + Cs,
 				  costMin[i-1][j] + Cd, minD + CD};
 	    costMin_ptr = min_element(currentCosts, currentCosts + 4);
 	    costMin[i][j] = *costMin_ptr;
-	    // indexCostMin = (costMin_ptr - currentCosts) / sizeof(int);
-	    // LAST LINE SHOULD BE USABLE INSTEAD OF CONDITONNAL CHECKS. BUT DOESNT WORK. WHY?
 
 	    if (costMin[i][j] == costMin[i][j-1] + Ca)
 		indexCostMin = OpChoiceAdd;
