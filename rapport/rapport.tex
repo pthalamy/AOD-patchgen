@@ -17,8 +17,8 @@
 
 \title{Rapport de TP 4MMAOD : Génération de patch optimal}
 \author{
-NOM Prénom étudiant$_1$ (groupe étudiant$_1$) 
-\\ NOM Prénom étudiant$_2$ (groupe étudiant$_2$) 
+    LEROUX Benjamin (ISI1)
+\\  THALAMY Pierre (ISI2)
 }
 
 \begin{document}
@@ -27,66 +27,63 @@ NOM Prénom étudiant$_1$ (groupe étudiant$_1$)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \paragraph{\em Préambule}
-{\em \begin{itemize} 
-   \item Compléter ce patron de rapport en supprimant toutes les phrases en italique\,: elles ne doivent pas apparaître dans le rapport pdf.
-   \item Il sera attribué {\bf 1 point} pour la qualité globale du rapport\,: présentation, concision et clarté de l'argumentation.
-\end{itemize}
-}
+    Nous avons choisi d'écrire notre programme de calcul de patch optimal en C++ pour des raisons de performance. En effet, après une première version du code en Python, nous n'étions pas satisfait du temps d'exécution de notre programme. Le C++ nous offre un compromis intéressant entre performance brut et facilité d'implémentation au moyen des classes de base.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Principe de notre  programme (1 point)}
-{\em Mettre ici une explication brève du principe de votre programme en  précisant la méthode implantée (récursive, itérative) et les
-choix effectués (notamment pour l'ordonnancement des instructions).
-} 
+
+Notre programme remplit deux matrices de tailles égales aux nombres de lignes + 1 présendans les fichiers source et cible. Chaque case (i, j) de la première matrice représente le coût minimal du patch transformant le fichier source en fichier cible jusqu'aux lignes i et j respectivement. La deuxième matrice conserve en mémoire le dernier choix optimal réalisé pour arriver jusqu'à ces lignes.
+
+Ensuite on parcourt la matrice des choix en partant de la case de plus haut indices, puis on détermine les opérations effectuées et on décrémente en fonction les indices (i,j) afin d'arriver au point (0, 0).
+
+Nous avons utilisé une méthode itérative dans toutes nos boucles.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Analyse du coût théorique (3 points)}
-{\em Donner ici l'analyse du coût théorique de votre programme en fonction des nombres $n_1$ et $n_2$ de lignes 
-et $c_1$ et $c_2$ de caractères des deux fichiers en entrée.
- Pour chaque coût, donner la formule qui le caractérise (en justifiant brièvement pourquoi cette formule correspond à votre programme), 
- puis l'ordre du coût en fonction de $n_1, n_2, c_1, c_2$ en notation $\Theta$ de préférence, sinon $O$.}
+Nous avons remarqué que l'essentiel du temps d'exécution de notre algorithme correspond au temps passé au remplissage des matrices. En effet en dehors du remplissage, on ne passe que peu de temps à lire les fichiers, initialiser les matrices ou même écrire le patch. De plus on effectue 12 opérations élémentaires dans les boucles imbriqués de remplissage.\\
+Lecture : $O(n_1+n_2)$\\
+Initialisation : $O(n_1+n_2)$\\
+Écriture du patch : $O(\sqrt{n_1+n_2})$ \\
+Remplissage des matrices : $O(12.n_1.n_2)$\\
+Coût total théorique : $O(2(n_1+n_2) + \sqrt{n_1+n_2} + 12.n_1.n_2)$
 
-  \subsection{Nombre  d'opérations en pire cas\,: }
+  \subsection{Nombre  d'opérations en pire cas\,: $3.n_1 + 3.n_2 + 14.n_1.n_2$}
     \paragraph{Justification\,: }
-    {\em La justification peut être par exemple de la forme: \\ 
-       "Le programme itératif contient les boucles $k_1=...$, $k_2= ...$ etc correspondant à la somme 
-      $$T(n_1, n_2, c_1, c_2) = \sum_{k_1=...}^{...} ... \sum ... + \sum_{i=...}^{...} ...$$ 
-      somme que nous avons calculée (ou majorée) par la technique de  ... " \\
-      ou  encore\,:  \\
-      "les appels récursifs du programme permettent de modéliser son coût par le système d'équations aux récurrences 
-      $$T(k_1, k_2) = ...  \mbox{~avec~les~conditions~initiales~....~} $$
-      Le coût indiqué est obtenu en résolvant ce système par la méthode de  .... "
-    } 
-  \subsection{Place mémoire requise\,: }
-    \paragraph{Justification\,: }
+    Le programme itératif contient les boucles \textit{while} : $k_1=1..n_1$, $k_2= 1..n_2$ correspondant à la lecture des lignes fichiers, puis on initialise nos matrices grâce à des boucles \textit{for} : $k_3=0..n_1$, $k_4= 0..n_2$, et nous remplissons des matrices de tailles ($n_1, n_2$) grâce à des boucles imbriqués \textit{for} : $k_5=1..n_1$, $k_6= 1..n_2$. Ensuite nous parcourons une matrice de taille ($n_1, n_2$), ce qui prend au pire des cas $n_1 + n_2$ opérations. Enfin nous devons afficher le patch ce qui peut prendre jusqu'à $2n_1.n_2$ opérations.
+    \begin{align}
+      T(n_1, n_2) &= \sum_{k_1=1}^{n_1} O(1) + \sum_{k_2=1}^{n_2} O(1) + \sum_{k_3=0}^{n_1} O(1) + \sum_{k_4=0}^{n_2} O(1)\\
+      & \;+ n_1 + n_2 + 2.n_1.n_2 \\
+      & \;+ \sum_{k_5=1}^{n_2} \sum_{k_6=1}^{n_1} \underbrace{O(1)}_{\text{Init des coef}} + \underbrace{2.O(1)}_{\text{Calcul Min D}} + \underbrace{4.O(1)}_{\text{Calcul min}} + \underbrace{4.O(1)}_{\text{Sauv de l'opération}} + \underbrace{O(1)}_{\text{Sauv nb de lignes D}}\\
+      &= 3.n_1 + 3.n_2 + 14.n_1.n_2
+    \end{align}
 
-  \subsection{Nombre de défauts de cache sur le modèle CO\,: }
+  \subsection{Place mémoire requise\,: $2.n_1.n_2 + O(\sqrt{n_1+n_2}) + O(n_1) + O(n_2)$}
     \paragraph{Justification\,: }
+    On utilise deux matrices pour stocker les coûts précédemment calculés, et les choix effectués. De plus on charge les deux fichiers afin de ne pas avoir à effectuer de lecture durant les boucles.
+    On utilise aussi un tableau de string pour stocker le patch calculé avant de l'afficher (de taille $O(\sqrt{n_1+n_2})$).
 
+  \subsection{Nombre de défauts de cache sur le modèle CO\,: $2.n_1. n_2 + n_1$}
+    \paragraph{Justification\,: }
+    Nous remplissons les matrices colonne par colonne alors qu'elles sont stockées lignes par lignes ce qui nous contraint à effectuer deux défauts de cache à chaque tour de nos boucles imbriqués. On considère que L est inférieur à $n_2$.
+
+    De plus on parcourt la matrice des choix lors du calcul du patch, ce qui nous fait effectuer $n_1$ changement de ligne, et donc autant de changement ligne. On considère ici qu'on ne fait pas de saut de distance supérieur à L dans une ligne.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Compte rendu d'expérimentation (2 points)}
-  \subsection{Conditions expérimentaless}
-     {\em Décrire les conditions permettant la reproductibilité des mesures: on demande la description
-      de la machine et la méthode utilisée pour mesurer le temps.
-     }
+  \subsection{Conditions expérimentales}
 
-    \subsubsection{Description synthétique de la machine\,:} 
-      {\em indiquer ici le  processeur et sa fréquence, la mémoire, le système d'exploitation. 
-       Préciser aussi si la machine était monopolisée pour un test, ou notamment si 
-       d'autres processus ou utilisateurs étaient en cours d'exécution. 
-      } 
+    \subsubsection{Description synthétique de la machine\,:}
+    La machine a été mise en mode mono-utilisateur, sans interface graphique, et notre test était donc le seul processus actif. Elle a les specs suivantes: \\
+    \textbf{OS:} Antergos (Arch) Linux 64-bit\\
+    \textbf{Mémoire RAM:} 3,8 GB\\
+    \textbf{Processeur:} CPU Intel Core M 5Y10 @0.800GHz (Turbo -> 2 GHz) x 4\\
+    \textbf{Compilateur:} g++ version 5.2\\
 
-    \subsubsection{Méthode utilisée pour les mesures de temps\,: } 
-      {\em préciser ici  comment les mesures de temps ont été effectuées (fonction appelée) et l'unité de temps; en particulier, 
-       préciser comment les 5 exécutions pour chaque test ont été faites (par exemple si le même test est fait 5 fois de suite, ou si les tests sont alternés entre
-       les mesures, ou exécutés en concurrence etc). 
-      }
+    \subsubsection{Méthode utilisée pour les mesures de temps\,: }
+    Le benchmark a été effectué à l'aide du script \textit{benchmark.sh} situé dans le répertoire du projet, il ne prend pas d'arguments et se contente d'exécuter 5 fois consécutives \textbf{computePatchOpt} sur chacun des dossiers de benchmark du répertoire \textit{benchmark/} avec l'utilitaire UNIX \textbf{time}. Il affiche sur la sortie standard le temps en seconde de type \textit{real} (Temps d'exécution du programme avec les appels systèmes nécessaires au programme).
 
   \subsection{Mesures expérimentales}
-    {\em Compléter le tableau suivant par les temps d'exécution mesurés pour chacun des 6 benchmarks imposés
-              (temps minimum, maximum et moyen sur 5 exécutions)
-    }
+    Les temps ci-dessous sont en secondes et comprennent l'exécution du programme, comprenant les appels système.
 
     \begin{figure}[h]
       \begin{center}
@@ -97,17 +94,17 @@ et $c_1$ et $c_2$ de caractères des deux fichiers en entrée.
             & du patch     & min       & max     & moyen \\
           \hline
           \hline
-            benchmark1 &      &     &     &     \\
+            benchmark1 &   2540   & 0,035  &  0,035  &  0,035 \\
           \hline
-            benchmark2 &      &     &     &     \\
+            benchmark2 &   3120   & 0,204  &  0,205  &  0,2044 \\
           \hline
-            benchmark3 &      &     &     &     \\
+            benchmark3 &   809   &  0,291  &  0,293  &  0,2922 \\
           \hline
-            benchmark4 &      &     &     &     \\
+            benchmark4 &   1708  & 0,759  &  0,762  &  0,7604 \\
           \hline
-            benchmark5 &      &     &     &     \\
+            benchmark5 &   7553   & 1,304  &  1,324  &  1,3084 \\
           \hline
-            benchmark6 &      &     &     &     \\
+            benchmark6 &   37027  & 7,016  &  7,035  &  7,0276  \\
           \hline
           \hline
         \end{tabular}
@@ -117,16 +114,9 @@ et $c_1$ et $c_2$ de caractères des deux fichiers en entrée.
     \end{figure}
 
 \subsection{Analyse des résultats expérimentaux}
-{\em Donner  une réponse justifiée  à la question\,: 
-              les  temps mesurés correspondent ils  à votre analyse théorique (nombre d’opérations et défauts de cache) ?
-}
+On remarque que $n_1$ et $n_2$ sont très proche. On peut alors prendre $N = \max{n_1, n_2}$ et grâce aux calculs théoriques estimer que le temps d'exécution est fonction de N de cette façon : $16.N^2 +7.N$  (Ajout du max des opérations effectuées et des défauts de cache)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Question\,: et  si le coût d'un patch était sa taille en octets ? (1 point)}
-{\em Préciser le principe de la résolution choisie (parmi celles vues en cours); donner  les modifications à apporter (soit à vos  équations, soit à votre programme, au choix) 
-pour s'adapter à cette nouvelle fonction de coût. 
-}
+Cependant lorsque le nombre de ligne max des fichiers double on devrait multiplier le temps d'exécution par un facteur de $\frac{78}{23} \simeq 3,4$. Or on remarque plutôt que le temps d'exécution est multiplié par 6. On en conclut que les résultats théoriques et expérimentaux ne coïncide pas, soit parce que nos calculs de coût sont trop approximatif, soit que d'autres variables entrent dans le calcul du coup d'exécution.
 
 \end{document}
 %% Fin mise au format
-
