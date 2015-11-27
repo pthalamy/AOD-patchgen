@@ -8,10 +8,11 @@ diff $DIR/sourcePatched $DIR/target > $DIR/diffShow
 
 if [ -s $DIR/diffShow ]
 then
-	tput setaf 1; echo $DIR : [TEST FAILED]	
-	cat diff_show 
+    tput setaf 1; echo $DIR : [TEST FAILED]	
+    cat diff_show 
 else
-	tput setaf 2; echo $DIR : [TEST PASSED]
+    tput setaf 2; echo $DIR : [TEST PASSED]
+    tput setaf 7; cat costPatch
 fi
 tput setaf 7
 
